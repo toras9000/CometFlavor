@@ -10,6 +10,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{FE2A006F-611C-4F77-AEF7-D377C37BD866}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCometFlavor", "Tests\TestCometFlavor\TestCometFlavor.csproj", "{E02E5CA0-394E-4E72-829B-8046DACF7D59}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,9 +24,16 @@ Global
 		{6EA5C9EA-2BF1-4D49-87FD-56F17EE80555}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EA5C9EA-2BF1-4D49-87FD-56F17EE80555}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EA5C9EA-2BF1-4D49-87FD-56F17EE80555}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E02E5CA0-394E-4E72-829B-8046DACF7D59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E02E5CA0-394E-4E72-829B-8046DACF7D59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E02E5CA0-394E-4E72-829B-8046DACF7D59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E02E5CA0-394E-4E72-829B-8046DACF7D59}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E02E5CA0-394E-4E72-829B-8046DACF7D59} = {FE2A006F-611C-4F77-AEF7-D377C37BD866}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2DB79F85-2C24-46A5-990C-35F876545C14}
