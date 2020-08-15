@@ -11,4 +11,8 @@
     <Description>A utility class library for WPF that depends on native Win32.</Description>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
+  </ItemGroup>
+
 </Project>
