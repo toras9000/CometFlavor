@@ -1,4 +1,4 @@
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Markup;
 
 [assembly: ThemeInfo(
@@ -9,3 +9,10 @@ using System.Windows.Markup;
                                               //(used if a resource is not found in the page,
                                               // app, or any theme specific resource dictionaries)
 )]
+
+// XAML用名前空間定義
+[assembly: XmlnsDefinition("http://schemas.cometflavor.toras9000/wpf/interactions", "CometFlavor.Wpf.Interactions")]
+[assembly: XmlnsDefinition("http://schemas.cometflavor.toras9000/wpf/converters", "CometFlavor.Wpf.Converters")]
+
+[assembly: XmlnsDefinition("http://schemas.cometflavor.toras9000/", "CometFlavor.Wpf.Interactions")]
+[assembly: XmlnsDefinition("http://schemas.cometflavor.toras9000/", "CometFlavor.Wpf.Converters")]
