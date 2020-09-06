@@ -5,7 +5,7 @@
     <UseWPF>true</UseWPF>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.0.0</Version>
+    <Version>0.0.1</Version>
     <Authors>toras9000</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>A utility class library for WPF that depends on native Win32.</Description>
