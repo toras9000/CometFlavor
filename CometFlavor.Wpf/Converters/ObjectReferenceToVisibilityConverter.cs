@@ -8,12 +8,15 @@ using System.Windows.Data;
 namespace CometFlavor.Wpf.Converters
 {
     /// <summary>
-    /// オブジェクトの有無をbool値に変換する。
+    /// オブジェクトの有無(nullか否か)をVisibility列挙子に変換する。
     /// </summary>
-    public class ExistenceToBooleanConverter : IValueConverter
+    public class ObjectReferenceToVisibilityConverter : IValueConverter
     {
         // 公開プロパティ
         #region 動作設定
+        /// <summary>true に設定すると非表示時に Visibility.Hidden にする。デフォルトでは Visibility.Collapsed となる。</summary>
+        public bool InvisibleToHidden { get; set; }
+
         /// <summary>trueに設定するとオブジェクト有無の解釈を逆にする。</summary>
         public bool ReverseLogic { get; set; }
         #endregion
@@ -33,8 +36,17 @@ namespace CometFlavor.Wpf.Converters
             // オブジェクトの有無
             var existance = (value != null);
 
-            // 論理解釈の設定値に応じた値を返却
-            return this.ReverseLogic ? !existance : existance;
+            // 表示状態
+            var visibility = this.ReverseLogic ? !existance : existance;
+
+            // 表示ありの場合は表示値を返却
+            if (visibility)
+            {
+                return Visibility.Visible;
+            }
+
+            // 表示なしであれば設定に応じた非表示状態
+            return this.InvisibleToHidden ? Visibility.Hidden : Visibility.Collapsed;
         }
 
         /// <summary>

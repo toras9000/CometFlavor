@@ -9,12 +9,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace TestCometFlavor.Wpf.Converters
 {
     [TestClass]
-    public class ExistenceToBooleanConverterTests
+    public class ObjectReferenceToBooleanConverterTests
     {
         [TestMethod]
         public void TestConvert_NormalLogic()
         {
-            var target = new ExistenceToBooleanConverter();
+            var target = new ObjectReferenceToBooleanConverter();
             target.ReverseLogic = false;
             target.Convert(new object(), null, null, null).Should().Be(true);
             target.Convert(null, null, null, null).Should().Be(false);
@@ -23,7 +23,7 @@ namespace TestCometFlavor.Wpf.Converters
         [TestMethod]
         public void TestConvert_ReverseLogic()
         {
-            var target = new ExistenceToBooleanConverter();
+            var target = new ObjectReferenceToBooleanConverter();
             target.ReverseLogic = true;
             target.Convert(new object(), null, null, null).Should().Be(false);
             target.Convert(null, null, null, null).Should().Be(true);
@@ -32,7 +32,7 @@ namespace TestCometFlavor.Wpf.Converters
         [TestMethod]
         public void TestConvert_NullableType()
         {
-            var target = new ExistenceToBooleanConverter();
+            var target = new ObjectReferenceToBooleanConverter();
             target.ReverseLogic = false;
             target.Convert(new int?(0), null, null, null).Should().Be(true);
             target.Convert(new int?(), null, null, null).Should().Be(false);
@@ -41,7 +41,7 @@ namespace TestCometFlavor.Wpf.Converters
         [TestMethod]
         public void TestConvertBack_NormalLogic()
         {
-            var target = new ExistenceToBooleanConverter();
+            var target = new ObjectReferenceToBooleanConverter();
             target.ReverseLogic = false;
             target.ConvertBack(true, null, null, null).Should().Be(DependencyProperty.UnsetValue);
             target.ConvertBack(false, null, null, null).Should().Be(DependencyProperty.UnsetValue);
@@ -50,7 +50,7 @@ namespace TestCometFlavor.Wpf.Converters
         [TestMethod]
         public void TestConvertBack_ReverseLogic()
         {
-            var target = new ExistenceToBooleanConverter();
+            var target = new ObjectReferenceToBooleanConverter();
             target.ReverseLogic = false;
             target.ConvertBack(true, null, null, null).Should().Be(DependencyProperty.UnsetValue);
             target.ConvertBack(false, null, null, null).Should().Be(DependencyProperty.UnsetValue);

@@ -9,12 +9,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace TestCometFlavor.Wpf.Converters
 {
     [TestClass]
-    public class ExistenceToVisibilityConverterTests
+    public class ObjectReferenceToVisibilityConverterTests
     {
         [TestMethod]
         public void TestConvert_NormalLogic_InvisibleCollapse()
         {
-            var target = new ExistenceToVisibilityConverter();
+            var target = new ObjectReferenceToVisibilityConverter();
             target.ReverseLogic = false;
             target.InvisibleToHidden = false;
             target.Convert(new object(), null, null, null).Should().Be(Visibility.Visible);
@@ -24,7 +24,7 @@ namespace TestCometFlavor.Wpf.Converters
         [TestMethod]
         public void TestConvert_NormalLogic_InvisibleHidden()
         {
-            var target = new ExistenceToVisibilityConverter();
+            var target = new ObjectReferenceToVisibilityConverter();
             target.ReverseLogic = false;
             target.InvisibleToHidden = true;
             target.Convert(new object(), null, null, null).Should().Be(Visibility.Visible);
@@ -34,7 +34,7 @@ namespace TestCometFlavor.Wpf.Converters
         [TestMethod]
         public void TestConvert_ReverseLogic_InvisibleCollapse()
         {
-            var target = new ExistenceToVisibilityConverter();
+            var target = new ObjectReferenceToVisibilityConverter();
             target.ReverseLogic = true;
             target.InvisibleToHidden = false;
             target.Convert(new object(), null, null, null).Should().Be(Visibility.Collapsed);
@@ -44,7 +44,7 @@ namespace TestCometFlavor.Wpf.Converters
         [TestMethod]
         public void TestConvert_ReverseLogic_InvisibleHidden()
         {
-            var target = new ExistenceToVisibilityConverter();
+            var target = new ObjectReferenceToVisibilityConverter();
             target.ReverseLogic = true;
             target.InvisibleToHidden = true;
             target.Convert(new object(), null, null, null).Should().Be(Visibility.Hidden);
@@ -54,7 +54,7 @@ namespace TestCometFlavor.Wpf.Converters
         [TestMethod]
         public void TestConvert_NullableType()
         {
-            var target = new ExistenceToVisibilityConverter();
+            var target = new ObjectReferenceToVisibilityConverter();
             target.ReverseLogic = false;
             target.InvisibleToHidden = true;
             target.Convert(new int?(0), null, null, null).Should().Be(Visibility.Visible);
@@ -64,7 +64,7 @@ namespace TestCometFlavor.Wpf.Converters
         [TestMethod]
         public void TestConvertBack_NormalLogic_InvisibleCollapse()
         {
-            var target = new ExistenceToVisibilityConverter();
+            var target = new ObjectReferenceToVisibilityConverter();
             target.ReverseLogic = false;
             target.InvisibleToHidden = false;
             target.ConvertBack(Visibility.Visible, null, null, null).Should().Be(DependencyProperty.UnsetValue);
@@ -75,7 +75,7 @@ namespace TestCometFlavor.Wpf.Converters
         [TestMethod]
         public void TestConvertBack_NormalLogic_InvisibleHidden()
         {
-            var target = new ExistenceToVisibilityConverter();
+            var target = new ObjectReferenceToVisibilityConverter();
             target.ReverseLogic = false;
             target.InvisibleToHidden = true;
             target.ConvertBack(Visibility.Visible, null, null, null).Should().Be(DependencyProperty.UnsetValue);
@@ -86,7 +86,7 @@ namespace TestCometFlavor.Wpf.Converters
         [TestMethod]
         public void TestConvertBack_ReverseLogic_InvisibleCollapse()
         {
-            var target = new ExistenceToVisibilityConverter();
+            var target = new ObjectReferenceToVisibilityConverter();
             target.ReverseLogic = true;
             target.InvisibleToHidden = false;
             target.ConvertBack(Visibility.Visible, null, null, null).Should().Be(DependencyProperty.UnsetValue);
@@ -97,7 +97,7 @@ namespace TestCometFlavor.Wpf.Converters
         [TestMethod]
         public void TestConvertBack_ReverseLogic_InvisibleHidden()
         {
-            var target = new ExistenceToVisibilityConverter();
+            var target = new ObjectReferenceToVisibilityConverter();
             target.ReverseLogic = true;
             target.InvisibleToHidden = true;
             target.ConvertBack(Visibility.Visible, null, null, null).Should().Be(DependencyProperty.UnsetValue);
