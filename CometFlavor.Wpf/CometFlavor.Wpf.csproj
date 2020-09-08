@@ -9,6 +9,8 @@
     <Authors>toras9000</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>A utility class library for WPF.</Description>
+    <PackageProjectUrl>https://github.com/toras9000/CometFlavor</PackageProjectUrl>
+    <PackageTags>wpf</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

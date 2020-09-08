@@ -9,6 +9,7 @@
     <Company />
     <Version>0.0.1</Version>
     <Description>A generic utility class library.</Description>
+    <PackageProjectUrl>https://github.com/toras9000/CometFlavor</PackageProjectUrl>
   </PropertyGroup>
 
 </Project>
