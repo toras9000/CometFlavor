@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using CometFlavor.Wpf.Converters;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -12,7 +9,7 @@ namespace TestCometFlavor.Wpf.Converters
     public class ObjectReferenceToBooleanConverterTests
     {
         [TestMethod]
-        public void TestConvert_NormalLogic()
+        public void Test_Convert_NormalLogic()
         {
             var target = new ObjectReferenceToBooleanConverter();
             target.ReverseLogic = false;
@@ -21,7 +18,7 @@ namespace TestCometFlavor.Wpf.Converters
         }
 
         [TestMethod]
-        public void TestConvert_ReverseLogic()
+        public void Test_Convert_ReverseLogic()
         {
             var target = new ObjectReferenceToBooleanConverter();
             target.ReverseLogic = true;
@@ -30,7 +27,7 @@ namespace TestCometFlavor.Wpf.Converters
         }
 
         [TestMethod]
-        public void TestConvert_NullableType()
+        public void Test_Convert_NullableType()
         {
             var target = new ObjectReferenceToBooleanConverter();
             target.ReverseLogic = false;
@@ -39,7 +36,7 @@ namespace TestCometFlavor.Wpf.Converters
         }
 
         [TestMethod]
-        public void TestConvertBack_NormalLogic()
+        public void Test_ConvertBack_NormalLogic()
         {
             var target = new ObjectReferenceToBooleanConverter();
             target.ReverseLogic = false;
@@ -48,7 +45,7 @@ namespace TestCometFlavor.Wpf.Converters
         }
 
         [TestMethod]
-        public void TestConvertBack_ReverseLogic()
+        public void Test_ConvertBack_ReverseLogic()
         {
             var target = new ObjectReferenceToBooleanConverter();
             target.ReverseLogic = false;

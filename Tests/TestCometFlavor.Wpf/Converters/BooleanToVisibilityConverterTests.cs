@@ -1,10 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FluentAssertions;
-using Moq;
-using System;
-using System.Collections.Generic;
+﻿using System.Windows;
 using CometFlavor.Wpf.Converters;
-using System.Windows;
+using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TestCometFlavor.Wpf.Converters
 {
@@ -12,7 +9,7 @@ namespace TestCometFlavor.Wpf.Converters
     public class BooleanToVisibilityConverterTests
     {
         [TestMethod]
-        public void TestConvert_NormalLogic_InvisibleCollapse()
+        public void Test_Convert_NormalLogic_InvisibleCollapse()
         {
             var target = new BooleanToVisibilityConverter();
             target.ReverseLogic = false;
@@ -22,7 +19,7 @@ namespace TestCometFlavor.Wpf.Converters
         }
 
         [TestMethod]
-        public void TestConvert_NormalLogic_InvisibleHidden()
+        public void Test_Convert_NormalLogic_InvisibleHidden()
         {
             var target = new BooleanToVisibilityConverter();
             target.ReverseLogic = false;
@@ -32,7 +29,7 @@ namespace TestCometFlavor.Wpf.Converters
         }
 
         [TestMethod]
-        public void TestConvert_ReverseLogic_InvisibleCollapse()
+        public void Test_Convert_ReverseLogic_InvisibleCollapse()
         {
             var target = new BooleanToVisibilityConverter();
             target.ReverseLogic = true;
@@ -42,7 +39,7 @@ namespace TestCometFlavor.Wpf.Converters
         }
 
         [TestMethod]
-        public void TestConvert_ReverseLogic_InvisibleHidden()
+        public void Test_Convert_ReverseLogic_InvisibleHidden()
         {
             var target = new BooleanToVisibilityConverter();
             target.ReverseLogic = true;
@@ -52,7 +49,7 @@ namespace TestCometFlavor.Wpf.Converters
         }
 
         [TestMethod]
-        public void TestConvert_NotExpectType()
+        public void Test_Convert_NotExpectType()
         {
             var target = new BooleanToVisibilityConverter();
             target.InvisibleToHidden = true;
@@ -61,7 +58,7 @@ namespace TestCometFlavor.Wpf.Converters
         }
 
         [TestMethod]
-        public void TestConvertBack_NormalLogic_InvisibleCollapse()
+        public void Test_ConvertBack_NormalLogic_InvisibleCollapse()
         {
             var target = new BooleanToVisibilityConverter();
             target.ReverseLogic = false;
@@ -72,7 +69,7 @@ namespace TestCometFlavor.Wpf.Converters
         }
 
         [TestMethod]
-        public void TestConvertBack_NormalLogic_InvisibleHidden()
+        public void Test_ConvertBack_NormalLogic_InvisibleHidden()
         {
             var target = new BooleanToVisibilityConverter();
             target.ReverseLogic = false;
@@ -83,7 +80,7 @@ namespace TestCometFlavor.Wpf.Converters
         }
 
         [TestMethod]
-        public void TestConvertBack_ReverseLogic_InvisibleCollapse()
+        public void Test_ConvertBack_ReverseLogic_InvisibleCollapse()
         {
             var target = new BooleanToVisibilityConverter();
             target.ReverseLogic = true;
@@ -94,7 +91,7 @@ namespace TestCometFlavor.Wpf.Converters
         }
 
         [TestMethod]
-        public void TestConvertBack_ReverseLogic_InvisibleHidden()
+        public void Test_ConvertBack_ReverseLogic_InvisibleHidden()
         {
             var target = new BooleanToVisibilityConverter();
             target.ReverseLogic = true;
@@ -105,7 +102,7 @@ namespace TestCometFlavor.Wpf.Converters
         }
 
         [TestMethod]
-        public void TestConvertBack_NotExpectType()
+        public void Test_ConvertBack_NotExpectType()
         {
             var target = new BooleanToVisibilityConverter();
             target.InvisibleToHidden = true;

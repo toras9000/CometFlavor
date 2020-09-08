@@ -10,6 +10,7 @@ namespace CometFlavor.Wpf.Converters
     /// <summary>
     /// オブジェクトの有無(nullか否か)をVisibility列挙子に変換する。
     /// </summary>
+    [ValueConversion(typeof(object), typeof(Visibility))]
     public class ObjectReferenceToVisibilityConverter : IValueConverter
     {
         // 公開プロパティ
@@ -56,7 +57,7 @@ namespace CometFlavor.Wpf.Converters
         /// <param name="targetType">対象の型</param>
         /// <param name="parameter">コンバータパラメータ</param>
         /// <param name="culture"></param>
-        /// <returns>変換できた場合はbool値。変換できない場合は DependencyProperty.UnsetValue。</returns>
+        /// <returns>常に DependencyProperty.UnsetValue。</returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             // 対称性のある逆変換は出来ない。
