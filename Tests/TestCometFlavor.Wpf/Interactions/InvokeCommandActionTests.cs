@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using CometFlavor.Wpf.Interactions;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Reactive.Bindings;
 using TestCometFlavor.Wpf._Test;
 
 namespace TestCometFlavor.Wpf.Interactions
@@ -189,6 +191,84 @@ namespace TestCometFlavor.Wpf.Interactions
             // 呼び出し結果の検証
             cmdMock.Verify(c => c.Execute(argParam), Times.Never());
             cmdMock.Verify(c => c.Execute(propParam), Times.Once());
+        }
+
+        [TestMethod]
+        public void Test_Invoke_ParamBinding_Auto()
+        {
+            // Mode=Auto
+
+            // コマンドのモック
+            var cmdMock = new TestCommand();
+            cmdMock.Setup_CanExecute(true);
+
+            // テスト対象の準備
+            var target = new InvokeCommandAction();
+            target.CommandParameterMode = InvokeCommandAction.CommandParameterModeKind.Auto;
+            target.Command = cmdMock.Object;
+
+            // バインドソース
+            var argParam = new object();
+            var propParam = new ReactivePropertySlim<object>(new object());
+
+            // バインド
+            var binding = new Binding();
+            binding.Mode = BindingMode.OneWay;
+            binding.Source = propParam;
+            binding.Path = new PropertyPath(nameof(propParam.Value));
+            BindingOperations.SetBinding(target, InvokeCommandAction.CommandParameterProperty, binding);
+
+            // テスト対象のアクションを呼び出すためのトリガ作成
+            var element = new DependencyObject();
+            var trigger = new TestTrigger();
+            trigger.Attach(element);
+            trigger.Actions.Add(target);
+
+            // アクションを呼び出すためにトリガ実行
+            trigger.Invoke(argParam);
+
+            // 呼び出し結果の検証
+            cmdMock.Verify(c => c.Execute(argParam), Times.Never());
+            cmdMock.Verify(c => c.Execute(propParam.Value), Times.Once());
+        }
+
+        [TestMethod]
+        public void Test_Invoke_ParamBinding_Property()
+        {
+            // Mode=Auto
+
+            // コマンドのモック
+            var cmdMock = new TestCommand();
+            cmdMock.Setup_CanExecute(true);
+
+            // テスト対象の準備
+            var target = new InvokeCommandAction();
+            target.CommandParameterMode = InvokeCommandAction.CommandParameterModeKind.Property;
+            target.Command = cmdMock.Object;
+
+            // バインドソース
+            var argParam = new object();
+            var propParam = new ReactivePropertySlim<object>(new object());
+
+            // バインド
+            var binding = new Binding();
+            binding.Mode = BindingMode.OneWay;
+            binding.Source = propParam;
+            binding.Path = new PropertyPath(nameof(propParam.Value));
+            BindingOperations.SetBinding(target, InvokeCommandAction.CommandParameterProperty, binding);
+
+            // テスト対象のアクションを呼び出すためのトリガ作成
+            var element = new DependencyObject();
+            var trigger = new TestTrigger();
+            trigger.Attach(element);
+            trigger.Actions.Add(target);
+
+            // アクションを呼び出すためにトリガ実行
+            trigger.Invoke(argParam);
+
+            // 呼び出し結果の検証
+            cmdMock.Verify(c => c.Execute(argParam), Times.Never());
+            cmdMock.Verify(c => c.Execute(propParam.Value), Times.Once());
         }
 
         [STATestMethod]

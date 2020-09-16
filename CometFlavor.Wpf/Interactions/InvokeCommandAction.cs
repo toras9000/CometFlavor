@@ -202,6 +202,7 @@ namespace CometFlavor.Wpf.Interactions
                     }
                     else
                     {
+                        cmdParam = this.CommandParameter;
                         otherParam = parameter;
                     }
                     break;
