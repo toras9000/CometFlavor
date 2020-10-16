@@ -1,7 +1,10 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
+using CometFlavor.Wpf.Converters;
 using Microsoft.Xaml.Behaviors;
 
 namespace CometFlavor.Wpf.Interactions
@@ -13,13 +16,24 @@ namespace CometFlavor.Wpf.Interactions
     {
         // 公開プロパティ
         #region 動作設定
+        /// <summary>ドロップ受け入れを自動的に有効にするか否か</summary>
+        /// <remarks>
+        /// このプロパティを true にると要素にアタッチした際に自動的に <see cref="UIElement.AllowDrop"/> を true とする。
+        /// また、デタッチ時には自動設定前の値に再設定する。
+        /// </remarks>
+        public bool AutoAllowDrop
+        {
+            get { return (bool)GetValue(AutoAllowDropProperty); }
+            set { SetValue(AutoAllowDropProperty, value); }
+        }
+
         /// <summary>ドロップを受け入れるデータフォーマット名の配列</summary>
         /// <remarks>
         /// 有効な名称配列を指定した場合、そのフォーマット名のデータを含む場合のみドロップを受け入れる。
         /// このプロパティがnullや空の配列である場合、全てのドロップを受け入れる。
         /// デフォルト値は null となる。
         /// </remarks>
-        public string[] AcceptDropFormats
+        public IReadOnlyList<string> AcceptDropFormats
         {
             get { return (string[])GetValue(AcceptDropFormatsProperty); }
             set { SetValue(AcceptDropFormatsProperty, value); }
@@ -51,30 +65,20 @@ namespace CometFlavor.Wpf.Interactions
             set { SetValue(ParameterConverterProperty, value); }
         }
 
-        /// <summary>ドロップ受け入れを自動的に有効にするか否か</summary>
-        /// <remarks>
-        /// このプロパティを true にると要素にアタッチした際に自動的に <see cref="UIElement.AllowDrop"/> を true とする。
-        /// また、デタッチ時には自動設定前の値に再設定する。
-        /// </remarks>
-        public bool AutoAllowDrop
-        {
-            get { return (bool)GetValue(AutoAllowDropProperty); }
-            set { SetValue(AutoAllowDropProperty, value); }
-        }
         #endregion
 
         #region 依存プロパティ
+        /// <summary><see cref="AutoAllowDrop"/> の依存プロパティ</summary>
+        public static readonly DependencyProperty AutoAllowDropProperty = DependencyProperty.Register(nameof(AutoAllowDrop), typeof(bool), typeof(DragDropTerigger), new PropertyMetadata(true));
+
         /// <summary><see cref="AcceptDropFormats"/> の依存プロパティ</summary>
-        public static readonly DependencyProperty AcceptDropFormatsProperty = DependencyProperty.Register(nameof(AcceptDropFormats), typeof(string[]), typeof(DragDropTerigger), new PropertyMetadata(null));
+        public static readonly DependencyProperty AcceptDropFormatsProperty = DependencyProperty.Register(nameof(AcceptDropFormats), typeof(string[]), typeof(DragDropTerigger), new PropertyMetadata(null, onAcceptDropFormatsChanged));
 
         /// <summary><see cref="AcceptDropEffect"/> の依存プロパティ</summary>
         public static readonly DependencyProperty AcceptDropEffectProperty = DependencyProperty.Register(nameof(AcceptDropEffect), typeof(DragDropEffects), typeof(DragDropTerigger), new PropertyMetadata(DragDropEffects.All));
 
         /// <summary><see cref="ParameterConverter"/> の依存プロパティ</summary>
-        public static readonly DependencyProperty ParameterConverterProperty = DependencyProperty.Register(nameof(ParameterConverter), typeof(IValueConverter), typeof(DragDropTerigger), new PropertyMetadata(null));
-
-        /// <summary><see cref="AutoAllowDrop"/> の依存プロパティ</summary>
-        public static readonly DependencyProperty AutoAllowDropProperty = DependencyProperty.Register(nameof(AutoAllowDrop), typeof(bool), typeof(DragDropTerigger), new PropertyMetadata(true));
+        public static readonly DependencyProperty ParameterConverterProperty = DependencyProperty.Register(nameof(ParameterConverter), typeof(IValueConverter), typeof(DragDropTerigger), new PropertyMetadata(null, onParameterConverterChanged));
         #endregion
 
         // 保護メソッド
@@ -132,9 +136,42 @@ namespace CometFlavor.Wpf.Interactions
         #region 保存
         /// <summary>バックアップされたアタッチ要素のAllowDrop設定値</summary>
         private bool? orgAllowDrop;
+
+        /// <summary>直接のプロパティで指定された受け入れ書式</summary>
+        private IReadOnlyList<string> explicitAcceptFormats;
+
+        /// <summary>パラメータコンバータから指定された受け入れ書式</summary>
+        private IReadOnlyList<string> converterAcceptFormats;
         #endregion
 
         // 非公開メソッド
+        #region 依存プロパティ変更ハンドラ
+        /// <summary>
+        /// <see cref="AcceptDropFormats"/> 依存プロパティの変更ハンドラ
+        /// </summary>
+        private static void onAcceptDropFormatsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is DragDropTerigger self)
+            {
+                // 明示的なプロパティ変更が行われた場合、必ずその値を使用するためにnullでない値(同じ意味となる空配列)で保持する。
+                self.explicitAcceptFormats = (e.NewValue as IReadOnlyList<string>) ?? Array.Empty<string>();
+            }
+        }
+
+        /// <summary>
+        /// <see cref="ParameterConverter"/> 依存プロパティの変更ハンドラ
+        /// </summary>
+        private static void onParameterConverterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is DragDropTerigger self)
+            {
+                // パラメータコンバータが専用のインターフェースを実装している場合、インターフェースから受け入れ書式を取得
+                // (専用インターフェースを実装していなければコンバータでの書式指定値はクリアする)
+                self.converterAcceptFormats = (e.NewValue as IDragDropTriggerParameterConverter)?.AcceptFormats;
+            }
+        }
+        #endregion
+
         #region イベントハンドラ
         /// <summary>
         /// 要素上へのドラッグオーバーイベントハンドラ
@@ -143,10 +180,13 @@ namespace CometFlavor.Wpf.Interactions
         /// <param name="e"></param>
         private void AssociatedObject_DragOver(object sender, DragEventArgs e)
         {
+            // 受け入れ書式ソースを選択
+            // このコンバータ自体のプロパティによる明示的な設定値があればそれを優先。
+            var acceptFormats = this.explicitAcceptFormats ?? this.converterAcceptFormats;
+
             // ドロップを受け入れるかを判定
-            var acceptType = this.AcceptDropFormats;
-            if (acceptType == null || acceptType.Length <= 0
-             || acceptType.Any(format => e.Data.GetDataPresent(format)))
+            if (acceptFormats == null || acceptFormats.Count <= 0
+             || acceptFormats.Any(format => e.Data.GetDataPresent(format)))
             {
                 // データ形式が特に指定されていない場合、
                 // もしくは指定された形式のいずれかを含む場合は、受け入れ可能。

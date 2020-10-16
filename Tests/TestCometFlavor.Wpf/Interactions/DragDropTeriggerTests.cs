@@ -25,6 +25,327 @@ namespace TestCometFlavor.Wpf.Interactions
         }
 
         [TestMethod]
+        public void Test_AcceptDropFormats_NoSpecify()
+        {
+            // テスト対象のアクションを呼び出すためのトリガ作成
+            var element = new UIElement();
+            var action = new TestAction();
+
+            // テスト対象の準備
+            var trigger = new DragDropTerigger();
+            trigger.AcceptDropEffect = DragDropEffects.Move;
+
+            // 要素にアタッチ
+            trigger.Attach(element);
+            trigger.Actions.Add(action);
+
+            // ドロップデータのモック
+            var dataMock = new TestDataObject();
+
+            // テスト用のイベントパラメータ生成
+            var args = TestActivator.CreateDragEventArgs(dataMock.Object, allowedEffects: DragDropEffects.All);
+            args.RoutedEvent = UIElement.DragOverEvent;
+
+            // 書式指定無ければなんでも受け付けられる
+            {
+                // イベントデータ設定
+                args.Effects = DragDropEffects.None;
+
+                // イベントを発生させる
+                args.Handled = false;
+                element.RaiseEvent(args);
+
+                // イベント処理結果検証
+                args.Effects.Should().Be(DragDropEffects.Move);
+            }
+
+            // 書式指定が空
+            trigger.AcceptDropFormats = new string[0];
+
+            // 空の場合もなんでも受け付けられる
+            {
+                // イベントデータ設定
+                args.Effects = DragDropEffects.None;
+
+                // イベントを発生させる
+                args.Handled = false;
+                element.RaiseEvent(args);
+
+                // イベント処理結果検証
+                args.Effects.Should().Be(DragDropEffects.Move);
+            }
+        }
+
+        [TestMethod]
+        public void Test_AcceptDropFormats_FromProperty()
+        {
+            // テスト対象のアクションを呼び出すためのトリガ作成
+            var element = new UIElement();
+            var action = new TestAction();
+
+            // テスト対象の準備
+            var trigger = new DragDropTerigger();
+            trigger.AcceptDropFormats = new[] { "Data1", "Data2", };
+            trigger.AcceptDropEffect = DragDropEffects.Move;
+
+            // 要素にアタッチ
+            trigger.Attach(element);
+            trigger.Actions.Add(action);
+
+            // ドロップデータのモック
+            var dataMock = new TestDataObject();
+
+            // テスト用のイベントパラメータ生成
+            var args = TestActivator.CreateDragEventArgs(dataMock.Object, allowedEffects: DragDropEffects.All);
+            args.RoutedEvent = UIElement.DragOverEvent;
+
+            // プロパティで指定される書式に含めば受け付けられる
+            {
+                // イベントデータ設定
+                dataMock.Setup_GetDataPresent("Data1", () => true);
+                dataMock.Setup_GetDataPresent("Data2", () => false);
+                args.Effects = DragDropEffects.None;
+
+                // イベントを発生させる
+                args.Handled = false;
+                element.RaiseEvent(args);
+
+                // イベント処理結果検証
+                args.Effects.Should().Be(DragDropEffects.Move);
+            }
+
+            // プロパティで指定される書式に含めば受け付けられる
+            {
+                // イベントデータ設定
+                dataMock.Setup_GetDataPresent("Data1", () => false);
+                dataMock.Setup_GetDataPresent("Data2", () => true);
+                args.Effects = DragDropEffects.None;
+
+                // イベントを発生させる
+                args.Handled = false;
+                element.RaiseEvent(args);
+
+                // イベント処理結果検証
+                args.Effects.Should().Be(DragDropEffects.Move);
+            }
+
+            // プロパティでの指定に含まなければ受け付けない
+            {
+                // イベントデータ設定
+                dataMock.Setup_GetDataPresent("Data1", () => false);
+                dataMock.Setup_GetDataPresent("Data2", () => false);
+                args.Effects = DragDropEffects.None;
+
+                // イベントを発生させる
+                args.Handled = false;
+                element.RaiseEvent(args);
+
+                // イベント処理結果検証
+                args.Effects.Should().Be(DragDropEffects.None);
+            }
+        }
+
+        [TestMethod]
+        public void Test_AcceptDropFormats_FromConverter()
+        {
+            // テスト対象のアクションを呼び出すためのトリガ作成
+            var element = new UIElement();
+            var action = new TestAction();
+
+            // 専用インターフェースを実装したコンバータ
+            var converter = new Mock<IDragDropTriggerParameterConverter>();
+            converter.Setup(m => m.AcceptFormats).Returns(() => new[] { "Conv1", "Conv2", });
+
+            // テスト対象の準備
+            var trigger = new DragDropTerigger();
+            trigger.AcceptDropEffect = DragDropEffects.Move;
+            trigger.ParameterConverter = converter.Object;
+
+            // 要素にアタッチ
+            trigger.Attach(element);
+            trigger.Actions.Add(action);
+
+            // ドロップデータのモック
+            var dataMock = new TestDataObject();
+
+            // テスト用のイベントパラメータ生成
+            var args = TestActivator.CreateDragEventArgs(dataMock.Object, allowedEffects: DragDropEffects.All);
+            args.RoutedEvent = UIElement.DragOverEvent;
+
+            // コンバータで指定される書式に含めば受け付けられる
+            {
+                // イベントデータ設定
+                dataMock.Setup_GetDataPresent("Conv1", () => true);
+                dataMock.Setup_GetDataPresent("Conv2", () => false);
+                args.Effects = DragDropEffects.None;
+
+                // イベントを発生させる
+                args.Handled = false;
+                element.RaiseEvent(args);
+
+                // イベント処理結果検証
+                args.Effects.Should().Be(DragDropEffects.Move);
+            }
+
+            // コンバータで指定される書式に含めば受け付けられる
+            {
+                // イベントデータ設定
+                dataMock.Setup_GetDataPresent("Conv1", () => false);
+                dataMock.Setup_GetDataPresent("Conv2", () => true);
+                args.Effects = DragDropEffects.None;
+
+                // イベントを発生させる
+                args.Handled = false;
+                element.RaiseEvent(args);
+
+                // イベント処理結果検証
+                args.Effects.Should().Be(DragDropEffects.Move);
+            }
+
+            // コンバータでの指定に含まなければ受け付けない
+            {
+                // イベントデータ設定
+                dataMock.Setup_GetDataPresent("Conv1", () => false);
+                dataMock.Setup_GetDataPresent("Conv2", () => false);
+                args.Effects = DragDropEffects.None;
+
+                // イベントを発生させる
+                args.Handled = false;
+                element.RaiseEvent(args);
+
+                // イベント処理結果検証
+                args.Effects.Should().Be(DragDropEffects.None);
+            }
+        }
+
+        [TestMethod]
+        public void Test_AcceptDropFormats_FromBoth()
+        {
+            // テスト対象のアクションを呼び出すためのトリガ作成
+            var element = new UIElement();
+            var action = new TestAction();
+
+            // 専用インターフェースを実装したコンバータ
+            var converter = new Mock<IDragDropTriggerParameterConverter>();
+            converter.Setup(m => m.AcceptFormats).Returns(() => new[] { "Conv1", "Conv2", });
+
+            // テスト対象の準備
+            var trigger = new DragDropTerigger();
+            trigger.AcceptDropFormats = new[] { "Data1", "Data2", };
+            trigger.AcceptDropEffect = DragDropEffects.Move;
+            trigger.ParameterConverter = converter.Object;
+
+            // 要素にアタッチ
+            trigger.Attach(element);
+            trigger.Actions.Add(action);
+
+            // ドロップデータのモック
+            var dataMock = new TestDataObject();
+
+            // テスト用のイベントパラメータ生成
+            var args = TestActivator.CreateDragEventArgs(dataMock.Object, allowedEffects: DragDropEffects.All);
+            args.RoutedEvent = UIElement.DragOverEvent;
+
+            // 両方指定されていればプロパティ優先。コンバータの持っている書式指定は無効。
+            {
+                // イベントデータ設定
+                dataMock.Setup_GetDataPresent("Conv1", () => true);
+                dataMock.Setup_GetDataPresent("Conv2", () => false);
+                dataMock.Setup_GetDataPresent("Data1", () => false);
+                dataMock.Setup_GetDataPresent("Data2", () => false);
+                args.Effects = DragDropEffects.None;
+
+                // イベントを発生させる
+                args.Handled = false;
+                element.RaiseEvent(args);
+
+                // イベント処理結果検証
+                args.Effects.Should().Be(DragDropEffects.None);
+            }
+
+            // 両方指定されていればプロパティ優先。プロパティの指定を受け付ける。
+            {
+                // イベントデータ設定
+                dataMock.Setup_GetDataPresent("Conv1", () => false);
+                dataMock.Setup_GetDataPresent("Conv2", () => false);
+                dataMock.Setup_GetDataPresent("Data1", () => true);
+                dataMock.Setup_GetDataPresent("Data2", () => false);
+                args.Effects = DragDropEffects.None;
+
+                // イベントを発生させる
+                args.Handled = false;
+                element.RaiseEvent(args);
+
+                // イベント処理結果検証
+                args.Effects.Should().Be(DragDropEffects.Move);
+            }
+
+            // プロパティでの書式指定値が null 
+            trigger.AcceptDropFormats = null;
+
+            // 明示的な指定があれば全許可の値も効く。コンバータの書式指定ではなく、プロパティに null 設定したものが効く。(なのでなんでも受付になっている)
+            {
+                // イベントデータ設定
+                dataMock.Setup_GetDataPresent("Conv1", () => true);
+                dataMock.Setup_GetDataPresent("Conv2", () => false);
+                dataMock.Setup_GetDataPresent("Data1", () => false);
+                dataMock.Setup_GetDataPresent("Data2", () => false);
+                args.Effects = DragDropEffects.None;
+
+                // イベントを発生させる
+                args.Handled = false;
+                element.RaiseEvent(args);
+
+                // イベント処理結果検証
+                args.Effects.Should().Be(DragDropEffects.Move);
+            }
+
+        }
+
+        [TestMethod]
+        public void Test_AcceptDropFormats_UnrelatedConverter()
+        {
+            // テスト対象のアクションを呼び出すためのトリガ作成
+            var element = new UIElement();
+            var action = new TestAction();
+
+            // 専用インターフェースを実装していない(ただAcceptFormatsプロパティがあるだけの)コンバータ
+            var converter = new TestHasFormatsValueConverter();
+            converter.AcceptFormats = new[] { "Conv1", "Conv2", };
+
+            // テスト対象の準備
+            var trigger = new DragDropTerigger();
+            trigger.AcceptDropEffect = DragDropEffects.Move;
+            trigger.ParameterConverter = converter;
+
+            // 要素にアタッチ
+            trigger.Attach(element);
+            trigger.Actions.Add(action);
+
+            // ドロップデータのモック
+            var dataMock = new TestDataObject();
+
+            // テスト用のイベントパラメータ生成
+            var args = TestActivator.CreateDragEventArgs(dataMock.Object, allowedEffects: DragDropEffects.All);
+            args.RoutedEvent = UIElement.DragOverEvent;
+
+            // 専用インターフェスでなければコンパータでの指定はできない。プロパティ指定もしていなければ何でも受け付ける状態。
+            {
+                // イベントデータ設定
+                dataMock.Setup_GetDataPresent("Conv1", () => false);
+                dataMock.Setup_GetDataPresent("Conv2", () => false);
+                args.Effects = DragDropEffects.None;
+
+                // イベントを発生させる
+                args.Handled = false;
+                element.RaiseEvent(args);
+
+                // イベント処理結果検証
+                args.Effects.Should().Be(DragDropEffects.Move);
+            }
+        }
+
+        [TestMethod]
         public void Test_AutoAllowDrop_Enable()
         {
             // テスト対象のアクションを呼び出すためのトリガ作成
@@ -44,8 +365,14 @@ namespace TestCometFlavor.Wpf.Interactions
             trigger.Attach(element);
             trigger.Actions.Add(action);
 
-            // 事前の状態チェック
+            // 設定の影響を確認
             element.AllowDrop.Should().Be(true);
+
+            // 要素からデタッチ
+            trigger.Detach();
+
+            // 元の設定に戻ることを確認
+            element.AllowDrop.Should().Be(false);
         }
 
         [TestMethod]
@@ -68,7 +395,7 @@ namespace TestCometFlavor.Wpf.Interactions
             trigger.Attach(element);
             trigger.Actions.Add(action);
 
-            // 事前の状態チェック
+            // 設定の影響を確認
             element.AllowDrop.Should().Be(false);
         }
 
@@ -93,7 +420,7 @@ namespace TestCometFlavor.Wpf.Interactions
             trigger.Attach(element);
             trigger.Actions.Add(action);
 
-            // 事前の状態チェック
+            // 設定の影響を確認
             element.AllowDrop.Should().Be(true);
         }
 
@@ -269,7 +596,7 @@ namespace TestCometFlavor.Wpf.Interactions
 
             // テスト対象の準備
             var trigger = new DragDropTerigger();
-            trigger.ParameterConverter = new FileDropParameterConverter();
+            trigger.ParameterConverter = new DragEventArgsToFilePathConverter();
 
             // 要素にアタッチ
             trigger.Attach(element);

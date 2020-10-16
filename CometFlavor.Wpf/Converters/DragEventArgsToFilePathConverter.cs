@@ -1,27 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.Text;
+using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 
 namespace CometFlavor.Wpf.Converters
 {
     /// <summary>
-    /// ドロップイベントパラメータからURL情報に変換する
+    /// ドロップイベントパラメータからファイルパス情報に変換する
     /// </summary>
     [ValueConversion(typeof(DragEventArgs), typeof(Uri))]
     [ValueConversion(typeof(DragEventArgs), typeof(string))]
-    public class UrlDropParameterConverter : IValueConverter
+    public class DragEventArgsToFilePathConverter : IDragDropTriggerParameterConverter
     {
         // 公開プロパティ
         #region 属性情報
         /// <summary>このコンバータの処理対象ドロップデータフォーマット</summary>
-        public string[] AcceptFormats { get; } = new[] { "UniformResourceLocatorW", "UniformResourceLocator", };
+        public IReadOnlyList<string> AcceptFormats { get; } = new[] { DataFormats.FileDrop, };
         #endregion
 
         #region 動作設定
-        /// <summary>URLを <see cref="Uri"/> 型に変換するか否か</summary>
+        /// <summary>ファイルパスを <see cref="Uri"/> 型に変換するか否か</summary>
         public bool ConvertToUri { get; set; } = false;
         #endregion
 
@@ -40,18 +40,30 @@ namespace CometFlavor.Wpf.Converters
             // 元データがドロップイベント引数であることを確認
             if (value is DragEventArgs args)
             {
-                var url = tryGetDropDataUrl(args, "UniformResourceLocatorW", Encoding.Unicode)
-                       ?? tryGetDropDataUrl(args, "UniformResourceLocator", Encoding.Default);
+                // ファイルドロップデータからファイルパスを取得
+                var paths = args.Data.GetData(DataFormats.FileDrop) as string[];
+                if (paths == null)
+                {
+                    // ファイルドロップデータがなければ null を返すことにする。(DependencyProperty.UnsetValue ではなく。)
+                    // ドロップデータを処理したけどデータがなかった、ということを表現するため。
+                    return null;
+                }
 
                 // 変換結果をUri型にするかを判定
                 // プロパティで設定されていれば常に、もしくは変換先の型がUriならば。
                 var toUri = this.ConvertToUri || targetType == typeof(Uri);
                 if (toUri)
                 {
-                    return Uri.TryCreate(url, UriKind.Absolute, out var uri) ? uri : null;
+                    // uriへ変換した結果を返却
+                    var uris = paths
+                        .Select(p => Uri.TryCreate(p, UriKind.Absolute, out var uri) ? uri : null)
+                        .Where(u => u != null)
+                        .ToArray();
+                    return uris;
                 }
 
-                return url;
+                // 変換しない場合は文字列のまま
+                return paths;
             }
 
             return DependencyProperty.UnsetValue;
@@ -70,29 +82,5 @@ namespace CometFlavor.Wpf.Converters
             return DependencyProperty.UnsetValue;
         }
         #endregion
-
-        private string tryGetDropDataUrl(DragEventArgs args, string format, Encoding encoding)
-        {
-            var url = default(string);
-            try
-            {
-                var data = args.Data.GetData(format);
-                if (data is MemoryStream stream)
-                {
-                    using (stream)
-                    {
-                        url = encoding.GetString(stream.ToArray());
-                    }
-                }
-                else if (data is IDisposable res)
-                {
-                    res.Dispose();
-                }
-            }
-            catch
-            { }
-
-            return url;
-        }
     }
 }

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using CometFlavor.Wpf.Converters;
 using FluentAssertions;
@@ -11,212 +9,223 @@ using TestCometFlavor.Wpf._Test;
 namespace TestCometFlavor.Wpf.Converters
 {
     [TestClass]
-    public class UrlDropParameterConverterTests
+    public class DragEventArgsToFilePathConverterTests
     {
         [TestMethod]
         public void Test_Construct()
         {
-            var target = new UrlDropParameterConverter();
-            target.AcceptFormats.Should().Contain("UniformResourceLocatorW", "UniformResourceLocator");
+            var target = new DragEventArgsToFilePathConverter();
+            target.AcceptFormats.Should().Contain(DataFormats.FileDrop);
             target.ConvertToUri.Should().Be(false);
         }
 
         [TestMethod]
-        public void Test_Convert_ToString_FromUnicode()
+        public void Test_Convert_ToString()
         {
             // ドロップテストデータ
-            var url = "https://www.google.com";
+            var paths = new string[] { @"c:\directory\file.ext", @"d:\path\to\data" };
 
             // モック
             var dataMock = new TestDataObject();
-            dataMock.Setup_GetDataPresent("UniformResourceLocatorW", () => true);
-            dataMock.Setup_GetData("UniformResourceLocatorW", () => new MemoryStream(Encoding.Unicode.GetBytes(url)));
+            dataMock.Setup_GetDataPresent(DataFormats.FileDrop, () => true);
+            dataMock.Setup_GetData(DataFormats.FileDrop, () => paths);
 
             // テスト用のイベントパラメータ生成
             var args = TestActivator.CreateDragEventArgs(dataMock.Object);
 
             // 変換テスト
-            var target = new UrlDropParameterConverter();
+            var target = new DragEventArgsToFilePathConverter();
             target.ConvertToUri = false;
             target.Convert(args, null, null, null)
-                .Should().BeOfType<string>()
+                .Should().BeOfType<string[]>()
                 .Which
-                .Should().Be(url);
+                .Should().Equal(paths);
         }
 
         [TestMethod]
-        public void Test_Convert_ToString_FromAnsi()
+        public void Test_Convert_ToString_Empty()
         {
             // ドロップテストデータ
-            var url = "https://www.google.com";
+            var paths = new string[] { };
 
             // モック
             var dataMock = new TestDataObject();
-            dataMock.Setup_GetDataPresent("UniformResourceLocator", () => true);
-            dataMock.Setup_GetData("UniformResourceLocator", () => new MemoryStream(Encoding.ASCII.GetBytes(url)));
+            dataMock.Setup_GetDataPresent(DataFormats.FileDrop, () => true);
+            dataMock.Setup_GetData(DataFormats.FileDrop, () => paths);
 
             // テスト用のイベントパラメータ生成
             var args = TestActivator.CreateDragEventArgs(dataMock.Object);
 
             // 変換テスト
-            var target = new UrlDropParameterConverter();
+            var target = new DragEventArgsToFilePathConverter();
             target.ConvertToUri = false;
             target.Convert(args, null, null, null)
-                .Should().BeOfType<string>()
+                .Should().BeOfType<string[]>()
                 .Which
-                .Should().Be(url);
+                .Should().BeEmpty();
         }
 
         [TestMethod]
-        public void Test_Convert_ToUri_FromUnicode()
+        public void Test_Convert_ToUri()
         {
             // ドロップテストデータ
-            var url = "https://www.google.com";
+            var paths = new string[] { @"c:\directory\file.ext", @"d:\path\to\data" };
 
             // モック
             var dataMock = new TestDataObject();
-            dataMock.Setup_GetDataPresent("UniformResourceLocatorW", () => true);
-            dataMock.Setup_GetData("UniformResourceLocatorW", () => new MemoryStream(Encoding.Unicode.GetBytes(url)));
+            dataMock.Setup_GetDataPresent(DataFormats.FileDrop, () => true);
+            dataMock.Setup_GetData(DataFormats.FileDrop, () => paths);
 
             // テスト用のイベントパラメータ生成
             var args = TestActivator.CreateDragEventArgs(dataMock.Object);
 
             // テストデータを期待値の型に変換しておく
-            var expects = new Uri(url);
+            var expects = paths.Select(p => new Uri(p)).ToArray();
 
             // 変換テスト
-            var target = new UrlDropParameterConverter();
+            var target = new DragEventArgsToFilePathConverter();
             target.ConvertToUri = true;
             target.Convert(args, null, null, null)
-                .Should().BeOfType<Uri>()
+                .Should().BeOfType<Uri[]>()
                 .Which
-                .Should().Be(expects);
+                .Should().Equal(expects);
         }
 
         [TestMethod]
-        public void Test_Convert_ToUri_FromAnsi()
+        public void Test_Convert_ToUri_Empty()
         {
             // ドロップテストデータ
-            var url = "https://www.google.com";
+            var paths = new string[] { };
 
             // モック
             var dataMock = new TestDataObject();
-            dataMock.Setup_GetDataPresent("UniformResourceLocator", () => true);
-            dataMock.Setup_GetData("UniformResourceLocator", () => new MemoryStream(Encoding.ASCII.GetBytes(url)));
+            dataMock.Setup_GetDataPresent(DataFormats.FileDrop, () => true);
+            dataMock.Setup_GetData(DataFormats.FileDrop, () => paths);
 
             // テスト用のイベントパラメータ生成
             var args = TestActivator.CreateDragEventArgs(dataMock.Object);
 
             // テストデータを期待値の型に変換しておく
-            var expects = new Uri(url);
+            var expects = paths.Select(p => new Uri(p)).ToArray();
 
             // 変換テスト
-            var target = new UrlDropParameterConverter();
+            var target = new DragEventArgsToFilePathConverter();
             target.ConvertToUri = true;
             target.Convert(args, null, null, null)
-                .Should().BeOfType<Uri>()
+                .Should().BeOfType<Uri[]>()
                 .Which
-                .Should().Be(expects);
+                .Should().BeEmpty();
         }
 
         [TestMethod]
         public void Test_Convert_ToUri_NotConvert()
         {
             // ドロップテストデータ
-            var url = "::::::::::::";
+            var paths = new string[] { @"::::::::::", @"d:\path\to\data" };
 
             // モック
             var dataMock = new TestDataObject();
-            dataMock.Setup_GetDataPresent("UniformResourceLocatorW", () => true);
-            dataMock.Setup_GetData("UniformResourceLocatorW", () => new MemoryStream(Encoding.Unicode.GetBytes(url)));
+            dataMock.Setup_GetDataPresent(DataFormats.FileDrop, () => true);
+            dataMock.Setup_GetData(DataFormats.FileDrop, () => paths);
 
             // テスト用のイベントパラメータ生成
             var args = TestActivator.CreateDragEventArgs(dataMock.Object);
 
+            // テストデータを期待値の型に変換しておく
+            var expects = new[] { new Uri(@"d:\path\to\data") };
+
             // 変換テスト
-            var target = new UrlDropParameterConverter();
+            var target = new DragEventArgsToFilePathConverter();
             target.ConvertToUri = true;
             target.Convert(args, null, null, null)
-                .Should().BeNull();
+                .Should().BeOfType<Uri[]>()
+                .Which
+                .Should().Equal(expects);
         }
 
         [TestMethod]
         public void Test_Convert_ByTargetType_Uri()
         {
             // ドロップテストデータ
-            var url = "https://www.google.com";
+            var paths = new string[] { @"c:\directory\file.ext", @"d:\path\to\data" };
 
             // モック
             var dataMock = new TestDataObject();
-            dataMock.Setup_GetDataPresent("UniformResourceLocatorW", () => true);
-            dataMock.Setup_GetData("UniformResourceLocatorW", () => new MemoryStream(Encoding.Unicode.GetBytes(url)));
+            dataMock.Setup_GetDataPresent(DataFormats.FileDrop, () => true);
+            dataMock.Setup_GetData(DataFormats.FileDrop, () => paths);
 
             // テスト用のイベントパラメータ生成
             var args = TestActivator.CreateDragEventArgs(dataMock.Object);
 
+            // テストデータを期待値の型に変換しておく
+            var expects = paths.Select(p => new Uri(p)).ToArray();
+
             // 変換テスト
-            var target = new UrlDropParameterConverter();
+            var target = new DragEventArgsToFilePathConverter();
             target.ConvertToUri = false;
             target.Convert(args, typeof(Uri), null, null)
-                .Should().BeOfType<Uri>()
+                .Should().BeOfType<Uri[]>()
                 .Which
-                .Should().Be(url);
+                .Should().Equal(expects);
         }
 
         [TestMethod]
         public void Test_Convert_ByTargetType_NotUri()
         {
             // ドロップテストデータ
-            var url = "https://www.google.com";
+            var paths = new string[] { @"c:\directory\file.ext", @"d:\path\to\data" };
 
             // モック
             var dataMock = new TestDataObject();
-            dataMock.Setup_GetDataPresent("UniformResourceLocatorW", () => true);
-            dataMock.Setup_GetData("UniformResourceLocatorW", () => new MemoryStream(Encoding.Unicode.GetBytes(url)));
+            dataMock.Setup_GetDataPresent(DataFormats.FileDrop, () => true);
+            dataMock.Setup_GetData(DataFormats.FileDrop, () => paths);
 
             // テスト用のイベントパラメータ生成
             var args = TestActivator.CreateDragEventArgs(dataMock.Object);
 
+            // テストデータを期待値の型に変換しておく
+            var expects = paths;
+
             // 変換テスト
-            var target = new UrlDropParameterConverter();
+            var target = new DragEventArgsToFilePathConverter();
             target.ConvertToUri = false;
             target.Convert(args, typeof(int), null, null)
-                .Should().BeOfType<string>()
+                .Should().BeOfType<string[]>()
                 .Which
-                .Should().Be(url);
+                .Should().Equal(expects);
         }
 
         [TestMethod]
-        public void Test_Convert_NotUrlDrop1()
+        public void Test_Convert_NotFileDrop1()
         {
             // モック
             var dataMock = new TestDataObject();
-            dataMock.Setup_GetDataPresent("UniformResourceLocatorW", () => true);
-            dataMock.Setup_GetData("UniformResourceLocatorW", () => new object());
+            dataMock.Setup_GetDataPresent(DataFormats.FileDrop, () => true);
+            dataMock.Setup_GetData(DataFormats.FileDrop, () => new object());
 
             // テスト用のイベントパラメータ生成
             var args = TestActivator.CreateDragEventArgs(dataMock.Object);
 
             // 変換テスト
-            var target = new UrlDropParameterConverter();
+            var target = new DragEventArgsToFilePathConverter();
             target.ConvertToUri = false;
             target.Convert(args, null, null, null)
                 .Should().BeNull();
         }
 
         [TestMethod]
-        public void Test_Convert_NotUrlDrop2()
+        public void Test_Convert_NotFileDrop2()
         {
             // モック
             var dataMock = new TestDataObject();
-            dataMock.Setup_GetDataPresent("UniformResourceLocatorW", () => true);
-            dataMock.Setup_GetData("UniformResourceLocatorW", () => null);
+            dataMock.Setup_GetDataPresent(DataFormats.FileDrop, () => true);
+            dataMock.Setup_GetData(DataFormats.FileDrop, () => null);
 
             // テスト用のイベントパラメータ生成
             var args = TestActivator.CreateDragEventArgs(dataMock.Object);
 
             // 変換テスト
-            var target = new UrlDropParameterConverter();
+            var target = new DragEventArgsToFilePathConverter();
             target.ConvertToUri = false;
             target.Convert(args, null, null, null)
                 .Should().BeNull();
@@ -226,12 +235,12 @@ namespace TestCometFlavor.Wpf.Converters
         public void Test_Convert_UnexpectType()
         {
             // ドロップテストデータ
-            var url = "https://www.google.com";
+            var paths = new string[] { @"c:\directory\file.ext", @"d:\path\to\data" };
 
             // 変換テスト (変換元データ型が期待と異なる)
-            var target = new UrlDropParameterConverter();
+            var target = new DragEventArgsToFilePathConverter();
             target.ConvertToUri = false;
-            target.Convert(url, null, null, null)
+            target.Convert(paths, null, null, null)
                 .Should().Be(DependencyProperty.UnsetValue);
         }
 
@@ -239,12 +248,12 @@ namespace TestCometFlavor.Wpf.Converters
         public void Test_ConvertBack_NotSupport()
         {
             // ドロップテストデータ
-            var url = "https://www.google.com";
+            var paths = new string[] { @"c:\directory\file.ext", @"d:\path\to\data" };
 
             // 変換テスト (変換元データ型が期待と異なる)
-            var target = new UrlDropParameterConverter();
+            var target = new DragEventArgsToFilePathConverter();
             target.ConvertToUri = false;
-            target.ConvertBack(url, null, null, null)
+            target.ConvertBack(paths, null, null, null)
                 .Should().Be(DependencyProperty.UnsetValue);
         }
     }
