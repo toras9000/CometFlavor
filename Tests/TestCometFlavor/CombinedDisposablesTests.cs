@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CometFlavor.Collections;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -108,6 +109,14 @@ namespace TestCometFlavor
         }
 
         [TestMethod]
+        public void TestAdd_ArgNull()
+        {
+            var target = new CombinedDisposables();
+
+            new Action(() => target.Add(null)).Should().Throw<ArgumentNullException>();
+        }
+
+        [TestMethod]
         public void TestRemove_NoDispose()
         {
             var item1 = new Mock<IDisposable>();
@@ -205,6 +214,14 @@ namespace TestCometFlavor
             var item6 = new Mock<IDisposable>();
             target.Remove(item6.Object).Should().Be(false);
             item6.Verify(o => o.Dispose(), Times.Once());
+        }
+
+        [TestMethod]
+        public void TestRemove_ArgNull()
+        {
+            var target = new CombinedDisposables();
+
+            new Action(() => target.Remove(null)).Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -363,6 +380,53 @@ namespace TestCometFlavor
             target.Contains(item3.Object).Should().Be(false);
             target.Contains(item4.Object).Should().Be(false);
             target.Contains(item5.Object).Should().Be(false);
+        }
+
+        [TestMethod]
+        public void TestContains_ArgNull()
+        {
+            var target = new CombinedDisposables();
+
+            new Action(() => target.Contains(null)).Should().Throw<ArgumentNullException>();
+        }
+
+        [TestMethod]
+        public void TestEnumerate()
+        {
+            var item1 = new Mock<IDisposable>();
+            var item2 = new Mock<IDisposable>();
+            var item3 = new Mock<IDisposable>();
+            var item4 = new Mock<IDisposable>();
+            var item5 = new Mock<IDisposable>();
+
+            var target = new CombinedDisposables(reverse: true, removeDispose: false);
+            target.Add(item1.Object);
+            target.Add(item2.Object);
+            target.Add(item3.Object);
+            target.Add(item4.Object);
+            target.Add(item5.Object);
+
+            target.AsEnumerable().Should().Equal(
+                item1.Object,
+                item2.Object,
+                item3.Object,
+                item4.Object,
+                item5.Object
+            );
+
+            // for Un generic enumeration
+            var ungeneric = new List<object>();
+            foreach (var obj in ((System.Collections.IEnumerable)target))
+            {
+                ungeneric.Add(obj);
+            }
+            ungeneric.Should().Equal(
+                item1.Object,
+                item2.Object,
+                item3.Object,
+                item4.Object,
+                item5.Object
+            );
         }
 
         [TestMethod]
@@ -537,6 +601,31 @@ namespace TestCometFlavor
 
             target.Remove(item5.Object).Should().Be(true);
             target.LatestException.Should().BeNull();
+        }
+
+        [TestMethod]
+        public void TestLatestException_Clear_Single()
+        {
+            var item1 = new Mock<IDisposable>();
+            var item2 = new Mock<IDisposable>();
+            var item3 = new Mock<IDisposable>();
+            var item4 = new Mock<IDisposable>();
+            var item5 = new Mock<IDisposable>();
+
+            var ex4 = new Exception("4");
+            item4.Setup(o => o.Dispose()).Callback(() => throw ex4);
+
+            var target = new CombinedDisposables(reverse: false, removeDispose: true);
+            target.Add(item1.Object);
+            target.Add(item2.Object);
+            target.Add(item3.Object);
+            target.Add(item4.Object);
+            target.Add(item5.Object);
+
+            target.Clear();
+            target.LatestException.Should()
+                .BeOfType<Exception>()
+                .Which.Should().BeSameAs(ex4);
         }
 
         [TestMethod]

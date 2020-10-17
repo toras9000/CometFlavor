@@ -262,6 +262,34 @@ namespace TestCometFlavor.Wpf.Converters
         }
 
         [TestMethod]
+        public void Test_Convert_NotSupport()
+        {
+            var target = new BooleanCombineToVisibilityConverter();
+            target.Mode = (BooleanCombineToVisibilityConverter.CombineMode)(-1);
+            target.IgnoreNotBool = true;
+            target.InvisibleToHidden = false;
+
+            // 定義されていないモードではなんであっても変換結果無し
+
+            target.Convert(new object[] { false, }, null, null, null).Should().Be(DependencyProperty.UnsetValue);
+            target.Convert(new object[] { false, false, false, }, null, null, null).Should().Be(DependencyProperty.UnsetValue);
+
+            target.Convert(new object[] { true, }, null, null, null).Should().Be(DependencyProperty.UnsetValue);
+            target.Convert(new object[] { true, false, true, }, null, null, null).Should().Be(DependencyProperty.UnsetValue);
+            target.Convert(new object[] { true, true, true, }, null, null, null).Should().Be(DependencyProperty.UnsetValue);
+
+            target.Convert(new object[] { }, null, null, null).Should().Be(DependencyProperty.UnsetValue);
+            target.Convert(null, null, null, null).Should().Be(DependencyProperty.UnsetValue);
+
+            target.Convert(new object[] { true, 1, false, }, null, null, null).Should().Be(DependencyProperty.UnsetValue);
+            target.Convert(new object[] { true, "true", false, }, null, null, null).Should().Be(DependencyProperty.UnsetValue);
+            target.Convert(new object[] { true, 1, true, }, null, null, null).Should().Be(DependencyProperty.UnsetValue);
+            target.Convert(new object[] { true, "true", true, }, null, null, null).Should().Be(DependencyProperty.UnsetValue);
+
+            target.Convert(new object[] { 1, 1, 1, }, null, null, null).Should().Be(DependencyProperty.UnsetValue);
+        }
+
+        [TestMethod]
         public void Test_ConvertBack()
         {
             var target = new BooleanCombineToVisibilityConverter();

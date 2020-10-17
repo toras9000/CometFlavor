@@ -148,6 +148,46 @@ namespace TestCometFlavor.Wpf.Interactions
         }
 
         [STATestMethod]
+        public void Test_HasViewError_Detach()
+        {
+            // テスト対象の準備
+            var target = new ViewValidationErrorBehavior();
+
+            // テスト対象をアタッチするコントロールを生成
+            var element = new TextBox();
+
+            // バインドソース
+            var rxp = new ReactiveProperty<int>();
+
+            // バインド
+            var binding = new Binding();
+            binding.Mode = BindingMode.TwoWay;
+            binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            binding.Source = rxp;
+            binding.Path = new PropertyPath(nameof(rxp.Value));
+            binding.NotifyOnValidationError = true;
+            BindingOperations.SetBinding(element, TextBox.TextProperty, binding);
+
+            // アタッチ
+            target.Attach(element);
+
+            // 事前のエラーがない場合
+            target.HasViewError.Should().BeFalse();
+
+            // パース出来ない値でエラーを発生させる
+            element.Text = "asd";
+
+            // 発生したエラーを検出すること
+            target.HasViewError.Should().BeTrue();
+
+            // アタッチ
+            target.Detach();
+
+            // エラー状態はクリアされることを確認
+            target.HasViewError.Should().BeFalse();
+        }
+
+        [STATestMethod]
         public void Test_HasViewError_BeforeAttach_SourceError()
         {
             // テスト対象の準備

@@ -98,5 +98,30 @@ namespace TestCometFlavor.Wpf.Interactions
             propMock.Verify(c => c.Dispose(), Times.Exactly(2));
             argMock.Verify(c => c.Dispose(), Times.Exactly(2));
         }
+
+        [TestMethod]
+        public void Test_Invoke_DisposeError()
+        {
+            // テスト用データモック
+            var propMock = new Mock<IDisposable>();
+            var argMock = new Mock<IDisposable>();
+
+            propMock.Setup(m => m.Dispose()).Throws(new Exception());
+            argMock.Setup(m => m.Dispose()).Throws(new Exception());
+
+            // テスト対象の準備
+            var target = new ObjectDisposeAction();
+            target.Object = propMock.Object;
+            target.DisposeParameter = true;
+
+            // テスト対象のアクションを呼び出すためのトリガ作成
+            var element = new DependencyObject();
+            var trigger = new TestTrigger();
+            trigger.Attach(element);
+            trigger.Actions.Add(target);
+
+            // アクションを呼び出すためにトリガ実行
+            new Action(() => trigger.Invoke(argMock.Object)).Should().NotThrow();
+        }
     }
 }

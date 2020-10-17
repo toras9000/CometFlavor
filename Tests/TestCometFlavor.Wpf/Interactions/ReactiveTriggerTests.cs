@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Windows;
 using CometFlavor.Wpf.Interactions;
 using FluentAssertions;
@@ -265,6 +266,72 @@ namespace TestCometFlavor.Wpf.Interactions
             action.Reset();
             cause(30);
             action.InvokedParameters.Should().AllBeOfType<int>().And.Equal(30);
+        }
+
+        [TestMethod]
+        public void Test_Source_OnCompleted()
+        {
+            // テスト用トリガソース
+            var subject = new Subject<int>();
+
+            // テスト対象の準備
+            var trigger = new ReactiveTrigger<int>();
+            trigger.Source = subject;
+
+            // テスト対象のアクションを呼び出すためのトリガ作成
+            var element = new DependencyObject();
+            var action = new TestAction();
+            trigger.Attach(element);
+            trigger.Actions.Add(action);
+
+            // 適当にシーケンスに値を流す
+            action.Reset();
+            subject.OnNext(10);
+            subject.OnNext(11);
+            subject.OnNext(12);
+            action.InvokedParameters.Should().AllBeOfType<int>().And.Equal(10, 11, 12);
+
+            // シーケンスを完了する
+            subject.OnCompleted();
+            action.InvokedParameters.Should().AllBeOfType<int>().And.Equal(10, 11, 12);
+
+            // 完了後に値を流してみる
+            // これは単に完了したSubjectがOnNextの呼び出しを無視するだけかもしれないが。
+            subject.OnNext(20);
+            action.InvokedParameters.Should().AllBeOfType<int>().And.Equal(10, 11, 12);
+        }
+
+        [TestMethod]
+        public void Test_Source_OnError()
+        {
+            // テスト用トリガソース
+            var subject = new Subject<int>();
+
+            // テスト対象の準備
+            var trigger = new ReactiveTrigger<int>();
+            trigger.Source = subject;
+
+            // テスト対象のアクションを呼び出すためのトリガ作成
+            var element = new DependencyObject();
+            var action = new TestAction();
+            trigger.Attach(element);
+            trigger.Actions.Add(action);
+
+            // 適当にシーケンスに値を流す
+            action.Reset();
+            subject.OnNext(10);
+            subject.OnNext(11);
+            subject.OnNext(12);
+            action.InvokedParameters.Should().AllBeOfType<int>().And.Equal(10, 11, 12);
+
+            // シーケンスをエラー終了する
+            subject.OnError(new Exception());
+            action.InvokedParameters.Should().AllBeOfType<int>().And.Equal(10, 11, 12);
+
+            // 完了後に値を流してみる
+            // これは単に完了したSubjectがOnNextの呼び出しを無視するだけかもしれないが。
+            subject.OnNext(20);
+            action.InvokedParameters.Should().AllBeOfType<int>().And.Equal(10, 11, 12);
         }
 
     }

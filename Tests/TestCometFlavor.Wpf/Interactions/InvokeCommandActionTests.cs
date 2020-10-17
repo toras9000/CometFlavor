@@ -268,6 +268,34 @@ namespace TestCometFlavor.Wpf.Interactions
             cmdMock.Verify(c => c.Execute(propParam.Value), Times.Once());
         }
 
+        [TestMethod]
+        public void Test_Invoke_NoCommand()
+        {
+            // 呼び出しコマンドが設定されていないとき
+
+            // コマンドのモック
+            var cmdMock = new TestCommand();
+            cmdMock.Setup_CanExecute(true);
+
+            // パラメータ用データ
+            var argParam = new object();
+            var propParam = new object();
+
+            // テスト対象の準備 (Command未設定)
+            var target = new InvokeCommandAction();
+            target.CommandParameterMode = InvokeCommandAction.CommandParameterModeKind.Auto;
+            target.CommandParameter = propParam;
+
+            // テスト対象のアクションを呼び出すためのトリガ作成
+            var element = new DependencyObject();
+            var trigger = new TestTrigger();
+            trigger.Attach(element);
+            trigger.Actions.Add(target);
+
+            // アクションを呼び出すためにトリガ実行
+            new Action(() => trigger.Invoke(argParam)).Should().NotThrow();
+        }
+
         [STATestMethod]
         public void Test_AutoEnable_Disable_SetCommand_AttachElem()
         {

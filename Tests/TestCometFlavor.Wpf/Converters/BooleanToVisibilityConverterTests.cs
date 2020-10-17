@@ -102,6 +102,15 @@ namespace TestCometFlavor.Wpf.Converters
         }
 
         [TestMethod]
+        public void Test_ConvertBack_UndefinedValue()
+        {
+            var target = new BooleanToVisibilityConverter();
+            target.ReverseLogic = false;
+            target.InvisibleToHidden = true;
+            target.ConvertBack(unchecked((Visibility)(-1)), null, null, null).Should().Be(DependencyProperty.UnsetValue);
+        }
+
+        [TestMethod]
         public void Test_ConvertBack_NotExpectType()
         {
             var target = new BooleanToVisibilityConverter();
