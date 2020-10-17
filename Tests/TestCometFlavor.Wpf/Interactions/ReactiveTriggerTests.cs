@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reactive.Linq;
-using System.Text;
 using System.Windows;
 using CometFlavor.Wpf.Interactions;
 using FluentAssertions;

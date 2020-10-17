@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using Moq;
-using Moq.Language.Flow;
 
 namespace TestCometFlavor.Wpf._Test
 {

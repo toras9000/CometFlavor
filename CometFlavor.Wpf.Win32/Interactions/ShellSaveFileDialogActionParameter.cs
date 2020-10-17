@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using CometFlavor.Wpf.Win32.Dialogs;
 
 namespace CometFlavor.Wpf.Win32.Interactions

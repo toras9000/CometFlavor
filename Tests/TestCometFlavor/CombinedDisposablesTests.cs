@@ -1,9 +1,9 @@
-using CometFlavor.Collections;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FluentAssertions;
-using Moq;
 using System;
 using System.Collections.Generic;
+using CometFlavor.Collections;
+using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace TestCometFlavor
 {

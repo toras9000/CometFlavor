@@ -1,10 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FluentAssertions;
-using Moq;
-using System;
-using System.Collections.Generic;
+﻿using System.Windows;
 using CometFlavor.Wpf.Converters;
-using System.Windows;
+using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TestCometFlavor.Wpf.Converters
 {
