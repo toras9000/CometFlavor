@@ -342,7 +342,7 @@ namespace CometFlavor.Wpf.Interactions
                 if (!object.ReferenceEquals(this.bindElement, element))
                 {
                     // 既存の対象要素は状態を戻す
-                    if (this.restoreEnabled.HasValue)
+                    if (this.restoreEnabled.HasValue && this.bindElement != null)
                     {
                         this.bindElement.IsEnabled = this.restoreEnabled.Value;
                     }
