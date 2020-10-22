@@ -5,7 +5,7 @@
     <UseWPF>true</UseWPF>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.0.5</Version>
+    <Version>0.0.6</Version>
     <Authors>toras9000</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>A utility class library for WPF.</Description>
