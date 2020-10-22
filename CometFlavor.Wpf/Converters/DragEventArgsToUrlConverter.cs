@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Text;
 using System.Windows;
 using System.Windows.Data;
 
@@ -41,8 +43,8 @@ namespace CometFlavor.Wpf.Converters
             {
                 // URLデータの取り出し
                 // 取得の容易さと内部データ構造への依存を避ける意味から、テキストへの自動変換を利用する。
-                var url = (args.Data.GetDataPresent(UnicodeUrlFormat) ? args.Data.GetData(DataFormats.UnicodeText, true) as string : null)
-                       ?? (args.Data.GetDataPresent(AnsiUrlFormat) ? args.Data.GetData(DataFormats.Text, true) as string : null);
+                var url = tryGetDropUrl(args, UnicodeUrlFormat, Encoding.Unicode)
+                       ?? tryGetDropUrl(args, AnsiUrlFormat, Encoding.ASCII);
 
                 // 変換結果をUri型にするかを判定
                 // プロパティで設定されていれば常に、もしくは変換先の型がUriならば。
@@ -79,6 +81,41 @@ namespace CometFlavor.Wpf.Converters
 
         /// <summary>ANSIエンコーディングテキストのURLデータ名</summary>
         private const string AnsiUrlFormat = "UniformResourceLocator";
+        #endregion
+
+        // 非公開メソッド
+        #region データ処理
+        /// <summary>
+        /// ドロップデータからURLを取得する。
+        /// </summary>
+        /// <param name="args">ドロップ引数</param>
+        /// <param name="format">データ書式</param>
+        /// <param name="encoding">URLテキストをデコードするエンコーディング</param>
+        /// <returns>取得したURLテキスト。取得できなかった場合は null を返却。</returns>
+        private string tryGetDropUrl(DragEventArgs args, string format, Encoding encoding)
+        {
+            // 指定書式のデータを得る。
+            // まずは IDisposable であるかを判別。もしもデータが MemoryStream でなくても、必要があれば破棄できるようにする。
+            if (args.Data.GetData(format) is IDisposable resource)
+            {
+                try
+                {
+                    // IDisposable であればとりあえず抜ける前には破棄できるようにする
+                    using (resource)
+                    {
+                        // データが MemoryStream であるかを判別
+                        if (resource is MemoryStream stream)
+                        {
+                            // 内容をテキストに変換
+                            return encoding.GetString(stream.ToArray());
+                        }
+                    }
+                }
+                catch { }
+            }
+
+            return null;
+        }
         #endregion
     }
 }

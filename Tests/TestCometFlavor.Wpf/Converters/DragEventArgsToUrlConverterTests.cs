@@ -1,8 +1,11 @@
 ﻿using System;
+using System.IO;
+using System.Text;
 using System.Windows;
 using CometFlavor.Wpf.Converters;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using TestCometFlavor.Wpf._Test;
 
 namespace TestCometFlavor.Wpf.Converters
@@ -27,7 +30,7 @@ namespace TestCometFlavor.Wpf.Converters
             // モック
             var dataMock = new TestDataObject();
             dataMock.Setup_GetDataPresent("UniformResourceLocatorW", () => true);
-            dataMock.Setup_GetData(DataFormats.UnicodeText, true, () => url);   // 自動変換で文字列化される想定
+            dataMock.Setup_GetData("UniformResourceLocatorW", () => new MemoryStream(Encoding.Unicode.GetBytes(url)));
 
             // テスト用のイベントパラメータ生成
             var args = TestActivator.CreateDragEventArgs(dataMock.Object);
@@ -50,7 +53,85 @@ namespace TestCometFlavor.Wpf.Converters
             // モック
             var dataMock = new TestDataObject();
             dataMock.Setup_GetDataPresent("UniformResourceLocator", () => true);
-            dataMock.Setup_GetData(DataFormats.Text, true, () => url);   // 自動変換で文字列化される想定
+            dataMock.Setup_GetData("UniformResourceLocator", () => new MemoryStream(Encoding.ASCII.GetBytes(url)));
+
+            // テスト用のイベントパラメータ生成
+            var args = TestActivator.CreateDragEventArgs(dataMock.Object);
+
+            // 変換テスト
+            var target = new DragEventArgsToUrlConverter();
+            target.ConvertToUri = false;
+            target.Convert(args, null, null, null)
+                .Should().BeOfType<string>()
+                .Which
+                .Should().Be(url);
+        }
+
+        [TestMethod]
+        public void Test_Convert_ToString_PriorityUnicode()
+        {
+            // ドロップテストデータ
+            var urlUnicode = "https://www.google.com/unicode";
+            var urlAnsi = "https://www.google.com/ansi";
+
+            // モック
+            var dataMock = new TestDataObject();
+            dataMock.Setup_GetDataPresent("UniformResourceLocatorW", () => true);
+            dataMock.Setup_GetDataPresent("UniformResourceLocator", () => true);
+            dataMock.Setup_GetData("UniformResourceLocatorW", () => new MemoryStream(Encoding.Unicode.GetBytes(urlUnicode)));
+            dataMock.Setup_GetData("UniformResourceLocator", () => new MemoryStream(Encoding.ASCII.GetBytes(urlAnsi)));
+
+            // テスト用のイベントパラメータ生成
+            var args = TestActivator.CreateDragEventArgs(dataMock.Object);
+
+            // 変換テスト
+            var target = new DragEventArgsToUrlConverter();
+            target.ConvertToUri = false;
+            target.Convert(args, null, null, null)
+                .Should().BeOfType<string>()
+                .Which
+                .Should().Be(urlUnicode);
+        }
+
+        [TestMethod]
+        public void Test_Convert_ToString_Fallback1()
+        {
+            // ドロップテストデータ
+            var url = "https://www.google.com";
+
+            // モック
+            var dataMock = new TestDataObject();
+            dataMock.Setup_GetDataPresent("UniformResourceLocatorW", () => true);
+            dataMock.Setup_GetDataPresent("UniformResourceLocator", () => true);
+            dataMock.Setup_GetData("UniformResourceLocatorW", () => new object());
+            dataMock.Setup_GetData("UniformResourceLocator", () => new MemoryStream(Encoding.ASCII.GetBytes(url)));
+
+            // テスト用のイベントパラメータ生成
+            var args = TestActivator.CreateDragEventArgs(dataMock.Object);
+
+            // 変換テスト
+            var target = new DragEventArgsToUrlConverter();
+            target.ConvertToUri = false;
+            target.Convert(args, null, null, null)
+                .Should().BeOfType<string>()
+                .Which
+                .Should().Be(url);
+        }
+
+        [TestMethod]
+        public void Test_Convert_ToString_Fallback2()
+        {
+            // ドロップテストデータ
+            var url = "https://www.google.com";
+
+            // モック
+            var resourceMock = new Mock<IDisposable>();
+            resourceMock.Setup(m => m.Dispose()).Throws(new Exception());
+            var dataMock = new TestDataObject();
+            dataMock.Setup_GetDataPresent("UniformResourceLocatorW", () => true);
+            dataMock.Setup_GetDataPresent("UniformResourceLocator", () => true);
+            dataMock.Setup_GetData("UniformResourceLocatorW", () => resourceMock.Object);
+            dataMock.Setup_GetData("UniformResourceLocator", () => new MemoryStream(Encoding.ASCII.GetBytes(url)));
 
             // テスト用のイベントパラメータ生成
             var args = TestActivator.CreateDragEventArgs(dataMock.Object);
@@ -73,7 +154,7 @@ namespace TestCometFlavor.Wpf.Converters
             // モック
             var dataMock = new TestDataObject();
             dataMock.Setup_GetDataPresent("UniformResourceLocatorW", () => true);
-            dataMock.Setup_GetData(DataFormats.UnicodeText, true, () => url);   // 自動変換で文字列化される想定
+            dataMock.Setup_GetData("UniformResourceLocatorW", () => new MemoryStream(Encoding.Unicode.GetBytes(url)));
 
             // テスト用のイベントパラメータ生成
             var args = TestActivator.CreateDragEventArgs(dataMock.Object);
@@ -99,7 +180,7 @@ namespace TestCometFlavor.Wpf.Converters
             // モック
             var dataMock = new TestDataObject();
             dataMock.Setup_GetDataPresent("UniformResourceLocator", () => true);
-            dataMock.Setup_GetData(DataFormats.Text, true, () => url);   // 自動変換で文字列化される想定
+            dataMock.Setup_GetData("UniformResourceLocator", () => new MemoryStream(Encoding.ASCII.GetBytes(url)));
 
             // テスト用のイベントパラメータ生成
             var args = TestActivator.CreateDragEventArgs(dataMock.Object);
@@ -125,7 +206,7 @@ namespace TestCometFlavor.Wpf.Converters
             // モック
             var dataMock = new TestDataObject();
             dataMock.Setup_GetDataPresent("UniformResourceLocatorW", () => true);
-            dataMock.Setup_GetData(DataFormats.UnicodeText, true, () => url);   // 自動変換で文字列化される想定
+            dataMock.Setup_GetData("UniformResourceLocatorW", () => new MemoryStream(Encoding.Unicode.GetBytes(url)));
 
             // テスト用のイベントパラメータ生成
             var args = TestActivator.CreateDragEventArgs(dataMock.Object);
@@ -146,7 +227,7 @@ namespace TestCometFlavor.Wpf.Converters
             // モック
             var dataMock = new TestDataObject();
             dataMock.Setup_GetDataPresent("UniformResourceLocatorW", () => true);
-            dataMock.Setup_GetData(DataFormats.UnicodeText, true, () => url);   // 自動変換で文字列化される想定
+            dataMock.Setup_GetData("UniformResourceLocatorW", () => new MemoryStream(Encoding.Unicode.GetBytes(url)));
 
             // テスト用のイベントパラメータ生成
             var args = TestActivator.CreateDragEventArgs(dataMock.Object);
@@ -169,7 +250,7 @@ namespace TestCometFlavor.Wpf.Converters
             // モック
             var dataMock = new TestDataObject();
             dataMock.Setup_GetDataPresent("UniformResourceLocatorW", () => true);
-            dataMock.Setup_GetData(DataFormats.UnicodeText, true, () => url);   // 自動変換で文字列化される想定
+            dataMock.Setup_GetData("UniformResourceLocatorW", () => new MemoryStream(Encoding.Unicode.GetBytes(url)));
 
             // テスト用のイベントパラメータ生成
             var args = TestActivator.CreateDragEventArgs(dataMock.Object);
@@ -190,7 +271,6 @@ namespace TestCometFlavor.Wpf.Converters
             var dataMock = new TestDataObject();
             dataMock.Setup_GetDataPresent("UniformResourceLocatorW", () => true);
             dataMock.Setup_GetData("UniformResourceLocatorW", () => new object());
-            dataMock.Setup_GetData(DataFormats.UnicodeText, true, () => new object());  // 変換しても文字列ではないデータ型
 
             // テスト用のイベントパラメータ生成
             var args = TestActivator.CreateDragEventArgs(dataMock.Object);
@@ -209,7 +289,6 @@ namespace TestCometFlavor.Wpf.Converters
             var dataMock = new TestDataObject();
             dataMock.Setup_GetDataPresent("UniformResourceLocatorW", () => true);
             dataMock.Setup_GetData("UniformResourceLocatorW", () => null);
-            dataMock.Setup_GetData(DataFormats.UnicodeText, true, () => null);
 
             // テスト用のイベントパラメータ生成
             var args = TestActivator.CreateDragEventArgs(dataMock.Object);
@@ -245,6 +324,31 @@ namespace TestCometFlavor.Wpf.Converters
             target.ConvertToUri = false;
             target.ConvertBack(url, null, null, null)
                 .Should().Be(DependencyProperty.UnsetValue);
+        }
+
+        [TestMethod]
+        public void Test_Convert_Dispose()
+        {
+            // モック
+            var resourceUnicodeMock = new Mock<IDisposable>();
+            var resourceAnsiMock = new Mock<IDisposable>();
+            var dataMock = new TestDataObject();
+            dataMock.Setup_GetDataPresent("UniformResourceLocatorW", () => true);
+            dataMock.Setup_GetDataPresent("UniformResourceLocator", () => true);
+            dataMock.Setup_GetData("UniformResourceLocatorW", () => resourceUnicodeMock.Object);
+            dataMock.Setup_GetData("UniformResourceLocator", () => resourceAnsiMock.Object);
+
+            // テスト用のイベントパラメータ生成
+            var args = TestActivator.CreateDragEventArgs(dataMock.Object);
+
+            // 変換テスト
+            var target = new DragEventArgsToUrlConverter();
+            target.ConvertToUri = false;
+            target.Convert(args, null, null, null)
+                .Should().BeNull();
+
+            resourceUnicodeMock.Verify(m => m.Dispose(), Times.Once());
+            resourceAnsiMock.Verify(m => m.Dispose(), Times.Once());
         }
     }
 }
