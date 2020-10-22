@@ -12,5 +12,10 @@ namespace TestCometFlavor.Wpf._Test
             this.Setup(c => c.Convert(It.IsAny<object>(), It.IsAny<Type>(), It.IsAny<object>(), It.IsAny<CultureInfo>()))
                 .Returns(stub);
         }
+        public void Setup_Convert_Throws(Exception exception)
+        {
+            this.Setup(c => c.Convert(It.IsAny<object>(), It.IsAny<Type>(), It.IsAny<object>(), It.IsAny<CultureInfo>()))
+                .Throws(exception);
+        }
     }
 }

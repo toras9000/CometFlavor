@@ -830,5 +830,41 @@ namespace TestCometFlavor.Wpf.Interactions
             convMock.Verify(c => c.Convert(argParam, It.IsAny<Type>(), null, It.IsAny<CultureInfo>()), Times.Once());
         }
 
+        [TestMethod]
+        public void Test_ParameterConverter_Error()
+        {
+            // Mode=Auto, プロパティ設定あり時
+
+            // コマンドのモック
+            var cmdMock = new TestCommand();
+            cmdMock.Setup_CanExecute(true);
+
+            // コンバータのモック
+            var convMock = new TestValueConverter();
+            convMock.Setup_Convert_Throws(new Exception());
+
+            // パラメータ用データ
+            var argParam = new object();
+            var propParam = new object();
+
+            // テスト対象の準備
+            var target = new InvokeCommandAction();
+            target.Command = cmdMock.Object;
+            target.CommandParameterMode = InvokeCommandAction.CommandParameterModeKind.Auto;
+            target.ParameterConverter = convMock.Object;
+
+            // テスト対象のアクションを呼び出すためのトリガ作成
+            var element = new DependencyObject();
+            var trigger = new TestTrigger();
+            trigger.Attach(element);
+            trigger.Actions.Add(target);
+
+            // アクションを呼び出すためにトリガ実行
+            trigger.Invoke(argParam);
+
+            // 呼び出し結果の検証
+            cmdMock.Verify(c => c.Execute(null), Times.Once());
+        }
+
     }
 }
