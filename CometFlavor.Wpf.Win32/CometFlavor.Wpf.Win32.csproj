@@ -3,15 +3,39 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.1;net462</TargetFrameworks>
     <UseWPF>true</UseWPF>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.0.2</Version>
-    <Authors>toras9000</Authors>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>CometFlavor.Wpf.Win32</PackageId>
+    <PackageDescription>A utility class library for WPF that depends on native Win32.</PackageDescription>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Description>A utility class library for WPF that depends on native Win32.</Description>
-    <PackageProjectUrl>https://github.com/toras9000/CometFlavor</PackageProjectUrl>
     <PackageTags>wpf</PackageTags>
   </PropertyGroup>
+  <PropertyGroup>
+    <Authors>toras9000</Authors>
+    <Company />
+    <Version>0.0.2</Version>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PackageProjectUrl>https://github.com/toras9000/CometFlavor</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/toras9000/CometFlavor</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <EmbedAllSources>true</EmbedAllSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DeterministicSourcePaths>true</DeterministicSourcePaths>
+  </PropertyGroup>
+  <ItemGroup>
+    <SourceRoot Include="$(MSBuildThisFileDirectory)" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
