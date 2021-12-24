@@ -23,7 +23,7 @@ namespace CometFlavor.Wpf.Win32.Dialogs
         /// <param name="owner">オーナーウィンドウハンドル。nullを指定するとオーナーウィンドウ無しとなる。</param>
         /// <param name="parameter">ダイアログ表示パラメータ</param>
         /// <returns>ダイアログの結果</returns>
-        public ShellOpenFileDialogResult ShowDialog(Window owner, ShellOpenFileDialogParameter parameter)
+        public ShellOpenFileDialogResult ShowDialog(Window? owner, ShellOpenFileDialogParameter parameter)
         {
             // 現在のプラットフォームで利用可能かを判定
             var os = Environment.OSVersion;
@@ -56,16 +56,18 @@ namespace CometFlavor.Wpf.Win32.Dialogs
         /// <param name="owner">オーナーウィンドウハンドル。nullを指定するとオーナーウィンドウ無しとなる。</param>
         /// <param name="parameter">ダイアログ表示パラメータ</param>
         /// <returns>ダイアログの結果</returns>
-        private ShellOpenFileDialogResult showInternal(Window owner, ShellOpenFileDialogParameter parameter)
+        private ShellOpenFileDialogResult showInternal(Window? owner, ShellOpenFileDialogParameter parameter)
         {
+            if (parameter == null) throw new ArgumentNullException(nameof(parameter));
+
             var comObjects = new ComUtility.ObjectList();
             var dlgResult = new ShellOpenFileDialogResult();
             try
             {
                 // FileOpenDialog COMオブジェクト生成
                 var dlgClsId = new Guid(CLSID.FileOpenDialog);
-                var dlgType = Type.GetTypeFromCLSID(dlgClsId);
-                var dialogObject = Activator.CreateInstance(dlgType).WithAddTo(comObjects);
+                var dlgType = Type.GetTypeFromCLSID(dlgClsId) ?? throw new NotSupportedException();
+                var dialogObject = Activator.CreateInstance(dlgType).WithAddTo(comObjects) ?? throw new NotSupportedException();
 
                 // IFileOpenDialogインターフェース取得(インポートインターフェースへのキャストにて)
                 var shellDialog = ((IFileOpenDialog)dialogObject).WithAddTo(comObjects);
@@ -91,7 +93,10 @@ namespace CometFlavor.Wpf.Win32.Dialogs
                 // フィルタがあれば設定
                 if (0 < parameter.Filters.Count)
                 {
-                    var fileTypes = parameter.Filters.Select(f => new COMDLG_FILTERSPEC { pszName = f.Name, pszSpec = f.Spec }).ToArray();
+                    var fileTypes = parameter.Filters
+                        .Where(f => f != null)
+                        .Select(f => new COMDLG_FILTERSPEC { pszName = f.Name, pszSpec = f.Spec })
+                        .ToArray();
                     shellDialog.SetFileTypes((UInt32)fileTypes.Length, fileTypes);
 
                     // フィルタの初期選択インデクス指定があれば設定
@@ -134,7 +139,7 @@ namespace CometFlavor.Wpf.Win32.Dialogs
                 }
 
                 // 追加の場所指定があれば追加
-                foreach (var place in parameter.AdditionalPlaces)
+                foreach (var place in parameter.AdditionalPlaces.Where(p => p != null))
                 {
                     var placeItem = ComUtility.CreateShellItemFromPath(place.Path).WithAddTo(comObjects);
                     var placeOrder = place.Order == ShellFileDialogPlaceOrder.Top ? FDAP.TOP : FDAP.BOTTOM;
@@ -177,7 +182,7 @@ namespace CometFlavor.Wpf.Win32.Dialogs
 
                     // 各アイテムのファイルパスを列挙して結果リストに格納
                     var paths = ComUtility.EnumerateItemPaths(items);
-                    dlgResult.Items.AddRange(paths);
+                    dlgResult.Items.AddRange(paths.Where(p => p != null)!);
 
                     // 選択されたフィルタインデクスを取得
                     shellDialog.GetFileTypeIndex(out var resultIndex);

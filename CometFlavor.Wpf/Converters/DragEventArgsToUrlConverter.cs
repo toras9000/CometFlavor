@@ -36,7 +36,7 @@ namespace CometFlavor.Wpf.Converters
         /// <param name="parameter">コンバータパラメータ</param>
         /// <param name="culture">変換時のカルチャ</param>
         /// <returns>変換結果値。変換できない場合は DependencyProperty.UnsetValue。</returns>
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             // 元データがドロップイベント引数であることを確認
             if (value is DragEventArgs args)
@@ -92,7 +92,7 @@ namespace CometFlavor.Wpf.Converters
         /// <param name="format">データ書式</param>
         /// <param name="encoding">URLテキストをデコードするエンコーディング</param>
         /// <returns>取得したURLテキスト。取得できなかった場合は null を返却。</returns>
-        private string tryGetDropUrl(DragEventArgs args, string format, Encoding encoding)
+        private string? tryGetDropUrl(DragEventArgs args, string format, Encoding encoding)
         {
             // 指定書式のデータを得る。
             // まずは IDisposable であるかを判別。もしもデータが MemoryStream でなくても、必要があれば破棄できるようにする。

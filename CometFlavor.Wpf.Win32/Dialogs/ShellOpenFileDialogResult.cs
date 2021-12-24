@@ -26,7 +26,7 @@ namespace CometFlavor.Wpf.Win32.Dialogs
         /// <summary>ダイアログの選択結果</summary>
         /// <remarks>このプロパティは<see cref="Items"/>の最初の要素を返却する。</remarks>
         /// <remarks>ダイアログでアイテムが選択されていない場合はnullとなる。</remarks>
-        public string Item => (this.Items.Count <= 0) ? null : this.Items[0];
+        public string? Item => (this.Items.Count <= 0) ? null : this.Items[0];
 
         /// <summary>ダイアログのすべての選択結果</summary>
         /// <remarks>単一選択でも複数選択でも利用可能</remarks>

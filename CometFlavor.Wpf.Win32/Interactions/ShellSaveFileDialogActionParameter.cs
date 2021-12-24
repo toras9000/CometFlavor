@@ -10,15 +10,15 @@ namespace CometFlavor.Wpf.Win32.Interactions
     {
         #region 動作設定
         /// <summary>ダイアログ表示パラメータ</summary>
-        public ShellSaveFileDialogParameter Parameter { get; set; }
+        public ShellSaveFileDialogParameter? Parameter { get; set; }
         #endregion
 
         #region 結果
         /// <summary>ダイアログの結果</summary>
-        public ShellSaveFileDialogResult Result { get; set; }
+        public ShellSaveFileDialogResult? Result { get; set; }
 
         /// <summary>表示処理で発生した例外オブジェクト</summary>
-        public Exception Exception { get; set; }
+        public Exception? Exception { get; set; }
         #endregion
     }
 }

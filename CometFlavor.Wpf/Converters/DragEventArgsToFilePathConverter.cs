@@ -35,7 +35,7 @@ namespace CometFlavor.Wpf.Converters
         /// <param name="parameter">コンバータパラメータ</param>
         /// <param name="culture">変換時のカルチャ</param>
         /// <returns>変換結果値。変換できない場合は DependencyProperty.UnsetValue。</returns>
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             // 元データがドロップイベント引数であることを確認
             if (value is DragEventArgs args)

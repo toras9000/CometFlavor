@@ -33,7 +33,7 @@ namespace CometFlavor.Wpf.Interactions
         /// このプロパティがnullや空の配列である場合、全てのドロップを受け入れる。
         /// デフォルト値は null となる。
         /// </remarks>
-        public IReadOnlyList<string> AcceptDropFormats
+        public IReadOnlyList<string>? AcceptDropFormats
         {
             get { return (string[])GetValue(AcceptDropFormatsProperty); }
             set { SetValue(AcceptDropFormatsProperty, value); }
@@ -59,7 +59,7 @@ namespace CometFlavor.Wpf.Interactions
         /// コンバータを指定した場合、ドロップイベント引数をコンバータで変換した結果がアクションパラメータとして渡される。
         /// デフォルト値は null となる。
         /// </remarks>
-        public IValueConverter ParameterConverter
+        public IValueConverter? ParameterConverter
         {
             get { return (IValueConverter)GetValue(ParameterConverterProperty); }
             set { SetValue(ParameterConverterProperty, value); }
@@ -138,10 +138,10 @@ namespace CometFlavor.Wpf.Interactions
         private bool? orgAllowDrop;
 
         /// <summary>直接のプロパティで指定された受け入れ書式</summary>
-        private IReadOnlyList<string> explicitAcceptFormats;
+        private IReadOnlyList<string>? explicitAcceptFormats;
 
         /// <summary>パラメータコンバータから指定された受け入れ書式</summary>
-        private IReadOnlyList<string> converterAcceptFormats;
+        private IReadOnlyList<string>? converterAcceptFormats;
         #endregion
 
         // 非公開メソッド

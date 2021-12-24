@@ -96,7 +96,7 @@ namespace CometFlavor.Wpf.Interactions
         /// <summary>
         /// <see cref="HasViewError"/> 依存プロパティの値の矯正ハンドラ
         /// </summary>
-        private static object onHasViewErrorCoerceValue(DependencyObject d, object baseValue)
+        private static object? onHasViewErrorCoerceValue(DependencyObject? d, object? baseValue)
         {
             // 一応自このクラス型であることを確認
             if (d is ViewValidationErrorBehavior self)
@@ -114,10 +114,10 @@ namespace CometFlavor.Wpf.Interactions
         /// <summary>
         /// 検証エラーイベントハンドラ
         /// </summary>
-        private void onValidationError(object sender, ValidationErrorEventArgs e)
+        private void onValidationError(object? sender, ValidationErrorEventArgs? e)
         {
             // イベントの種類によって状態更新
-            switch (e.Action)
+            switch (e?.Action)
             {
                 case ValidationErrorEventAction.Added:
                     // エラーが増えた場合

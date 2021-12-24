@@ -17,14 +17,14 @@ namespace CometFlavor.Wpf.Win32.Dialogs
         /// <summary>
         /// COMオブジェクトを保持するためのリスト
         /// </summary>
-        public class ObjectList : List<object>
+        public class ObjectList : List<object?>
         { }
 
         /// <summary>IShellItemのGuidインスタンスキャッシュ</summary>
         public static readonly Guid IShellItemID = new Guid(IID.IShellItem);
 
         /// <summary>
-        /// COｍオブジェクトをリストに追加してそのまま返却する拡張メソッド
+        /// COMオブジェクトをリストに追加してそのまま返却する拡張メソッド
         /// </summary>
         /// <typeparam name="T">追加するオブジェクトの型</typeparam>
         /// <param name="self">リストに追加するオブジェクト</param>
@@ -57,7 +57,7 @@ namespace CometFlavor.Wpf.Win32.Dialogs
         /// </summary>
         /// <param name="item">シェルアイテム</param>
         /// <returns>アイテムのファイルシステムパス</returns>
-        public static string GetFileSystemPath(IShellItem item)
+        public static string? GetFileSystemPath(IShellItem item)
         {
             var namePtr = IntPtr.Zero;
             var path = default(string);
@@ -83,7 +83,7 @@ namespace CometFlavor.Wpf.Win32.Dialogs
         /// </summary>
         /// <param name="items">シェルアイテム配列</param>
         /// <returns>ファイルパスのシーケンス</returns>
-        public static IEnumerable<string> EnumerateItemPaths(IShellItemArray items)
+        public static IEnumerable<string?> EnumerateItemPaths(IShellItemArray items)
         {
             // 配列内アイテムの個数を取得
             items.GetCount(out var itemCount);
@@ -128,7 +128,7 @@ namespace CometFlavor.Wpf.Win32.Dialogs
         /// COMオブジェクトの参照を解放(デクリメント)する。
         /// </summary>
         /// <param name="obj">COMオブジェクトのRCWオブジェクト。nullでない場合のみ解放を行う。</param>
-        public static void ReleaseExistComObject(object obj)
+        public static void ReleaseExistComObject(object? obj)
         {
             if (obj != null)
             {

@@ -6,7 +6,7 @@ using System.Windows.Data;
 namespace CometFlavor.Wpf.Converters
 {
     /// <summary>
-    /// bool値とVisibility列挙子に変換する。
+    /// bool値をVisibility列挙子に変換する。
     /// </summary>
     [ValueConversion(typeof(bool), typeof(Visibility))]
     public class BooleanToVisibilityConverter : IValueConverter

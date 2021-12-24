@@ -7,7 +7,7 @@ namespace CometFlavor.Wpf.Interactions
     /// <summary>
     /// IObservable{object}シーケンスを契機とするトリガ
     /// </summary>
-    public class ReactiveTrigger : ReactiveTrigger<object>
+    public class ReactiveTrigger : ReactiveTrigger<object?>
     {
     }
 
@@ -96,10 +96,10 @@ namespace CometFlavor.Wpf.Interactions
             // 非公開フィールド
             #region 連携情報
             /// <summary>所属するトリガ</summary>
-            private ReactiveTrigger<T> outer;
+            private ReactiveTrigger<T>? outer;
 
             /// <summary>シーケンス完了時コールバックデリゲート</summary>
-            private Action completeHandler;
+            private Action? completeHandler;
             #endregion
 
             // 非公開メソッド
@@ -120,7 +120,7 @@ namespace CometFlavor.Wpf.Interactions
         // 非公開フィールド
         #region 状態管理
         /// <summary>トリガソースの購読解除用オブジェクト</summary>
-        private IDisposable sourceUnsubscriber;
+        private IDisposable? sourceUnsubscriber;
         #endregion
 
         // 非公開メソッド

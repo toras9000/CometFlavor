@@ -94,7 +94,7 @@ namespace CometFlavor.Wpf.Converters
         /// <param name="parameter">コンバータパラメータ</param>
         /// <param name="culture">変換時のカルチャ</param>
         /// <returns>常に null を返却。</returns>
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        public object[]? ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             return null;
         }

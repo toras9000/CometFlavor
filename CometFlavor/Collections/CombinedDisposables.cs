@@ -82,7 +82,7 @@ namespace CometFlavor.Collections
         /// このプロパティは破棄が行われるたびに更新される。
         /// 一度例外が発生する呼び出しを行い例外が保存された後、別の呼び出しで破棄が正常に行われた場合はプロパティ値が null に更新される。
         /// </remarks>
-        public Exception LatestException { get; private set; }
+        public Exception? LatestException { get; private set; }
         #endregion
 
         // 公開メソッド

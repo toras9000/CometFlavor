@@ -11,7 +11,7 @@ namespace CometFlavor.Wpf.Win32.Dialogs
         #region 結果
         /// <summary>ダイアログの選択結果</summary>
         /// <remarks>ダイアログでアイテムが選択されていない場合はnullとなる。</remarks>
-        public string Item { get; set; }
+        public string? Item { get; set; }
 
         /// <summary>選択時のフィルタインデックス</summary>
         public uint FilterIndex { get; set; }

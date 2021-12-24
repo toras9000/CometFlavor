@@ -12,7 +12,7 @@ namespace CometFlavor.Wpf.Interactions
         // 公開プロパティ
         #region 動作設定
         /// <summary>破棄対象オブジェクト</summary>
-        public IDisposable Object
+        public IDisposable? Object
         {
             get { return (IDisposable)GetValue(ObjectProperty); }
             set { SetValue(ObjectProperty, value); }

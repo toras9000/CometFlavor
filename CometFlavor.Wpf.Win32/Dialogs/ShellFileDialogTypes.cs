@@ -1,6 +1,8 @@
 ﻿// このファイル内のコメントを除いたソースコードはパブリックドメインとします。
 // The source code except for comments in this file is in the public domain.
 
+using System;
+
 namespace CometFlavor.Wpf.Win32.Dialogs
 {
     /// <summary>
@@ -17,8 +19,8 @@ namespace CometFlavor.Wpf.Win32.Dialogs
         /// <param name="spec">パターン文字列</param>
         public ShellFileDialogFilter(string name, string spec)
         {
-            this.Name = name;
-            this.Spec = spec;
+            this.Name = name ?? throw new ArgumentNullException(nameof(name));
+            this.Spec = spec ?? throw new ArgumentNullException(nameof(spec));
         }
         #endregion
 
@@ -57,7 +59,7 @@ namespace CometFlavor.Wpf.Win32.Dialogs
         /// <param name="order">追加位置</param>
         public ShellFileDialogPlace(string path, ShellFileDialogPlaceOrder order)
         {
-            this.Path = path;
+            this.Path = path ?? throw new ArgumentNullException(nameof(path));
             this.Order = order;
         }
         #endregion

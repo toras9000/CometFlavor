@@ -56,7 +56,7 @@ namespace CometFlavor.Wpf.Interactions
         /// <summary>
         /// 呼び出しコマンド
         /// </summary>
-        public ICommand Command
+        public ICommand? Command
         {
             get { return (ICommand)GetValue(CommandProperty); }
             set { SetValue(CommandProperty, value); }
@@ -65,7 +65,7 @@ namespace CometFlavor.Wpf.Interactions
         /// <summary>
         /// コマンドパラメータ
         /// </summary>
-        public object CommandParameter
+        public object? CommandParameter
         {
             get { return (object)GetValue(CommandParameterProperty); }
             set { SetValue(CommandParameterProperty, value); }
@@ -74,7 +74,7 @@ namespace CometFlavor.Wpf.Interactions
         /// <summary>
         /// パラメータコンバータ
         /// </summary>
-        public IValueConverter ParameterConverter
+        public IValueConverter? ParameterConverter
         {
             get { return (IValueConverter)GetValue(ParameterConverterProperty); }
             set { SetValue(ParameterConverterProperty, value); }
@@ -158,10 +158,10 @@ namespace CometFlavor.Wpf.Interactions
         // 非公開フィールド
         #region 有効状態リンク関連
         /// <summary>有効状態参照元コマンド</summary>
-        private ICommand binCommand;
+        private ICommand? binCommand;
 
         /// <summary>有効状態反映先要素</summary>
-        private UIElement bindElement;
+        private UIElement? bindElement;
 
         /// <summary>有効状態リンク</summary>
         private bool? restoreEnabled;
@@ -174,7 +174,7 @@ namespace CometFlavor.Wpf.Interactions
         /// </summary>
         /// <param name="parameter">アクションパラメータ</param>
         /// <returns>決定されたパラメータ</returns>
-        private object getCommandParameter(object parameter)
+        private object? getCommandParameter(object? parameter)
         {
             // パラメータ使用モードによって選択する
             var cmdParam = default(object);
@@ -241,7 +241,7 @@ namespace CometFlavor.Wpf.Interactions
         /// </summary>
         /// <param name="d"></param>
         /// <param name="e"></param>
-        private static void onAutoEnableChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void onAutoEnableChanged(DependencyObject? d, DependencyPropertyChangedEventArgs e)
         {
             // 変更対象インスタンス取得
             if (d is InvokeCommandAction self)
@@ -259,7 +259,7 @@ namespace CometFlavor.Wpf.Interactions
         /// </summary>
         /// <param name="d"></param>
         /// <param name="e"></param>
-        private static void onCommandChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void onCommandChanged(DependencyObject? d, DependencyPropertyChangedEventArgs e)
         {
             // 変更対象インスタンス取得
             if (d is InvokeCommandAction self)
@@ -276,7 +276,7 @@ namespace CometFlavor.Wpf.Interactions
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void onCommandCanExecuteChanged(object sender, EventArgs e)
+        private void onCommandCanExecuteChanged(object? sender, EventArgs? e)
         {
             // 有効状態リンク中であれば状態反映する
             if (this.binCommand != null && this.bindElement != null)
@@ -296,7 +296,7 @@ namespace CometFlavor.Wpf.Interactions
         /// <param name="enableLink">状態リンクを有効とするか否か</param>
         /// <param name="command">有効状態参照元コマンド</param>
         /// <param name="element">有効状態反映先要素</param>
-        private void updateEnableLink(bool enableLink, ICommand command, UIElement element)
+        private void updateEnableLink(bool enableLink, ICommand? command, UIElement? element)
         {
             // 有効状態リンク可能であるかを判定
             if (!enableLink || command == null || element == null)

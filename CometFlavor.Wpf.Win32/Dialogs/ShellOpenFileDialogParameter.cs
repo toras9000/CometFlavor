@@ -56,15 +56,15 @@ namespace CometFlavor.Wpf.Win32.Dialogs
         #region ダイアログカスタマイズ
         /// <summary>ダイアログのタイトル</summary>
         /// <remarks>未設定(null)の場合はデフォルトのタイトルとなる。</remarks>
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
         /// <summary>確定ボタンのラベル</summary>
         /// <remarks>未設定(null)の場合はデフォルトのラベルとなる。</remarks>
-        public string AcceptButtonLabel { get; set; }
+        public string? AcceptButtonLabel { get; set; }
 
         /// <summary>ファイル名入力欄のラベル</summary>
         /// <remarks>未設定(null)の場合はデフォルトのラベルとなる。</remarks>
-        public string FileNameLabel { get; set; }
+        public string? FileNameLabel { get; set; }
 
         /// <summary>追加の選択場所</summary>
         /// <remarks>場所はフォルダでなければならない</remarks>
@@ -74,15 +74,15 @@ namespace CometFlavor.Wpf.Win32.Dialogs
         #region 状態設定
         /// <summary>初期フォルダ</summary>
         /// <remarks>nullは未指定を表す。</remarks>
-        public string Directory { get; set; }
+        public string? Directory { get; set; }
 
         /// <summary>初期入力ファイル名</summary>
         /// <remarks>nullは未指定を表す。</remarks>
-        public string InitialFileName { get; set; }
+        public string? InitialFileName { get; set; }
 
         /// <summary>デフォルト拡張子</summary>
         /// <remarks>nullは未指定を表す。</remarks>
-        public string DefaultExtension { get; set; }
+        public string? DefaultExtension { get; set; }
 
         /// <summary>選択できるファイルフィルタ</summary>
         public IList<ShellFileDialogFilter> Filters { get; }
@@ -93,7 +93,7 @@ namespace CometFlavor.Wpf.Win32.Dialogs
 
         /// <summary>最近使用したフォルダーが無い場合のデフォルトフォルダ</summary>
         /// <remarks>nullは未指定を表す。</remarks>
-        public string DefaultDirectory { get; set; }
+        public string? DefaultDirectory { get; set; }
 
         /// <summary>ダイアログ状態(最終フォルダや位置/サイズ)の永続化のためのGUID</summary>
         /// <remarks>Guid.Emptyは未指定を表す。</remarks>
