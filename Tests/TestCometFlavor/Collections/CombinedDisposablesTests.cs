@@ -6,7 +6,7 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace TestCometFlavor;
+namespace TestCometFlavor.Collections;
 
 [TestClass]
 public class CombinedDisposablesTest
