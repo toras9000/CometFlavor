@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,7 +34,7 @@ public class FileInfoExtensionsTests
 
         // テスト対象実行＆検証
         var actual = target.ReadAllBytes();
-        actual.Should().BeEquivalentTo(data);
+        actual.Should().Equal(data);
     }
 
     [TestMethod]
@@ -93,7 +94,7 @@ public class FileInfoExtensionsTests
 
         // テスト対象実行＆検証
         var actual = target.ReadAllLines();
-        actual.Should().BeEquivalentTo(texts);
+        actual.Should().Equal(texts);
     }
 
     [TestMethod]
@@ -117,7 +118,7 @@ public class FileInfoExtensionsTests
 
         // テスト対象実行＆検証
         var actual = target.ReadAllLines(enc);
-        actual.Should().BeEquivalentTo(texts);
+        actual.Should().Equal(texts);
     }
 
     [TestMethod]
@@ -140,7 +141,7 @@ public class FileInfoExtensionsTests
 
         // テスト対象実行＆検証
         var actual = target.ReadLines();
-        actual.Should().BeEquivalentTo(texts);
+        actual.Should().Equal(texts);
     }
 
     [TestMethod]
@@ -164,7 +165,7 @@ public class FileInfoExtensionsTests
 
         // テスト対象実行＆検証
         var actual = target.ReadLines(enc);
-        actual.Should().BeEquivalentTo(texts);
+        actual.Should().Equal(texts);
     }
 
     [TestMethod]
@@ -182,7 +183,7 @@ public class FileInfoExtensionsTests
 
         // テスト対象実行＆検証
         var actual = await target.ReadAllBytesAsync();
-        actual.Should().BeEquivalentTo(data);
+        actual.Should().Equal(data);
     }
 
     [TestMethod]
@@ -242,7 +243,7 @@ public class FileInfoExtensionsTests
 
         // テスト対象実行＆検証
         var actual = await target.ReadAllLinesAsync();
-        actual.Should().BeEquivalentTo(texts);
+        actual.Should().Equal(texts);
     }
 
     [TestMethod]
@@ -266,7 +267,7 @@ public class FileInfoExtensionsTests
 
         // テスト対象実行＆検証
         var actual = await target.ReadAllLinesAsync(enc);
-        actual.Should().BeEquivalentTo(texts);
+        actual.Should().Equal(texts);
     }
 
     [TestMethod]
@@ -285,7 +286,7 @@ public class FileInfoExtensionsTests
         target.WriteAllBytes(data);
 
         // 検証
-        File.ReadAllBytes(target.FullName).Should().BeEquivalentTo(data);
+        File.ReadAllBytes(target.FullName).Should().Equal(data);
     }
 
     [TestMethod]
@@ -348,7 +349,7 @@ public class FileInfoExtensionsTests
         target.WriteAllLines(texts);
 
         // 検証
-        File.ReadAllLines(target.FullName).Should().BeEquivalentTo(texts);
+        File.ReadAllLines(target.FullName).Should().Equal(texts);
     }
 
     [TestMethod]
@@ -373,7 +374,7 @@ public class FileInfoExtensionsTests
         target.WriteAllLines(texts, enc);
 
         // 検証
-        File.ReadAllLines(target.FullName, enc).Should().BeEquivalentTo(texts);
+        File.ReadAllLines(target.FullName, enc).Should().Equal(texts);
     }
 
     [TestMethod]
@@ -392,7 +393,7 @@ public class FileInfoExtensionsTests
         await target.WriteAllBytesAsync(data);
 
         // 検証
-        File.ReadAllBytes(target.FullName).Should().BeEquivalentTo(data);
+        File.ReadAllBytes(target.FullName).Should().Equal(data);
     }
 
     [TestMethod]
@@ -455,7 +456,7 @@ public class FileInfoExtensionsTests
         await target.WriteAllLinesAsync(texts);
 
         // 検証
-        File.ReadAllLines(target.FullName).Should().BeEquivalentTo(texts);
+        File.ReadAllLines(target.FullName).Should().Equal(texts);
     }
 
     [TestMethod]
@@ -480,7 +481,67 @@ public class FileInfoExtensionsTests
         await target.WriteAllLinesAsync(texts, enc);
 
         // 検証
-        File.ReadAllLines(target.FullName, enc).Should().BeEquivalentTo(texts);
+        File.ReadAllLines(target.FullName, enc).Should().Equal(texts);
     }
+
+    [TestMethod]
+    public void TestGetPathSegments_File()
+    {
+        new FileInfo(@"c:/abc/def/zxc/asd/qwe.txt").GetPathSegments()
+            .Should().Equal(new[] { @"c:\", "abc", "def", "zxc", "asd", "qwe.txt", });
+
+        new FileInfo(@"c:/abc/../asd/qwe.txt").GetPathSegments()
+            .Should().Equal(new[] { @"c:\", "asd", "qwe.txt", });
+
+        new FileInfo(@"/abc/def/qwe.txt").GetPathSegments()
+            .Should().HaveElementAt(0, Path.GetPathRoot(Environment.CurrentDirectory))
+            .And.Subject.Skip(1).Should().Equal(new[] { "abc", "def", "qwe.txt", });
+
+        new FileInfo(@"\\aaa\bbb\ccc\ddd").GetPathSegments()
+            .Should().Equal(new[] { @"\\aaa\bbb", "ccc", "ddd", });
+    }
+
+    [TestMethod]
+    public void TestGetPathSegments_Directory()
+    {
+        new DirectoryInfo(@"c:/abc/def/zxc/asd/qwe.txt").GetPathSegments()
+            .Should().Equal(new[] { @"c:\", "abc", "def", "zxc", "asd", "qwe.txt", });
+
+        new DirectoryInfo(@"c:/abc/../asd/qwe.txt").GetPathSegments()
+            .Should().Equal(new[] { @"c:\", "asd", "qwe.txt", });
+
+        new DirectoryInfo(@"/abc/def/qwe.txt").GetPathSegments()
+            .Should().HaveElementAt(0, Path.GetPathRoot(Environment.CurrentDirectory))
+            .And.Subject.Skip(1).Should().Equal(new[] { "abc", "def", "qwe.txt", });
+
+        new DirectoryInfo(@"\\aaa\bbb\ccc\ddd").GetPathSegments()
+            .Should().Equal(new[] { @"\\aaa\bbb", "ccc", "ddd", });
+    }
+
+    [TestMethod]
+    public void TestRelativePathFrom()
+    {
+        new FileInfo(@"c:/abc/def/ghi/asd/qwe.txt").RelativePathFrom(new DirectoryInfo(@"c:/abc/def/ghi/"), ignoreCase: true)
+            .Should().Be(@"asd\qwe.txt");
+
+        new FileInfo(@"c:/abc/def/ghi/qwe.txt").RelativePathFrom(new DirectoryInfo(@"c:/abc/def/ghi/"), ignoreCase: true)
+            .Should().Be(@"qwe.txt");
+
+        new FileInfo(@"c:/abc/def/zxc/asd/qwe.txt").RelativePathFrom(new DirectoryInfo(@"c:/abc/def/ghi/"), ignoreCase: true)
+            .Should().Be(@"..\zxc\asd\qwe.txt");
+
+        new FileInfo(@"D:/abc/def/zxc/asd/qwe.txt").RelativePathFrom(new DirectoryInfo(@"c:/abc/def/ghi/"), ignoreCase: true)
+            .Should().Be(@"D:\abc\def\zxc\asd\qwe.txt");
+
+        new FileInfo(@"\\aaa\bbb\ccc").RelativePathFrom(new DirectoryInfo(@"c:/abc/def/ghi/"), ignoreCase: true)
+            .Should().Be(@"\\aaa\bbb\ccc");
+
+        new FileInfo(@"\\aaa\bbb\ccc\eee\fff").RelativePathFrom(new DirectoryInfo(@"\\aaa\bbb\ccc\ddd"), ignoreCase: true)
+            .Should().Be(@"..\eee\fff");
+
+        new FileInfo(@"\\aaa\ggg\ccc\eee\fff").RelativePathFrom(new DirectoryInfo(@"\\aaa\bbb\ccc\ddd"), ignoreCase: true)
+            .Should().Be(@"\\aaa\ggg\ccc\eee\fff");
+    }
+
 
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace CometFlavor.Extensions.IO;
 /// </summary>
 public static class FileInfoExtensions
 {
+    #region Read
     /// <summary>
     /// ファイル内容の全バイト列を読み出す。
     /// </summary>
@@ -155,7 +157,9 @@ public static class FileInfoExtensions
         return File.ReadAllLinesAsync(self.FullName, encoding, cancelToken);
     }
 #endif
+    #endregion
 
+    #region Write
     /// <summary>
     /// ファイル内容が指定のバイト列となるように書き込む。
     /// </summary>
@@ -286,4 +290,141 @@ public static class FileInfoExtensions
         self.Refresh();
     }
 #endif
+    #endregion
+
+    #region Path
+    /// <summary>
+    /// ファイルパスの構成セグメントを取得する。
+    /// </summary>
+    /// <param name="self">対象ファイルのFileInfo</param>
+    /// <returns>パス構成セグメントのリスト</returns>
+    public static IList<string> GetPathSegments(this FileInfo self)
+    {
+        if (self == null) throw new ArgumentNullException(nameof(self));
+
+        // まずファイル名を処理
+        var segments = new List<string>(10);
+        segments.Add(self.Name);
+
+        // 構成ディレクトリを取得
+        var part = self.Directory;
+        while (part != null)
+        {
+            segments.Add(part.Name);
+            part = part.Parent;
+        }
+
+        // リスト内容を逆順にする
+        segments.Reverse();
+
+        return segments;
+    }
+
+    /// <summary>
+    /// ファイルパスの構成セグメントを取得する。
+    /// </summary>
+    /// <param name="self">対象ディレクトリのFileInfo</param>
+    /// <returns>パス構成セグメントのリスト</returns>
+    public static IList<string> GetPathSegments(this DirectoryInfo self)
+    {
+        if (self == null) throw new ArgumentNullException(nameof(self));
+
+        // 構成ディレクトリを取得
+        var segments = new List<string>(10);
+        var part = self;
+        while (part != null)
+        {
+            segments.Add(part.Name);
+            part = part.Parent;
+        }
+
+        // リスト内容を逆順にする
+        segments.Reverse();
+
+        return segments;
+    }
+
+    /// <summary>
+    /// 指定のディレクトリを起点としたファイルの相対パスを取得する。
+    /// </summary>
+    /// <remarks>
+    /// 単純なパス文字列処理であり、リパースポイントなどを解釈することはない。
+    /// </remarks>
+    /// <param name="self">対象ファイルのFileInfo</param>
+    /// <param name="baseDir">基準ディレクトリのDirectoryInfo</param>
+    /// <param name="ignoreCase">大文字と小文字を同一視するか否か</param>
+    /// <returns>相対パス</returns>
+    public static string RelativePathFrom(this FileInfo self, DirectoryInfo baseDir, bool ignoreCase)
+    {
+        // パラメータチェック
+        if (self == null) throw new ArgumentNullException(nameof(self));
+        if (baseDir == null) throw new ArgumentNullException(nameof(baseDir));
+
+        // ファイルのパスセグメントを取得
+        var fileSegments = self.GetPathSegments();
+        if (fileSegments.Count <= 0)
+        {
+            // 有効なFileInfoがこの条件に該当することは無いと思われるが、一応後続処理のためのガードとして。
+            return String.Empty;
+        }
+
+        // ディレクトリのパスセグメントを取得
+        var dirSegments = baseDir.GetPathSegments();
+
+        // ファイルとディレクトリのパスセグメントで一致する部分を検出
+        var index = 0;
+        var matchRule = ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+        while (index < dirSegments.Count)
+        {
+            // ファイル名位置まで到達した場合はそこで終了。
+            if (fileSegments.Count <= index)
+            {
+                break;
+            }
+
+            // 一致しないディレクトリ名を見つけたらそこで終了
+            var match = string.Equals(dirSegments[index], fileSegments[index], matchRule);
+            if (!match)
+            {
+                break;
+            }
+
+            // 一致している場合は次のセグメントへ
+            index++;
+        }
+
+        // もし最初のセグメントから不一致だった場合は相対表現にならないので元のファイルフルパスを返却
+        if (index == 0)
+        {
+            return self.FullName;
+        }
+
+        // 相対パスを構築：一致しなかった基準ディレクトリの残り数分だけ上に辿る必要がある。
+        var builder = new StringBuilder();
+        for (var i = index; i < dirSegments.Count; i++)
+        {
+            builder.Append("..");
+            builder.Append(Path.DirectorySeparatorChar);
+        }
+        // 相対パスを構築：一致しなかったディレクトリ分とファイル名を繋げる
+        for (var i = index; i < fileSegments.Count; i++)
+        {
+            builder.Append(fileSegments[i]);
+
+            // 必要な場合に区切り文字を追加
+            if (0 < builder.Length && i < (fileSegments.Count - 1))
+            {
+                // パスの最初のセグメントではルートを示す区切り文字が含まれる場合がある。
+                // その場合を除外するために、区切り文字が付いていない場合のみ付与する。
+                var lastChar = builder[builder.Length - 1];
+                if (lastChar != Path.DirectorySeparatorChar && lastChar != Path.AltDirectorySeparatorChar)
+                {
+                    builder.Append(Path.DirectorySeparatorChar);
+                }
+            }
+        }
+
+        return builder.ToString();
+    }
+    #endregion
 }
