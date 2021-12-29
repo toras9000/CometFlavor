@@ -485,7 +485,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public void TestGetPathSegments_File()
+    public void TestGetPathSegments()
     {
         new FileInfo(@"c:/abc/def/zxc/asd/qwe.txt").GetPathSegments()
             .Should().Equal(new[] { @"c:\", "abc", "def", "zxc", "asd", "qwe.txt", });
@@ -498,23 +498,6 @@ public class FileInfoExtensionsTests
             .And.Subject.Skip(1).Should().Equal(new[] { "abc", "def", "qwe.txt", });
 
         new FileInfo(@"\\aaa\bbb\ccc\ddd").GetPathSegments()
-            .Should().Equal(new[] { @"\\aaa\bbb", "ccc", "ddd", });
-    }
-
-    [TestMethod]
-    public void TestGetPathSegments_Directory()
-    {
-        new DirectoryInfo(@"c:/abc/def/zxc/asd/qwe.txt").GetPathSegments()
-            .Should().Equal(new[] { @"c:\", "abc", "def", "zxc", "asd", "qwe.txt", });
-
-        new DirectoryInfo(@"c:/abc/../asd/qwe.txt").GetPathSegments()
-            .Should().Equal(new[] { @"c:\", "asd", "qwe.txt", });
-
-        new DirectoryInfo(@"/abc/def/qwe.txt").GetPathSegments()
-            .Should().HaveElementAt(0, Path.GetPathRoot(Environment.CurrentDirectory))
-            .And.Subject.Skip(1).Should().Equal(new[] { "abc", "def", "qwe.txt", });
-
-        new DirectoryInfo(@"\\aaa\bbb\ccc\ddd").GetPathSegments()
             .Should().Equal(new[] { @"\\aaa\bbb", "ccc", "ddd", });
     }
 
@@ -541,6 +524,16 @@ public class FileInfoExtensionsTests
 
         new FileInfo(@"\\aaa\ggg\ccc\eee\fff").RelativePathFrom(new DirectoryInfo(@"\\aaa\bbb\ccc\ddd"), ignoreCase: true)
             .Should().Be(@"\\aaa\ggg\ccc\eee\fff");
+    }
+
+    [TestMethod]
+    public void TestRelativePathFrom_IgnoreCase()
+    {
+        new FileInfo(@"c:/abc/def/ghi/asd/qwe.txt").RelativePathFrom(new DirectoryInfo(@"c:/abc/def/ghi/"), ignoreCase: false)
+            .Should().Be(@"asd\qwe.txt");
+
+        new FileInfo(@"c:/abc/def/Ghi/asd/qwe.txt").RelativePathFrom(new DirectoryInfo(@"c:/abc/def/ghi/"), ignoreCase: false)
+            .Should().Be(@"..\Ghi\asd\qwe.txt");
     }
 
 
