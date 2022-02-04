@@ -16,7 +16,7 @@ public static class StringExtensions
     /// </summary>
     /// <param name="self">対象文字列</param>
     /// <returns>最初の行文字列</returns>
-    public static string FirstLine(this string self)
+    public static string? FirstLine(this string? self)
     {
         if (string.IsNullOrEmpty(self)) return self;
 
@@ -33,12 +33,34 @@ public static class StringExtensions
     }
 
     /// <summary>
+    /// 文字列の最後の行を取得する。
+    /// </summary>
+    /// <param name="self">対象文字列</param>
+    /// <returns>最後の行文字列</returns>
+    public static string? LastLine(this string? self)
+    {
+        if (string.IsNullOrEmpty(self)) return self;
+
+        // 最終改行位置を検索
+        var breakIdx = self.LastIndexOfAny(LineBreakChars);
+        if (breakIdx < 0)
+        {
+            // 改行がない場合はそのままを返却
+            return self;
+        }
+
+        // 最終改行の後ろを返却
+        return self.Substring(breakIdx + 1);
+
+    }
+
+    /// <summary>
     /// 文字列を連結する。
     /// </summary>
     /// <param name="self">文字列のシーケンス</param>
     /// <param name="separator">連結する文字間に差し込む文字列</param>
     /// <returns></returns>
-    public static string JoinString(this IEnumerable<string> self, string? separator = null)
+    public static string JoinString(this IEnumerable<string?> self, string? separator = null)
     {
         return string.Join(separator, self);
     }
@@ -50,7 +72,7 @@ public static class StringExtensions
     /// <param name="self">元になる文字列</param>
     /// <param name="format">文字列を装飾する書式。埋め込み位置0のプレースホルダ({{0}})が含まれる必要がある。</param>
     /// <returns>装飾された文字列。元がnullまたは空の場合はそのまま返却。</returns>
-    public static string Decorate(this string self, string format)
+    public static string? Decorate(this string? self, string format)
     {
         if (string.IsNullOrEmpty(self)) return self;
         return string.Format(format, self);
@@ -63,7 +85,7 @@ public static class StringExtensions
     /// <param name="self">元になる文字列</param>
     /// <param name="decorator">文字列を装飾するデリゲート</param>
     /// <returns>装飾された文字列。元がnullまたは空の場合はそのまま返却。</returns>
-    public static string Decorate(this string self, Func<string, string> decorator)
+    public static string? Decorate(this string? self, Func<string, string> decorator)
     {
         if (string.IsNullOrEmpty(self)) return self;
         if (decorator == null) return self;
@@ -71,6 +93,69 @@ public static class StringExtensions
     }
 
 #if NET5_0_OR_GREATER
+    /// <summary>
+    /// 文字列の先頭から指定された長さの文字要素を切り出す。
+    /// </summary>
+    /// <param name="self">元になる文字列</param>
+    /// <param name="count">切り出す文字要素の長さ。ゼロの場合は元のインスタンスをそのまま返却する。</param>
+    /// <returns>切り出された文字列</returns>
+    public static string? CutLeftElements(this string? self, int count)
+    {
+        // パラメータチェック
+        if (count < 0) throw new ArgumentException(nameof(count));
+        if (string.IsNullOrEmpty(self)) return self;
+        if (count == 0) return string.Empty;
+
+        // 切り出し文字列の構築用
+        var builder = new StringBuilder(capacity: count);
+
+        // 文字要素を列挙しながら指定要素数まで蓄積
+        var taked = 0;
+        var elementer = StringInfo.GetTextElementEnumerator(self);
+        while (taked < count && elementer.MoveNext())
+        {
+            builder.Append(elementer.Current);
+            taked++;
+        }
+
+        // 切り出した先頭文字列を返却
+        return builder.ToString();
+    }
+
+    /// <summary>
+    /// 文字列の末尾にある指定された長さの文字要素を切り出す。
+    /// </summary>
+    /// <param name="self">元になる文字列</param>
+    /// <param name="count">切り出す文字要素の長さ。ゼロの場合は元のインスタンスをそのまま返却する。</param>
+    /// <returns></returns>
+    public static string? CutRightElements(this string? self, int count)
+    {
+        // パラメータチェック
+        if (count < 0) throw new ArgumentException(nameof(count));
+        if (string.IsNullOrEmpty(self)) return self;
+        if (count == 0) return string.Empty;
+
+        // 最後の文字を蓄積するバッファ
+        var buffer = new Queue<object>(capacity: count);
+
+        // 文字要素を列挙しながら指定数までの最後の要素を蓄積
+        var elementer = StringInfo.GetTextElementEnumerator(self);
+        while (elementer.MoveNext())
+        {
+            // 既に切り出し要素数蓄積済みならば1つ除去
+            if (count <= buffer.Count)
+            {
+                buffer.Dequeue();
+            }
+
+            // 後方の要素を蓄積
+            buffer.Enqueue(elementer.Current);
+        }
+
+        // 蓄積された末尾文字列を返却
+        return string.Concat(buffer);
+    }
+
     /// <summary>
     /// 文字列を指定の長さに省略する。
     /// このメソッドでは string の Length 基準での長さ制限となる。

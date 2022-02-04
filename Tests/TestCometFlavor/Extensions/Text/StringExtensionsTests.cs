@@ -14,9 +14,22 @@ public class StringExtensionsTests
         "abc\ndef".FirstLine().Should().Be("abc");
         "aaa\rbbb".FirstLine().Should().Be("aaa");
         "xyz\r\nabc".FirstLine().Should().Be("xyz");
+        "abc\n".FirstLine().Should().Be("abc");
         "\nabc".FirstLine().Should().BeEmpty();
         "\n".FirstLine().Should().BeEmpty();
         default(string).FirstLine().Should().BeNull();
+    }
+
+    [TestMethod]
+    public void TestLastLine()
+    {
+        "abc\ndef".LastLine().Should().Be("def");
+        "aaa\rbbb".LastLine().Should().Be("bbb");
+        "xyz\r\nabc".LastLine().Should().Be("abc");
+        "abc\n".LastLine().Should().BeEmpty();
+        "\nabc".LastLine().Should().Be("abc");
+        "\n".LastLine().Should().BeEmpty();
+        default(string).LastLine().Should().BeNull();
     }
 
     [TestMethod]
@@ -56,6 +69,48 @@ public class StringExtensionsTests
         default(string).Decorate(s => throw new Exception()).Should().BeNull();
 
         new Action(() => "abc".Decorate(s => throw new Exception())).Should().Throw<Exception>();
+    }
+
+    [TestMethod]
+    public void TestCutLeftElements()
+    {
+        "abcdef".CutLeftElements(0).Should().Be("");
+        "abcdef".CutLeftElements(1).Should().Be("a");
+        "abcdef".CutLeftElements(2).Should().Be("ab");
+        "abcdef".CutLeftElements(6).Should().Be("abcdef");
+        "abcdef".CutLeftElements(7).Should().Be("abcdef");
+
+        "あいうえお".CutLeftElements(1).Should().Be("あ");
+        "あいうえお".CutLeftElements(5).Should().Be("あいうえお");
+        "あいうえお".CutLeftElements(6).Should().Be("あいうえお");
+
+        // 👩🏻‍👦🏼👨🏽‍👦🏾‍👦🏿👩🏼‍👨🏽‍👦🏼‍👧🏽👩🏻‍👩🏿‍👧🏼‍👧🏾
+        "👩🏻‍👦🏼👨🏽‍👦🏾‍👦🏿👩🏼‍👨🏽‍👦🏼‍👧🏽👩🏻‍👩🏿‍👧🏼‍👧🏾".CutLeftElements(1).Should().Be("👩🏻‍👦🏼");
+        "👩🏻‍👦🏼👨🏽‍👦🏾‍👦🏿👩🏼‍👨🏽‍👦🏼‍👧🏽👩🏻‍👩🏿‍👧🏼‍👧🏾".CutLeftElements(2).Should().Be("👩🏻‍👦🏼👨🏽‍👦🏾‍👦🏿");
+        "👩🏻‍👦🏼👨🏽‍👦🏾‍👦🏿👩🏼‍👨🏽‍👦🏼‍👧🏽👩🏻‍👩🏿‍👧🏼‍👧🏾".CutLeftElements(3).Should().Be("👩🏻‍👦🏼👨🏽‍👦🏾‍👦🏿👩🏼‍👨🏽‍👦🏼‍👧🏽");
+        "👩🏻‍👦🏼👨🏽‍👦🏾‍👦🏿👩🏼‍👨🏽‍👦🏼‍👧🏽👩🏻‍👩🏿‍👧🏼‍👧🏾".CutLeftElements(4).Should().Be("👩🏻‍👦🏼👨🏽‍👦🏾‍👦🏿👩🏼‍👨🏽‍👦🏼‍👧🏽👩🏻‍👩🏿‍👧🏼‍👧🏾");
+        "👩🏻‍👦🏼👨🏽‍👦🏾‍👦🏿👩🏼‍👨🏽‍👦🏼‍👧🏽👩🏻‍👩🏿‍👧🏼‍👧🏾".CutLeftElements(5).Should().Be("👩🏻‍👦🏼👨🏽‍👦🏾‍👦🏿👩🏼‍👨🏽‍👦🏼‍👧🏽👩🏻‍👩🏿‍👧🏼‍👧🏾");
+    }
+
+    [TestMethod]
+    public void TestCutRightElements()
+    {
+        "abcdef".CutRightElements(0).Should().Be("");
+        "abcdef".CutRightElements(1).Should().Be("f");
+        "abcdef".CutRightElements(2).Should().Be("ef");
+        "abcdef".CutRightElements(6).Should().Be("abcdef");
+        "abcdef".CutRightElements(7).Should().Be("abcdef");
+
+        "あいうえお".CutRightElements(1).Should().Be("お");
+        "あいうえお".CutRightElements(5).Should().Be("あいうえお");
+        "あいうえお".CutRightElements(6).Should().Be("あいうえお");
+
+        // 👩🏻‍👦🏼👨🏽‍👦🏾‍👦🏿👩🏼‍👨🏽‍👦🏼‍👧🏽👩🏻‍👩🏿‍👧🏼‍👧🏾
+        "👩🏻‍👦🏼👨🏽‍👦🏾‍👦🏿👩🏼‍👨🏽‍👦🏼‍👧🏽👩🏻‍👩🏿‍👧🏼‍👧🏾".CutRightElements(1).Should().Be("👩🏻‍👩🏿‍👧🏼‍👧🏾");
+        "👩🏻‍👦🏼👨🏽‍👦🏾‍👦🏿👩🏼‍👨🏽‍👦🏼‍👧🏽👩🏻‍👩🏿‍👧🏼‍👧🏾".CutRightElements(2).Should().Be("👩🏼‍👨🏽‍👦🏼‍👧🏽👩🏻‍👩🏿‍👧🏼‍👧🏾");
+        "👩🏻‍👦🏼👨🏽‍👦🏾‍👦🏿👩🏼‍👨🏽‍👦🏼‍👧🏽👩🏻‍👩🏿‍👧🏼‍👧🏾".CutRightElements(3).Should().Be("👨🏽‍👦🏾‍👦🏿👩🏼‍👨🏽‍👦🏼‍👧🏽👩🏻‍👩🏿‍👧🏼‍👧🏾");
+        "👩🏻‍👦🏼👨🏽‍👦🏾‍👦🏿👩🏼‍👨🏽‍👦🏼‍👧🏽👩🏻‍👩🏿‍👧🏼‍👧🏾".CutRightElements(4).Should().Be("👩🏻‍👦🏼👨🏽‍👦🏾‍👦🏿👩🏼‍👨🏽‍👦🏼‍👧🏽👩🏻‍👩🏿‍👧🏼‍👧🏾");
+        "👩🏻‍👦🏼👨🏽‍👦🏾‍👦🏿👩🏼‍👨🏽‍👦🏼‍👧🏽👩🏻‍👩🏿‍👧🏼‍👧🏾".CutRightElements(5).Should().Be("👩🏻‍👦🏼👨🏽‍👦🏾‍👦🏿👩🏼‍👨🏽‍👦🏼‍👧🏽👩🏻‍👩🏿‍👧🏼‍👧🏾");
     }
 
     [TestMethod]
