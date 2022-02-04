@@ -70,7 +70,7 @@ public static class StringExtensions
         return decorator(self);
     }
 
-#if NETCOREAPP3_0_OR_GREATER
+#if NET5_0_OR_GREATER
     /// <summary>
     /// 文字列を指定の長さに省略する。
     /// このメソッドでは string の Length 基準での長さ制限となる。
