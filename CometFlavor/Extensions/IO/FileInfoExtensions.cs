@@ -13,6 +13,43 @@ namespace CometFlavor.Extensions.IO;
 /// </summary>
 public static class FileInfoExtensions
 {
+    #region Name
+    /// <summary>
+    /// 拡張子を除いたファイル名を取得する。
+    /// </summary>
+    /// <param name="self">対象ファイルのFileInfo</param>
+    /// <returns>拡張子を除いたファイル名</returns>
+    public static string GetNameWithoutExtension(this FileInfo self)
+    {
+        if (self == null) throw new ArgumentNullException(nameof(self));
+        return Path.GetFileNameWithoutExtension(self.Name);
+    }
+
+    /// <summary>
+    /// 拡張子を取得する。
+    /// </summary>
+    /// <param name="self">対象ファイルのFileInfo</param>
+    /// <returns>拡張子</returns>
+    public static string GetExtension(this FileInfo self)
+    {
+        if (self == null) throw new ArgumentNullException(nameof(self));
+        return Path.GetExtension(self.Name);
+    }
+
+    /// <summary>
+    /// 指定した拡張子ファイルを示すFileInfoを取得する。
+    /// </summary>
+    /// <param name="self">対象ファイルのFileInfo</param>
+    /// <param name="extension">拡張子</param>
+    /// <returns> 指定した拡張子ファイルを示すFileInfo</returns>
+    public static FileInfo GetAnotherExtension(this FileInfo self, string extension)
+    {
+        if (self == null) throw new ArgumentNullException(nameof(self));
+        var path = Path.ChangeExtension(self.FullName, extension);
+        return new FileInfo(path);
+    }
+    #endregion
+
     #region Read
     /// <summary>
     /// ファイル内容の全バイト列を読み出す。
