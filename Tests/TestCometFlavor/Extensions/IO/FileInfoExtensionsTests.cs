@@ -203,7 +203,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public async ValueTask TestReadAllBytesAsync()
+    public async Task TestReadAllBytesAsync()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -221,7 +221,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public async ValueTask TestReadAllTextAsync()
+    public async Task TestReadAllTextAsync()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -239,7 +239,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public async ValueTask TestReadAllTextAsync_enc()
+    public async Task TestReadAllTextAsync_enc()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -258,7 +258,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public async ValueTask TestReadAllLinesAsync()
+    public async Task TestReadAllLinesAsync()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -281,7 +281,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public async ValueTask TestReadAllLinesAsync_enc()
+    public async Task TestReadAllLinesAsync_enc()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -412,7 +412,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public async ValueTask TestWriteAllBytesAsync()
+    public async Task TestWriteAllBytesAsync()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -431,7 +431,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public async ValueTask TestWriteAllTextAsync()
+    public async Task TestWriteAllTextAsync()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -450,7 +450,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public async ValueTask TestWriteAllTextAsync_enc()
+    public async Task TestWriteAllTextAsync_enc()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -470,7 +470,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public async ValueTask TestWriteAllLinesAsync()
+    public async Task TestWriteAllLinesAsync()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -494,7 +494,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public async ValueTask TestWriteAllLinesAsync_enc()
+    public async Task TestWriteAllLinesAsync_enc()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
