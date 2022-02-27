@@ -93,10 +93,42 @@ public static class StringExtensions
 
 #if NET5_0_OR_GREATER
     /// <summary>
+    /// 文字列のテキスト要素を列挙する。
+    /// </summary>
+    /// <param name="self">対象文字列</param>
+    /// <returns>テキスト要素シーケンス</returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    public static IEnumerable<string> AsTextElements(this string self)
+    {
+        // パラメータチェック
+        if (self == null) throw new ArgumentNullException(nameof(self));
+
+        // テキスト要素を列挙
+        var elementer = StringInfo.GetTextElementEnumerator(self);
+        while (elementer.MoveNext())
+        {
+            yield return (string)elementer.Current;
+        }
+    }
+
+    /// <summary>
+    /// 文字列のテキスト要素数を取得する。
+    /// </summary>
+    /// <param name="self">対象文字列</param>
+    /// <returns>テキスト要素数</returns>
+    public static int TextElementCount(this string self)
+    {
+        // パラメータチェック
+        if (self == null) throw new ArgumentNullException(nameof(self));
+
+        return StringInfo.ParseCombiningCharacters(self).Length;
+    }
+
+    /// <summary>
     /// 文字列の先頭から指定された長さの文字要素を切り出す。
     /// </summary>
-    /// <param name="self">元になる文字列</param>
-    /// <param name="count">切り出す文字要素の長さ。ゼロの場合は元のインスタンスをそのまま返却する。</param>
+    /// <param name="self">元になる文字列。nullまたは空の場合は元のインスタンスをそのまま返却する。</param>
+    /// <param name="count">切り出す文字要素の長さ。</param>
     /// <returns>切り出された文字列</returns>
     public static string? CutLeftElements(this string? self, int count)
     {
@@ -124,9 +156,9 @@ public static class StringExtensions
     /// <summary>
     /// 文字列の末尾にある指定された長さの文字要素を切り出す。
     /// </summary>
-    /// <param name="self">元になる文字列</param>
-    /// <param name="count">切り出す文字要素の長さ。ゼロの場合は元のインスタンスをそのまま返却する。</param>
-    /// <returns></returns>
+    /// <param name="self">元になる文字列。nullまたは空の場合は元のインスタンスをそのまま返却する。</param>
+    /// <param name="count">切り出す文字要素の長さ。</param>
+    /// <returns>切り出された文字列</returns>
     public static string? CutRightElements(this string? self, int count)
     {
         // パラメータチェック
@@ -167,6 +199,12 @@ public static class StringExtensions
     {
         // パラメータチェック
         if (self == null) throw new ArgumentNullException(nameof(self));
+        if (length < 0) throw new ArgumentException(nameof(length));
+
+        // マーカーが指定の長さを超えている場合は矛盾するのでパラメータ指定が正しくない。
+        // 省略されずマーカーが使用されない場合もあり得るが、パラメータ length と marker の関係性が正しくないのであれば揺れなく異常検出できようにしている。
+        var markerLen = marker?.Length ?? 0;
+        if (length < markerLen) throw new ArgumentException();
 
         // 元の文字列が指定の長さに収まる場合はそのまま返却
         if (self.Length <= length)
@@ -174,26 +212,23 @@ public static class StringExtensions
             return self;
         }
 
-        // マーカーが指定の長さを超えている場合は矛盾するのでパラメータ指定が正しくない。
-        var markerLen = marker?.Length ?? 0;
-        if (length < markerLen) throw new ArgumentException();
-
         // 省略文字列として切り出す長さを算出。マーカを付与するのでその分を除いた長さ。
         var takeLen = length - markerLen;
 
-        // サロゲートペアを分割しないよう、テキスト要素を認識して切り出す。
+        // 書記素クラスタを分割しないよう、テキスト要素を認識して切り出す。
         var builder = new StringBuilder();
         var elementer = StringInfo.GetTextElementEnumerator(self);
-        while (elementer.MoveNext())
+        while (0 < takeLen && elementer.MoveNext())
         {
             // テキスト要素を追加すると切り詰め長を超えてしまうようであればここで終わり
             var element = (string)elementer.Current;
-            if (takeLen < (builder.Length + element.Length))
+            if (takeLen < element.Length)
             {
                 break;
             }
             // 切り出し文字列に追加
             builder.Append(element);
+            takeLen -= element.Length;
         }
 
         // マーカーを追加
@@ -215,54 +250,48 @@ public static class StringExtensions
     {
         // パラメータチェック
         if (self == null) throw new ArgumentNullException(nameof(self));
-
-        // マーカーの長さを取得。
-        var markerLen = 0;
-        if (marker != null)
-        {
-            var checker = StringInfo.GetTextElementEnumerator(marker);
-            while (checker.MoveNext())
-            {
-                markerLen++;
-            }
-        }
+        if (count < 0) throw new ArgumentException(nameof(count));
 
         // マーカーが指定の長さを超えている場合は矛盾するのでパラメータ指定が正しくない。
-        if (count < markerLen) throw new ArgumentException();
+        // 省略されずマーカーが使用されない場合もあり得るが、パラメータ width と marker の関係性が正しくないのであれば揺れなく異常検出できようにしている。
+        var markerCount = marker?.TextElementCount() ?? 0;
+        if (count < markerCount) throw new ArgumentException(nameof(marker));
+
+        // 明かな状況を処理
+        if (string.IsNullOrEmpty(self)) return self;
+        if (count == 0) return string.Empty;
 
         // 省略文字列として切り出す長さを算出。マーカを付与するのでその分を除いた長さ。
-        var elipsedSrcCount = count - markerLen;
+        var ellipsisCount = count - markerCount;
 
-        // サロゲートペアを分割しないよう、テキスト要素を認識して切り出す。
-        var elipsisTextLen = default(int?);
-        var takeCount = 0;
+        // 書記素クラスタペアを分割しないよう、テキスト要素を認識して切り出す。
         var builder = new StringBuilder();
         var elementer = StringInfo.GetTextElementEnumerator(self);
+        var sumCount = 0;       // 切り出し合計幅
+        var ellipsedLen = 0;    // 省略が発生する場合に採用する文字列長さ
         while (elementer.MoveNext())
         {
-            // 制限長を超える長さになるかをチェック
-            if (count < (takeCount + 1))
+            // 追加すると切り詰め長を超えないかをチェック
+            if (count < (sumCount + 1))
             {
-                // 省略時のソース長さを保持している場合はその長さに切り詰め
-                if (elipsisTextLen.HasValue)
-                {
-                    builder.Length = elipsisTextLen.Value;
-                }
-                // マーカ追加して切り出しを打ち切り。
+                // 超える場合は省略時の長さ＋マーカーの内容で切り出し終了
+                builder.Length = ellipsedLen;
                 builder.Append(marker);
                 break;
             }
-
-            // 「省略を行う場合にソーステキストから取り出す長さ」になった場合の文字列Lengthを取得しておく。
-            // 続く文字要素を追加して制限に収まるかもしれないし、収まらずに省略するかもしれないので。
-            if (!elipsisTextLen.HasValue && elipsedSrcCount <= takeCount)
+            else
             {
-                elipsisTextLen = builder.Length;
-            }
+                // 切り出し文字列に追加
+                builder.Append(elementer.Current);
 
-            // 切り出し文字列に追加
-            builder.Append(elementer.Current);
-            takeCount++;
+                // 省略が発生した場合に使う文字列Lengthを把握する。
+                // 合計幅が省略時の許容長を越えない限りはその長さを利用できる。
+                sumCount++;
+                if (sumCount <= ellipsisCount)
+                {
+                    ellipsedLen = builder.Length;
+                }
+            }
         }
 
         // 省略した文字列を返却
