@@ -3,15 +3,15 @@
 namespace CometFlavor.Unicode;
 
 /// <summary>
-/// Unicode関係の情報
+/// Unicode関係の情報取得サービスファクトリ
 /// </summary>
 public static class UnicodeInfo
 {
-    /// <summary>Unicode バージョン 13 の情報取得サービスを生成する</summary>
+    /// <summary>Unicode バージョン 13.0.0 の情報取得サービスを生成する</summary>
     /// <returns>情報取得サービス</returns>
     public static IUnicodeInfo CreateV13() => new UnicodeInfoV13();
 
-    /// <summary>Unicode バージョン 14 の情報取得サービスを生成する</summary>
+    /// <summary>Unicode バージョン 14.0.0 の情報取得サービスを生成する</summary>
     /// <returns>情報取得サービス</returns>
     public static IUnicodeInfo CreateV14() => new UnicodeInfoV14();
 

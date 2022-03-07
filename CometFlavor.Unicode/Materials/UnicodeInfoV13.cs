@@ -6,5 +6,5 @@
 public class UnicodeInfoV13 : IUnicodeInfo
 {
     /// <inheritdoc />
-    public EastAsianWidth GetEastAsianWidth(int code) => UnicodeEastAsianWidthV14.GetEastAsianWidth(code);
+    public EastAsianWidth GetEastAsianWidth(int code) => UnicodeEastAsianWidthV13.GetEastAsianWidth(code);
 }
