@@ -75,6 +75,9 @@ FileInfo generateInfoSource(string directory, GenerateInfo generate, UnicodeVers
     writer.WriteLine("{");
     writer.WriteLine("    /// <inheritdoc />");
     writer.WriteLine($"    public EastAsianWidth GetEastAsianWidth(int code) => UnicodeEastAsianWidth{version.Symbol}.GetEastAsianWidth(code);");
+    writer.WriteLine("");
+    writer.WriteLine("    /// <inheritdoc />");
+    writer.WriteLine($"    public GraphemeClusterBreak GetGraphemeClusterBreak(int code) => UnicodeGraphemeClusterBreak{version.Symbol}.GetGraphemeClusterBreak(code);");
     writer.WriteLine("}");
     return file;
 }
