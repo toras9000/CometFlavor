@@ -3,47 +3,46 @@ using System.Linq;
 using BenchCometFlavor.Unicode.Codes;
 using BenchmarkDotNet.Attributes;
 
-namespace BenchCometFlavor.Unicode
+namespace BenchCometFlavor.Unicode;
+
+public class BenchEaw
 {
-    public class BenchEaw
+    [Params(10000)]
+    public int Count;
+
+    [GlobalSetup]
+    public void Setup()
     {
-        [Params(10000)]
-        public int Count;
+        var interval = 0x300000 / this.Count;
+        this.Codes = Enumerable.Range(0, this.Count).Select(n => n * interval).ToArray();
+    }
 
-        [GlobalSetup]
-        public void Setup()
+    public int[] Codes { get; private set; }
+
+    [Benchmark]
+    public void EawLinear()
+    {
+        for (var i = 0; i < this.Codes.Length; i++)
         {
-            var interval = 0x300000 / this.Count;
-            this.Codes = Enumerable.Range(0, this.Count).Select(n => n * interval).ToArray();
+            EawLinearV14.GetEastAsianWidth(this.Codes[i]);
         }
+    }
 
-        public int[] Codes { get; private set; }
-
-        [Benchmark]
-        public void EawLinear()
+    [Benchmark]
+    public void EawSwitchExp()
+    {
+        for (var i = 0; i < this.Codes.Length; i++)
         {
-            for (var i = 0; i < this.Codes.Length; i++)
-            {
-                EawLinearV14.GetEastAsianWidth(this.Codes[i]);
-            }
+            EawSwitchExpV14.GetEastAsianWidth(this.Codes[i]);
         }
+    }
 
-        [Benchmark]
-        public void EawSwitchExp()
+    [Benchmark]
+    public void EawIfBin()
+    {
+        for (var i = 0; i < this.Codes.Length; i++)
         {
-            for (var i = 0; i < this.Codes.Length; i++)
-            {
-                EawSwitchExpV14.GetEastAsianWidth(this.Codes[i]);
-            }
-        }
-
-        [Benchmark]
-        public void EawIfBin()
-        {
-            for (var i = 0; i < this.Codes.Length; i++)
-            {
-                EawIfBinV14.GetEastAsianWidth(this.Codes[i]);
-            }
+            EawIfBinV14.GetEastAsianWidth(this.Codes[i]);
         }
     }
 }
