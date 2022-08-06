@@ -53,6 +53,58 @@ public static class StringExtensions
 
     }
 
+    /// <summary>特定文字の前部分文字列を取得する</summary>
+    /// <param name="self">対象文字列</param>
+    /// <param name="marker">検索文字</param>
+    /// <param name="defaultEmpty">検索文字列が見つからない場合に空を返すか否か</param>
+    /// <returns>処理結果文字列</returns>
+    public static string? BeforeAt(this string? self, char marker, bool defaultEmpty = false)
+    {
+        if (self == null) return null;
+        var idx = self.IndexOf(marker);
+        if (idx < 0) return defaultEmpty ? "" : self;
+        return self.Substring(0, idx);
+    }
+
+    /// <summary>特定文字列の前部分文字列を取得する</summary>
+    /// <param name="self">対象文字列</param>
+    /// <param name="marker">検索文字列</param>
+    /// <param name="defaultEmpty">検索文字列が見つからない場合に空を返すか否か</param>
+    /// <returns>処理結果文字列</returns>
+    public static string? BeforeAt(this string? self, string marker, bool defaultEmpty = false)
+    {
+        if (self == null) return null;
+        var idx = self.IndexOf(marker);
+        if (idx < 0) return defaultEmpty ? "" : self;
+        return self.Substring(0, idx);
+    }
+
+    /// <summary>特定文字の後部分文字列を取得する</summary>
+    /// <param name="self">対象文字列</param>
+    /// <param name="marker">検索文字</param>
+    /// <param name="defaultEmpty">検索文字列が見つからない場合に空を返すか否か</param>
+    /// <returns>処理結果文字列</returns>
+    public static string? AfterAt(this string? self, char marker, bool defaultEmpty = false)
+    {
+        if (self == null) return null;
+        var idx = self.IndexOf(marker);
+        if (idx < 0) return defaultEmpty ? "" : self;
+        return self.Substring(idx + 1);
+    }
+
+    /// <summary>特定文字列の後部分文字列を取得する</summary>
+    /// <param name="self">対象文字列</param>
+    /// <param name="marker">検索文字列</param>
+    /// <param name="defaultEmpty">検索文字列が見つからない場合に空を返すか否か</param>
+    /// <returns>処理結果文字列</returns>
+    public static string? AfterAt(this string? self, string marker, bool defaultEmpty = false)
+    {
+        if (self == null) return null;
+        var idx = self.IndexOf(marker);
+        if (idx < 0) return defaultEmpty ? "" : self;
+        return self.Substring(idx + marker.Length);
+    }
+
     /// <summary>
     /// 文字列を連結する。
     /// </summary>
@@ -89,6 +141,29 @@ public static class StringExtensions
         if (string.IsNullOrEmpty(self)) return self;
         if (decorator == null) return self;
         return decorator(self);
+    }
+
+    /// <summary>
+    /// 文字列をクォートする。
+    /// </summary>
+    /// <param name="text">対象文字列。nullの場合は空文字列と同じ扱いとする。</param>
+    /// <param name="quote">クォートキャラクタ</param>
+    /// <param name="escape">対象文字列中のクォートキャラクタをエスケープするキャラクタ</param>
+    /// <returns>クォートされたキャラクタ</returns>
+    public static string Quote(this string? text, char quote = '"', char? escape = null)
+    {
+        if (string.IsNullOrEmpty(text)) return new string(quote, 2);
+        var esc = escape ?? quote;
+        var buffer = new StringBuilder(text.Length + 10);
+        buffer.Append(quote);
+        foreach (var c in text)
+        {
+            if (c == quote) buffer.Append(esc);
+            buffer.Append(c);
+        }
+        buffer.Append(quote);
+
+        return buffer.ToString();
     }
 
 #if NET5_0_OR_GREATER

@@ -39,6 +39,42 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
+    public void TestBeforeAt()
+    {
+        "abcdef".BeforeAt('a').Should().Be("");
+        "abcdef".BeforeAt('c').Should().Be("ab");
+        "abcdef".BeforeAt('f').Should().Be("abcde");
+
+        "abcdef".BeforeAt('g', defaultEmpty: false).Should().Be("abcdef");
+        "abcdef".BeforeAt('g', defaultEmpty: true).Should().Be("");
+
+        "abcdef".BeforeAt("ab").Should().Be("");
+        "abcdef".BeforeAt("cd").Should().Be("ab");
+        "abcdef".BeforeAt("ef").Should().Be("abcd");
+
+        "abcdef".BeforeAt("ac", defaultEmpty: false).Should().Be("abcdef");
+        "abcdef".BeforeAt("ac", defaultEmpty: true).Should().Be("");
+    }
+
+    [TestMethod]
+    public void TestAfterAt()
+    {
+        "abcdef".AfterAt('a').Should().Be("bcdef");
+        "abcdef".AfterAt('c').Should().Be("def");
+        "abcdef".AfterAt('f').Should().Be("");
+
+        "abcdef".AfterAt('g', defaultEmpty: false).Should().Be("abcdef");
+        "abcdef".AfterAt('g', defaultEmpty: true).Should().Be("");
+
+        "abcdef".AfterAt("ab").Should().Be("cdef");
+        "abcdef".AfterAt("cd").Should().Be("ef");
+        "abcdef".AfterAt("ef").Should().Be("");
+
+        "abcdef".AfterAt("ac", defaultEmpty: false).Should().Be("abcdef");
+        "abcdef".AfterAt("ac", defaultEmpty: true).Should().Be("");
+    }
+
+    [TestMethod]
     public void TestJoinString()
     {
         new[] { "aaa", "bbb", "ccc" }.JoinString().Should().Be("aaabbbccc");
@@ -75,6 +111,20 @@ public class StringExtensionsTests
         default(string).Decorate(s => throw new Exception()).Should().BeNull();
 
         new Action(() => "abc".Decorate(s => throw new Exception())).Should().Throw<Exception>();
+    }
+
+    [TestMethod]
+    public void TestQuotet()
+    {
+        "abc".Quote().Should().Be("\"abc\"");
+        "a\"bc".Quote().Should().Be("\"a\"\"bc\"");
+
+        "abc".Quote(quote: '\'').Should().Be("'abc'");
+        "ab'c".Quote(quote: '\'').Should().Be("'ab''c'");
+        "ab\"c".Quote(quote: '\'').Should().Be("'ab\"c'");
+
+        "abc".Quote(quote: '\'', escape: '/').Should().Be("'abc'");
+        "ab'c".Quote(quote: '\'', escape: '/').Should().Be("'ab/'c'");
     }
 
     [TestMethod]
