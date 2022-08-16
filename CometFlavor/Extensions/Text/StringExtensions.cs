@@ -34,25 +34,25 @@ public static class StringExtensions
     /// <param name="self">対象文字列</param>
     /// <param name="alt">代替文字列</param>
     /// <returns>nullや空ならば代替文字列、それ以外ならば元の文字列</returns>
-    public static string WhenEmpty(this string? self, string alt) => string.IsNullOrEmpty(self) ? alt : self;
+    public static string? WhenEmpty(this string? self, string? alt) => string.IsNullOrEmpty(self) ? alt : self;
 
     /// <summary>文字列がnullや空であれば代替文字列を返却する。</summary>
     /// <param name="self">対象文字列</param>
     /// <param name="alt">代替文字列取得デリゲート</param>
     /// <returns>nullや空ならば代替文字列、それ以外ならば元の文字列</returns>
-    public static string WhenEmpty(this string? self, Func<string> alt) => string.IsNullOrEmpty(self) ? alt.Invoke() : self;
+    public static string? WhenEmpty(this string? self, Func<string?> alt) => string.IsNullOrEmpty(self) ? alt.Invoke() : self;
 
     /// <summary>文字列がnullや空白文字であれば代替文字列を返却する。</summary>
     /// <param name="self">対象文字列</param>
     /// <param name="alt">代替文字列</param>
     /// <returns>nullや空白文字ならば代替文字列、それ以外ならば元の文字列</returns>
-    public static string WhenWhite(this string? self, string alt) => string.IsNullOrWhiteSpace(self) ? alt : self;
+    public static string? WhenWhite(this string? self, string? alt) => string.IsNullOrWhiteSpace(self) ? alt : self;
 
     /// <summary>文字列がnullや空白文字であれば代替文字列を返却する。</summary>
     /// <param name="self">対象文字列</param>
     /// <param name="alt">代替文字列取得デリゲート</param>
     /// <returns>nullや空白文字ならば代替文字列、それ以外ならば元の文字列</returns>
-    public static string WhenWhite(this string? self, Func<string> alt) => string.IsNullOrWhiteSpace(self) ? alt.Invoke() : self;
+    public static string? WhenWhite(this string? self, Func<string?> alt) => string.IsNullOrWhiteSpace(self) ? alt.Invoke() : self;
 
     /// <summary>
     /// 文字列の最初の行を取得する。

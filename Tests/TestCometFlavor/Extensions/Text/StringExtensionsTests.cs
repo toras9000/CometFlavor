@@ -55,11 +55,17 @@ public class StringExtensionsTests
         default(string).WhenEmpty("x").Should().Be("x");
         " ".WhenEmpty("x").Should().Be(" ");
         "a".WhenEmpty("x").Should().Be("a");
+        "".WhenEmpty(default(string)).Should().BeNull();
+        " ".WhenEmpty(default(string)).Should().Be(" ");
+        "a".WhenEmpty(default(string)).Should().Be("a");
 
         "".WhenEmpty(() => "x").Should().Be("x");
         default(string).WhenEmpty(() => "x").Should().Be("x");
         " ".WhenEmpty(() => "x").Should().Be(" ");
         "a".WhenEmpty(() => "x").Should().Be("a");
+        "".WhenEmpty(() => null).Should().BeNull();
+        " ".WhenEmpty(() => null).Should().Be(" ");
+        "a".WhenEmpty(() => null).Should().Be("a");
     }
 
     [TestMethod()]
@@ -69,11 +75,17 @@ public class StringExtensionsTests
         default(string).WhenWhite("x").Should().Be("x");
         " ".WhenWhite("x").Should().Be("x");
         "a".WhenWhite("x").Should().Be("a");
+        "".WhenWhite(default(string)).Should().BeNull();
+        " ".WhenWhite(default(string)).Should().BeNull();
+        "a".WhenWhite(default(string)).Should().Be("a");
 
         "".WhenWhite(() => "x").Should().Be("x");
         default(string).WhenWhite(() => "x").Should().Be("x");
         " ".WhenWhite(() => "x").Should().Be("x");
         "a".WhenWhite(() => "x").Should().Be("a");
+        "".WhenWhite(() => null).Should().BeNull();
+        " ".WhenWhite(() => null).Should().BeNull();
+        "a".WhenWhite(() => null).Should().Be("a");
     }
 
     [TestMethod]
