@@ -204,6 +204,20 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
+    public void TestAsTextLines()
+    {
+        "".AsTextLines().Should().Equal("");
+        "a".AsTextLines().Should().Equal("a");
+        "a\rb\nc".AsTextLines().Should().Equal("a", "b", "c");
+        "a\r\nb\n\rc".AsTextLines().Should().Equal("a", "b", "", "c");
+        "\ra\n".AsTextLines().Should().Equal("", "a", "");
+        "\r".AsTextLines().Should().Equal("", "");
+        "\n".AsTextLines().Should().Equal("", "");
+        "\r\n".AsTextLines().Should().Equal("", "");
+        "\n\r".AsTextLines().Should().Equal("", "", "");
+    }
+
+    [TestMethod]
     public void TestAsTextElements()
     {
         "".AsTextElements().Should().BeEmpty();
