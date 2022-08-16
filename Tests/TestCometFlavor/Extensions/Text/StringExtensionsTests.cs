@@ -12,6 +12,70 @@ public class StringExtensionsTests
     // ・Unicode 絵文字にまつわるあれこれ (絵文字の標準とプログラム上でのハンドリング)
     // 　https://qiita.com/_sobataro/items/47989ee4b573e0c2adfc
 
+    [TestMethod()]
+    public void TestIsEmpty()
+    {
+        "".IsEmpty().Should().BeTrue();
+        default(string).IsEmpty().Should().BeTrue();
+        " ".IsEmpty().Should().BeFalse();
+        "a".IsEmpty().Should().BeFalse();
+    }
+
+    [TestMethod()]
+    public void TestIsNotEmpty()
+    {
+        "".IsNotEmpty().Should().BeFalse();
+        default(string).IsNotEmpty().Should().BeFalse();
+        " ".IsNotEmpty().Should().BeTrue();
+        "a".IsNotEmpty().Should().BeTrue();
+    }
+
+    [TestMethod()]
+    public void TestIsWhite()
+    {
+        "".IsWhite().Should().BeTrue();
+        default(string).IsWhite().Should().BeTrue();
+        " ".IsWhite().Should().BeTrue();
+        "a".IsWhite().Should().BeFalse();
+    }
+
+    [TestMethod()]
+    public void TestIsNotWhite()
+    {
+        "".IsNotWhite().Should().BeFalse();
+        default(string).IsNotWhite().Should().BeFalse();
+        " ".IsNotWhite().Should().BeFalse();
+        "a".IsNotWhite().Should().BeTrue();
+    }
+
+    [TestMethod()]
+    public void TestWhenEmpty()
+    {
+        "".WhenEmpty("x").Should().Be("x");
+        default(string).WhenEmpty("x").Should().Be("x");
+        " ".WhenEmpty("x").Should().Be(" ");
+        "a".WhenEmpty("x").Should().Be("a");
+
+        "".WhenEmpty(() => "x").Should().Be("x");
+        default(string).WhenEmpty(() => "x").Should().Be("x");
+        " ".WhenEmpty(() => "x").Should().Be(" ");
+        "a".WhenEmpty(() => "x").Should().Be("a");
+    }
+
+    [TestMethod()]
+    public void TestWhenWhite()
+    {
+        "".WhenWhite("x").Should().Be("x");
+        default(string).WhenWhite("x").Should().Be("x");
+        " ".WhenWhite("x").Should().Be("x");
+        "a".WhenWhite("x").Should().Be("a");
+
+        "".WhenWhite(() => "x").Should().Be("x");
+        default(string).WhenWhite(() => "x").Should().Be("x");
+        " ".WhenWhite(() => "x").Should().Be("x");
+        "a".WhenWhite(() => "x").Should().Be("a");
+    }
+
     [TestMethod]
     public void TestFirstLine()
     {
