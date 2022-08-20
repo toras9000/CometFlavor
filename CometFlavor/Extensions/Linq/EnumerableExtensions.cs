@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CometFlavor.Extensions.Linq;
 
@@ -8,9 +9,7 @@ namespace CometFlavor.Extensions.Linq;
 /// </summary>
 public static class EnumerableExtensions
 {
-    /// <summary>
-    /// シーケンスのフィルタと条件に適合しない場合のアクションを指定するオペレータ。
-    /// </summary>
+    /// <summary>シーケンスのフィルタと条件に適合しない場合のアクションを指定するオペレータ。</summary>
     /// <typeparam name="TSource">シーケンスの要素型</typeparam>
     /// <param name="self">対象シーケンス</param>
     /// <param name="predicate">要素の通過判定処理</param>
@@ -29,5 +28,14 @@ public static class EnumerableExtensions
                 skipped(item);
             }
         }
+    }
+
+    /// <summary>シーケンスインスタンスがnullならば空のシーケンスを代替とする</summary>
+    /// <typeparam name="TSource">シーケンスの要素型</typeparam>
+    /// <param name="self">対象シーケンス</param>
+    /// <returns>元のシーケンスまたは空のシーケンス</returns>
+    public static IEnumerable<TSource> CoalesceEmpty<TSource>(this IEnumerable<TSource>? self)
+    {
+        return self ?? Enumerable.Empty<TSource>();
     }
 }
