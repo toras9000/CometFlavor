@@ -356,6 +356,33 @@ public static class FileInfoExtensions
         return segments;
     }
 
+    /// <summary>ファイルが指定のディレクトリの子孫であるかを判定する。</summary>
+    /// <remarks></remarks>
+    /// <param name="self">対象ファイル</param>
+    /// <param name="other">比較するディレクトリ</param>
+    /// <returns>指定ディレクトリの子孫であるか否か</returns>
+    public static bool IsDescendantOf(this FileInfo self, DirectoryInfo other)
+    {
+        if (self == null) throw new ArgumentNullException(nameof(self));
+        if (other == null) throw new ArgumentNullException(nameof(other));
+        if (self.Directory == null) throw new ArgumentException($"{nameof(self)}.{nameof(self.Directory)}");
+
+        // ファイル格納ディレクトリと比較対象のパス階層を取得
+        var selfDirSegs = self.Directory.GetPathSegments();
+        var otherSegs = other.GetPathSegments();
+
+        // 比較対象のほうが階層が深い場合はその子孫ではありえない。
+        if (selfDirSegs.Count < otherSegs.Count) return false;
+
+        // 比較対象が対象ファイルのディレクトリを全て含んでいるかを判定
+        for (var i = 0; i < otherSegs.Count; i++)
+        {
+            if (!string.Equals(selfDirSegs[i], otherSegs[i], StringComparison.OrdinalIgnoreCase)) return false;
+        }
+
+        return true;
+    }
+
     /// <summary>
     /// 指定のディレクトリを起点としたファイルの相対パスを取得する。
     /// </summary>

@@ -61,6 +61,49 @@ public static class DirectoryInfoExtensions
         return segments;
     }
 
+    /// <summary>ディレクトリが指定のディレクトリの子孫であるかを判定する。</summary>
+    /// <remarks></remarks>
+    /// <param name="self">対象ディレクトリ</param>
+    /// <param name="other">比較するディレクトリ</param>
+    /// <param name="sameIs">同一階層を真とするか否か</param>
+    /// <returns>指定ディレクトリの子孫であるか否か</returns>
+    public static bool IsDescendantOf(this DirectoryInfo self, DirectoryInfo other, bool sameIs = true)
+    {
+        if (self == null) throw new ArgumentNullException(nameof(self));
+        if (other == null) throw new ArgumentNullException(nameof(other));
+
+        // 対象ディレクトリと比較対象のパス階層を取得
+        var selfSegs = self.GetPathSegments();
+        var otherSegs = other.GetPathSegments();
+
+        // 比較対象のほうが階層が深い場合はその子孫ではありえない。
+        if (selfSegs.Count < otherSegs.Count) return false;
+
+        // 対象ディレクトリが比較対象を全て含んでいるかを判定
+        for (var i = 0; i < otherSegs.Count; i++)
+        {
+            if (!string.Equals(selfSegs[i], otherSegs[i], StringComparison.OrdinalIgnoreCase)) return false;
+        }
+
+        // 両者の階層が同じ場合はパラメータで指定された結果とする。
+        if (selfSegs.Count == otherSegs.Count) return sameIs;
+
+        return true;
+    }
+
+    /// <summary>ディレクトリが指定のディレクトリの祖先であるかを判定する。</summary>
+    /// <param name="self">対象ディレクトリ</param>
+    /// <param name="other">比較するディレクトリ</param>
+    /// <param name="sameIs">同一階層を真とするか否か</param>
+    /// <returns>指定ディレクトリの祖先であるか否か</returns>
+    public static bool IsAncestorOf(this DirectoryInfo self, DirectoryInfo other, bool sameIs = true)
+    {
+        if (self == null) throw new ArgumentNullException(nameof(self));
+        if (other == null) throw new ArgumentNullException(nameof(other));
+
+        return other.IsDescendantOf(self, sameIs);
+    }
+
     /// <summary>
     /// 指定のディレクトリを起点としたディレクトリの相対パスを取得する。
     /// </summary>

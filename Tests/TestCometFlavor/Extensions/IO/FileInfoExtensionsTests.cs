@@ -536,6 +536,30 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
+    public void TestIsDescendantOf()
+    {
+        new FileInfo(@"c:/abc/def/zxc/asd/qwe.txt")
+            .IsDescendantOf(new DirectoryInfo(@"c:/abc/def/zxc/asd"))
+            .Should().BeTrue();
+
+        new FileInfo(@"c:/abc/def/zxc/asd/qwe.txt")
+            .IsDescendantOf(new DirectoryInfo(@"c:/abc/def/zxc/"))
+            .Should().BeTrue();
+
+        new FileInfo(@"c:/abc/def/zxc/asd/qwe.txt")
+            .IsDescendantOf(new DirectoryInfo(@"c:"))
+            .Should().BeTrue();
+
+        new FileInfo(@"c:/abc/def/zxc/asd/qwe.txt")
+            .IsDescendantOf(new DirectoryInfo(@"C:/ABC/DEF/ZXC/ASD"))
+            .Should().BeTrue();
+
+        new FileInfo(@"c:/abc/def/zxc/asd/qwe.txt")
+            .IsDescendantOf(new DirectoryInfo(@"c:/abc/def/zxc/asd/qwe"))
+            .Should().BeFalse();
+    }
+
+    [TestMethod]
     public void TestRelativePathFrom()
     {
         new FileInfo(@"c:/abc/def/ghi/asd/qwe.txt").RelativePathFrom(new DirectoryInfo(@"c:/abc/def/ghi/"), ignoreCase: true)

@@ -126,6 +126,70 @@ public class CombinedDisposablesTest
     }
 
     [TestMethod]
+    public void TestIsDescendantOf()
+    {
+        new DirectoryInfo(@"c:/abc/def/zxc/asd")
+            .IsDescendantOf(new DirectoryInfo(@"c:/abc/def/zxc"), false)
+            .Should().BeTrue();
+
+        new DirectoryInfo(@"c:/abc/def/zxc/asd")
+            .IsDescendantOf(new DirectoryInfo(@"c:/abc/def"), false)
+            .Should().BeTrue();
+
+        new DirectoryInfo(@"c:/abc/def/zxc/asd")
+            .IsDescendantOf(new DirectoryInfo(@"c:"), false)
+            .Should().BeTrue();
+
+        new DirectoryInfo(@"c:/abc/def/zxc/asd")
+            .IsDescendantOf(new DirectoryInfo(@"C:/ABC/DEF/ZXC"), false)
+            .Should().BeTrue();
+
+        new DirectoryInfo(@"c:/abc/def/zxc/asd")
+            .IsDescendantOf(new DirectoryInfo(@"c:/abc/def/zxc/asd/qwe"), false)
+            .Should().BeFalse();
+
+        new DirectoryInfo(@"c:/abc/def/zxc/asd")
+            .IsDescendantOf(new DirectoryInfo(@"c:/abc/def/zxc/asd"), false)
+            .Should().BeFalse();
+
+        new DirectoryInfo(@"c:/abc/def/zxc/asd")
+            .IsDescendantOf(new DirectoryInfo(@"c:/abc/def/zxc/asd"), true)
+            .Should().BeTrue();
+    }
+
+    [TestMethod]
+    public void TestIsAncestorOf()
+    {
+        new DirectoryInfo(@"c:/abc/def/zxc")
+            .IsAncestorOf(new DirectoryInfo(@"c:/abc/def/zxc/asd"), false)
+            .Should().BeTrue();
+
+        new DirectoryInfo(@"c:/abc/def")
+            .IsAncestorOf(new DirectoryInfo(@"c:/abc/def/zxc/asd"), false)
+            .Should().BeTrue();
+
+        new DirectoryInfo(@"c:")
+            .IsAncestorOf(new DirectoryInfo(@"c:/abc/def/zxc/asd"), false)
+            .Should().BeTrue();
+
+        new DirectoryInfo(@"C:/ABC/DEF/ZXC")
+            .IsAncestorOf(new DirectoryInfo(@"c:/abc/def/zxc/asd"), false)
+            .Should().BeTrue();
+
+        new DirectoryInfo(@"c:/abc/def/zxc/asd/qwe")
+            .IsAncestorOf(new DirectoryInfo(@"c:/abc/def/zxc/asd"), false)
+            .Should().BeFalse();
+
+        new DirectoryInfo(@"c:/abc/def/zxc/asd")
+            .IsAncestorOf(new DirectoryInfo(@"c:/abc/def/zxc/asd"), false)
+            .Should().BeFalse();
+
+        new DirectoryInfo(@"c:/abc/def/zxc/asd")
+            .IsAncestorOf(new DirectoryInfo(@"c:/abc/def/zxc/asd"), true)
+            .Should().BeTrue();
+    }
+
+    [TestMethod]
     public void TestRelativePathFrom()
     {
         new DirectoryInfo(@"c:/abc/def/ghi/asd/qwe").RelativePathFrom(new DirectoryInfo(@"c:/abc/def/ghi/"), ignoreCase: true)
