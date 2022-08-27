@@ -399,7 +399,7 @@ public static class FileInfoExtensions
         if (self == null) throw new ArgumentNullException(nameof(self));
         if (baseDir == null) throw new ArgumentNullException(nameof(baseDir));
 
-        return DirectoryInfoExtensions.GegmentsToReletivePath(self.GetPathSegments(), baseDir, ignoreCase);
+        return DirectoryInfoExtensions.SegmentsToReletivePath(self.GetPathSegments(), baseDir, ignoreCase);
     }
     #endregion
 }

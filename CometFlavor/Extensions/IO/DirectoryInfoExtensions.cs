@@ -122,7 +122,7 @@ public static class DirectoryInfoExtensions
         if (self == null) throw new ArgumentNullException(nameof(self));
         if (baseDir == null) throw new ArgumentNullException(nameof(baseDir));
 
-        return GegmentsToReletivePath(self.GetPathSegments(), baseDir, ignoreCase);
+        return SegmentsToReletivePath(self.GetPathSegments(), baseDir, ignoreCase);
     }
 
     /// <summary>
@@ -132,7 +132,7 @@ public static class DirectoryInfoExtensions
     /// <param name="baseDir">基準ディレクトリのDirectoryInfo</param>
     /// <param name="ignoreCase">大文字と小文字を同一視するか否か</param>
     /// <returns>相対パス</returns>
-    internal static string GegmentsToReletivePath(IList<string> segments, DirectoryInfo baseDir, bool ignoreCase)
+    internal static string SegmentsToReletivePath(IList<string> segments, DirectoryInfo baseDir, bool ignoreCase)
     {
         // パスセグメント長をチェック
         if (segments.Count <= 0)
