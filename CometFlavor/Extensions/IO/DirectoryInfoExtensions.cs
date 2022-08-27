@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CometFlavor.Extensions.IO;
 
@@ -196,6 +198,146 @@ public static class DirectoryInfoExtensions
 
         return builder.ToString();
     }
+    #endregion
+
+    #region Search
+#if NET5_0_OR_GREATER
+    /// <summary>ディレクトリ配下のファイルを検索して変換処理を行う</summary>
+    /// <remarks>
+    /// このメソッドではサブディレクトリ配下の検索に再帰呼び出しを利用する。
+    /// ディレクトリ構成によってはスタックを大量に消費する可能性があることに注意。
+    /// ディレクトリ内を列挙する際、最初にファイルを列挙し、次に
+    /// </remarks>
+    /// <typeparam name="TResult">ファイルに対する変換結果の型</typeparam>
+    /// <param name="self">検索の起点ディレクトリ</param>
+    /// <param name="selector">ファイルに対する変換処理</param>
+    /// <param name="filter">
+    /// ファイル/ディレクトリを列挙するか否かを判定するフィルタ処理。
+    /// ディレクトリに対して列挙対象外と判定した場合、その配下の検索は行われない。
+    /// </param>
+    /// <param name="options">検索オプション</param>
+    /// <returns>変換結果のシーケンス</returns>
+    public static IEnumerable<TResult> SelectFiles<TResult>(this DirectoryInfo self, Func<FileInfo, TResult> selector, Func<FileSystemInfo, bool>? filter = null, SelectFilesOptions? options = null)
+    {
+        if (self == null) throw new ArgumentNullException(nameof(self));
+        if (selector == null) throw new ArgumentNullException(nameof(selector));
+
+        // 検索オプションが指定されていなければデフォルト設定とする。
+        options ??= new();
+
+        // ディレクトリ配下を検索するローカル関数
+        static IEnumerable<TResult> enumerate(DirectoryInfo directory, Func<FileInfo, TResult> selector, Func<FileSystemInfo, bool>? filter, SelectFilesOptions options)
+        {
+            // ファイルの列挙シーケンスを取得。オプションによってバッファリングとソート。
+            var files = options.Buffered ? directory.GetFiles() : directory.EnumerateFiles();
+            if (options.Sort) files = files.OrderBy(f => f.Name);
+
+            // ファイル列挙
+            foreach (var file in files)
+            {
+                // 列挙対象判定
+                var available = filter?.Invoke(file) ?? true;
+                if (!available) continue;
+
+                // 変換結果を返却
+                yield return selector(file);
+            }
+
+            // 再帰検索が指定されていればサブディレクトリを処理
+            if (options.Recurse)
+            {
+                // サブディレクトリの列挙シーケンスを取得。オプションによってバッファリングとソート。
+                var subdirs = options.Buffered ? directory.GetDirectories() : directory.EnumerateDirectories();
+                if (options.Sort) subdirs = subdirs.OrderBy(d => d.Name);
+
+                // サブディレクトリ列挙
+                foreach (var subdir in subdirs)
+                {
+                    // 列挙対象判定
+                    var available = filter?.Invoke(subdir) ?? true;
+                    if (!available) continue;
+
+                    // サブディレクトリ配下を再帰検索し、変換結果を列挙
+                    foreach (var result in enumerate(subdir, selector, filter, options))
+                    {
+                        yield return result;
+                    }
+                }
+            }
+        }
+
+        // 列挙
+        return enumerate(self, selector, filter, options);
+    }
+
+    /// <summary>ディレクトリ配下のファイルを検索して変換処理を行う</summary>
+    /// <remarks>
+    /// このメソッドではサブディレクトリ配下の検索に再帰呼び出しを利用する。
+    /// ディレクトリ構成によってはスタックを大量に消費する可能性があることに注意。
+    /// ディレクトリ内を列挙する際、最初にファイルを列挙し、次に
+    /// </remarks>
+    /// <typeparam name="TResult">ファイルに対する変換結果の型</typeparam>
+    /// <param name="self">検索の起点ディレクトリ</param>
+    /// <param name="selector">ファイルに対する変換処理</param>
+    /// <param name="filter">
+    /// ファイル/ディレクトリを列挙するか否かを判定するフィルタ処理。
+    /// ディレクトリに対して列挙対象外と判定した場合、その配下の検索は行われない。
+    /// </param>
+    /// <param name="options">検索オプション</param>
+    /// <returns>変換結果のシーケンス</returns>
+    public static IAsyncEnumerable<TResult> SelectFilesAsync<TResult>(this DirectoryInfo self, Func<FileInfo, Task<TResult>> selector, Func<FileSystemInfo, bool>? filter = null, SelectFilesOptions? options = null)
+    {
+        if (self == null) throw new ArgumentNullException(nameof(self));
+        if (selector == null) throw new ArgumentNullException(nameof(selector));
+
+        // 検索オプションが指定されていなければデフォルト設定とする。
+        options ??= new();
+
+        // ディレクトリ配下を検索するローカル関数
+        static async IAsyncEnumerable<TResult> enumerate(DirectoryInfo directory, Func<FileInfo, Task<TResult>> selector, Func<FileSystemInfo, bool>? filter, SelectFilesOptions options)
+        {
+            // ファイルの列挙シーケンスを取得。オプションによってバッファリングとソート。
+            var files = options.Buffered ? directory.GetFiles() : directory.EnumerateFiles();
+            if (options.Sort) files = files.OrderBy(f => f.Name);
+
+            // ファイル列挙
+            foreach (var file in files)
+            {
+                // 列挙対象判定
+                var available = filter?.Invoke(file) ?? true;
+                if (!available) continue;
+
+                // 変換結果を返却
+                yield return await selector(file);
+            }
+
+            // 再帰検索が指定されていればサブディレクトリを処理
+            if (options.Recurse)
+            {
+                // サブディレクトリの列挙シーケンスを取得。オプションによってバッファリングとソート。
+                var subdirs = options.Buffered ? directory.GetDirectories() : directory.EnumerateDirectories();
+                if (options.Sort) subdirs = subdirs.OrderBy(d => d.Name);
+
+                // サブディレクトリ列挙
+                foreach (var subdir in subdirs)
+                {
+                    // 列挙対象判定
+                    var available = filter?.Invoke(subdir) ?? true;
+                    if (!available) continue;
+
+                    // サブディレクトリ配下を再帰検索し、変換結果を列挙
+                    await foreach (var result in enumerate(subdir, selector, filter, options))
+                    {
+                        yield return result;
+                    }
+                }
+            }
+        }
+
+        // 列挙
+        return enumerate(self, selector, filter, options);
+    }
+#endif
     #endregion
 
 }
