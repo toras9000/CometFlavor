@@ -84,18 +84,16 @@ public class ProcCounter
     /// <remarks>結果数をカウントせずに連続で呼び出した場合、前回分を不明な結果としてカウントする。</remarks>
     public void Entry()
     {
-        // 対象数をカウントする
-        checked { this.status.Total++; }
-
-        // 前の対象数カウントに対する結果をカウントする前に再度カウントされた場合、
-        // 前回分を不明な結果としてカウントする。
-        var fwd = this.status.Total - this.status.Result;
-        if (1 < fwd)
+        // 前の対象数カウントに対する結果をカウントする前に再度カウントされた場合、前回分を不明な結果としてカウントする。
+        if (this.status.Result < this.status.Total)
         {
             this.status.Unknown++;
             this.status.Result++;
             reportCount();
         }
+
+        // 対象数をカウントする
+        checked { this.status.Total++; }
     }
 
     /// <summary>処理成功をカウントする</summary>
