@@ -8,16 +8,16 @@ namespace CometFlavor.Utility;
 public interface ICountInfo
 {
     /// <summary>合計のカウント数</summary>
-    int Total { get; set; }
+    uint Total { get; set; }
 
     /// <summary>成功したカウント数</summary>
-    int Successful { get; set; }
+    uint Successful { get; set; }
 
     /// <summary>失敗したカウント数</summary>
-    int Failed { get; set; }
+    uint Failed { get; set; }
 
     /// <summary>不明なカウント数</summary>
-    int Unknown { get; set; }
+    uint Unknown { get; set; }
 }
 
 /// <summary>
@@ -53,10 +53,8 @@ public class ProcCounter
     /// 結果数がこの値に達するごとに通知を発生させる。
     /// セロを指定すると通知を発生させない。
     /// </param>
-    public ProcCounter(int threshold = 10)
+    public ProcCounter(uint threshold = 10)
     {
-        if (threshold < 0) throw new ArgumentOutOfRangeException(nameof(threshold));
-
         this.status = new CountInfo();
         this.indicater = 0;
 
@@ -68,7 +66,7 @@ public class ProcCounter
     // 公開プロパティ
     #region コンストラクタ
     /// <summary>通知閾値</summary>
-    public int Threshold { get; }
+    public uint Threshold { get; }
 
     /// <summary>現在のカウント情報</summary>
     public ICountInfo Status { get; }
@@ -139,19 +137,19 @@ public class ProcCounter
     private class CountInfo : ICountInfo
     {
         /// <summary>合計のカウント数</summary>
-        public int Total { get; set; }
+        public uint Total { get; set; }
 
         /// <summary>結果のカウント数(Successful/Failed/Unknown の合計)</summary>
-        public int Result { get; set; }
+        public uint Result { get; set; }
 
         /// <summary>成功したカウント数</summary>
-        public int Successful { get; set; }
+        public uint Successful { get; set; }
 
         /// <summary>失敗したカウント数</summary>
-        public int Failed { get; set; }
+        public uint Failed { get; set; }
 
         /// <summary>不明なカウント数</summary>
-        public int Unknown { get; set; }
+        public uint Unknown { get; set; }
     }
     #endregion
 
@@ -161,7 +159,7 @@ public class ProcCounter
     private readonly CountInfo status;
 
     /// <summary>通知までのカウンタ</summary>
-    private int indicater;
+    private uint indicater;
     #endregion
 
     // 非公開フィールド

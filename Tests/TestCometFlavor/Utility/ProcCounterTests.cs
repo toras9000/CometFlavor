@@ -14,8 +14,6 @@ public class ProcCounterTests
         new ProcCounter(5).Threshold.Should().Be(5);
         new ProcCounter(100).Threshold.Should().Be(100);
         new ProcCounter(0).Threshold.Should().Be(0);
-
-        new Action(() => new ProcCounter(-1)).Should().Throw<Exception>();
     }
 
     [TestMethod()]
@@ -160,6 +158,26 @@ public class ProcCounterTests
             counter.Success(); mon.Should().NotRaise(nameof(counter.Progress));
             counter.Fail(); mon.Should().NotRaise(nameof(counter.Progress));
             counter.Success(); mon.Should().Raise(nameof(counter.Progress));
+        }
+    }
+
+    [TestMethod()]
+    public void Progress_None()
+    {
+        var counter = new ProcCounter(0);
+        using (var mon = counter.Monitor())
+        {
+            counter.Entry();
+            counter.Entry();
+            counter.Entry();
+            counter.Success();
+            counter.Success();
+            counter.Success();
+            counter.Fail();
+            counter.Fail();
+            counter.Fail();
+
+            mon.Should().NotRaise(nameof(counter.Progress));
         }
     }
 
