@@ -24,6 +24,7 @@
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
   <PropertyGroup>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)/../packages</PackageOutputPath>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <EmbedAllSources>true</EmbedAllSources>

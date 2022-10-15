@@ -22,6 +22,7 @@
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
   <PropertyGroup>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)/../packages</PackageOutputPath>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <EmbedAllSources>true</EmbedAllSources>
@@ -33,14 +34,14 @@
   <PropertyGroup>
     <DeterministicSourcePaths>true</DeterministicSourcePaths>
   </PropertyGroup>
+  <ItemGroup>
+    <SourceRoot Include="$(MSBuildThisFileDirectory)" />
+  </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
     <NoWarn>1701;1702;8602;8604</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
     <NoWarn>1701;1702;8602;8604</NoWarn>
   </PropertyGroup>
-  <ItemGroup>
-    <SourceRoot Include="$(MSBuildThisFileDirectory)" />
-  </ItemGroup>
 
 </Project>
