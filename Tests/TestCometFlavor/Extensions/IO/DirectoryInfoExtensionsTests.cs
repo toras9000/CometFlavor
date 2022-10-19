@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -258,10 +259,11 @@ public class CombinedDisposablesTest
         };
 
         var selector = (FileInfo file) => file.ReadAllText();
+        var converter = (IFileConverter<string> context) => context.SetResult(selector(context.File));
 
         var testExpects = testDir.Info.EnumerateFiles("*", SearchOption.TopDirectoryOnly).Select(selector);
 
-        testDir.Info.SelectFiles(selector, options: testOpt).Should().BeEquivalentTo(testExpects);
+        testDir.Info.SelectFiles(converter, options: testOpt).Should().BeEquivalentTo(testExpects);
     }
 
     [TestMethod]
@@ -296,10 +298,11 @@ public class CombinedDisposablesTest
         };
 
         var selector = (FileInfo file) => file.ReadAllText();
+        var converter = (IFileConverter<string> context) => context.SetResult(selector(context.File));
 
         var testExpects = testDir.Info.EnumerateFiles("*", SearchOption.AllDirectories).Select(selector);
 
-        testDir.Info.SelectFiles(selector, options: testOpt).Should().BeEquivalentTo(testExpects);
+        testDir.Info.SelectFiles(converter, options: testOpt).Should().BeEquivalentTo(testExpects);
     }
 
     [TestMethod]
@@ -335,15 +338,148 @@ public class CombinedDisposablesTest
 
         var selector = (FileInfo file) => file.ReadAllText();
         var filter = (FileSystemInfo item) => item is DirectoryInfo || item.Name.Contains(".txt");
+        var converter = (IFileConverter<string> context) => { if (filter(context.File)) context.SetResult(selector(context.File)); };
 
         var testExpects = testDir.Info.EnumerateFiles("*", SearchOption.AllDirectories)
             .Where(f => filter(f)).Select(selector);
 
-        testDir.Info.SelectFiles(selector, filter, options: testOpt).Should().BeEquivalentTo(testExpects);
+        testDir.Info.SelectFiles(converter, options: testOpt).Should().BeEquivalentTo(testExpects);
     }
 
     [TestMethod]
     public async Task TestSelectFiles_Filter_Dir()
+    {
+        using var testDir = new TempDirectory();
+
+        var testFiles = new[]
+        {
+            @"abc/aaa.txt",
+            @"def/ghi/bbb.png",
+            @"ccc.jpg",
+            @"abc/ddd.txt",
+            @"eee.png",
+            @"abc/fff.jpg",
+            @"asd/qwe/ggg.txt",
+            @"hhh.txt",
+        };
+
+        foreach (var data in testFiles)
+        {
+            var file = new FileInfo(Path.Combine(testDir.Info.FullName, data));
+            file.Directory.Create();
+            await file.WriteAllTextAsync(data);
+        }
+
+        var testOpt = new SelectFilesOptions
+        {
+            Recurse = true,
+            DirectoryHandling = true,
+            Buffered = false,
+            Sort = false,
+        };
+
+        var converter = (IFileConverter<string> context) =>
+        {
+            if (context.File == null)
+            {
+                if (context.Directory.Name == "abc") context.Break = true;
+            }
+            else
+            {
+                context.SetResult(context.File.ReadAllText());
+            }
+        };
+
+        testDir.Info.SelectFiles(converter, options: testOpt).Should().BeEquivalentTo(new[]
+        {
+            @"def/ghi/bbb.png",
+            @"ccc.jpg",
+            @"eee.png",
+            @"asd/qwe/ggg.txt",
+            @"hhh.txt",
+        });
+    }
+
+    [TestMethod]
+    public async Task TestSelectFilesAsync_TopOnly()
+    {
+        using var testDir = new TempDirectory();
+
+        var testFiles = new[]
+        {
+            @"abc/aaa.txt",
+            @"def/ghi/bbb.txt",
+            @"ccc.txt",
+            @"abc/ddd.txt",
+            @"eee.txt",
+            @"abc/fff.txt",
+            @"asd/qwe/ggg.txt",
+            @"hhh.txt",
+        };
+
+        foreach (var data in testFiles)
+        {
+            var file = new FileInfo(Path.Combine(testDir.Info.FullName, data));
+            file.Directory.Create();
+            await file.WriteAllTextAsync(data);
+        }
+
+        var testOpt = new SelectFilesOptions
+        {
+            Recurse = false,
+            Buffered = false,
+            Sort = false,
+        };
+
+        var selector = (FileInfo file) => file.ReadAllText();
+        var converter = (IFileConverter<string> context) => { context.SetResult(selector(context.File)); return ValueTask.CompletedTask; };
+
+        var testExpects = testDir.Info.EnumerateFiles("*", SearchOption.TopDirectoryOnly).Select(selector);
+
+        (await testDir.Info.SelectFilesAsync(converter, options: testOpt).ToArrayAsync()).Should().BeEquivalentTo(testExpects);
+    }
+
+    [TestMethod]
+    public async Task TestSelectFilesAsync_Recurse()
+    {
+        using var testDir = new TempDirectory();
+
+        var testFiles = new[]
+        {
+            @"abc/aaa.txt",
+            @"def/ghi/bbb.txt",
+            @"ccc.txt",
+            @"abc/ddd.txt",
+            @"eee.txt",
+            @"abc/fff.txt",
+            @"asd/qwe/ggg.txt",
+            @"hhh.txt",
+        };
+
+        foreach (var data in testFiles)
+        {
+            var file = new FileInfo(Path.Combine(testDir.Info.FullName, data));
+            file.Directory.Create();
+            await file.WriteAllTextAsync(data);
+        }
+
+        var testOpt = new SelectFilesOptions
+        {
+            Recurse = true,
+            Buffered = false,
+            Sort = false,
+        };
+
+        var selector = (FileInfo file) => file.ReadAllText();
+        var converter = (IFileConverter<string> context) => { context.SetResult(selector(context.File)); return ValueTask.CompletedTask; };
+
+        var testExpects = testDir.Info.EnumerateFiles("*", SearchOption.AllDirectories).Select(selector);
+
+        (await testDir.Info.SelectFilesAsync(converter, options: testOpt).ToArrayAsync()).Should().BeEquivalentTo(testExpects);
+    }
+
+    [TestMethod]
+    public async Task TestSelectFilesAsync_Filter()
     {
         using var testDir = new TempDirectory();
 
@@ -374,12 +510,61 @@ public class CombinedDisposablesTest
         };
 
         var selector = (FileInfo file) => file.ReadAllText();
-        var filter = (FileSystemInfo item) => item.Name != "abc";
+        var filter = (FileSystemInfo item) => item is DirectoryInfo || item.Name.Contains(".txt");
+        var converter = (IFileConverter<string> context) => { if (filter(context.File)) context.SetResult(selector(context.File)); return ValueTask.CompletedTask; };
 
         var testExpects = testDir.Info.EnumerateFiles("*", SearchOption.AllDirectories)
             .Where(f => filter(f)).Select(selector);
 
-        testDir.Info.SelectFiles(selector, filter, options: testOpt).Should().BeEquivalentTo(new[]
+        (await testDir.Info.SelectFilesAsync(converter, options: testOpt).ToArrayAsync()).Should().BeEquivalentTo(testExpects);
+    }
+
+    [TestMethod]
+    public async Task TestSelectFilesAsync_Filter_Dir()
+    {
+        using var testDir = new TempDirectory();
+
+        var testFiles = new[]
+        {
+            @"abc/aaa.txt",
+            @"def/ghi/bbb.png",
+            @"ccc.jpg",
+            @"abc/ddd.txt",
+            @"eee.png",
+            @"abc/fff.jpg",
+            @"asd/qwe/ggg.txt",
+            @"hhh.txt",
+        };
+
+        foreach (var data in testFiles)
+        {
+            var file = new FileInfo(Path.Combine(testDir.Info.FullName, data));
+            file.Directory.Create();
+            await file.WriteAllTextAsync(data);
+        }
+
+        var testOpt = new SelectFilesOptions
+        {
+            Recurse = true,
+            DirectoryHandling = true,
+            Buffered = false,
+            Sort = false,
+        };
+
+        var converter = (IFileConverter<string> context) =>
+        {
+            if (context.File == null)
+            {
+                if (context.Directory.Name == "abc") context.Break = true;
+            }
+            else
+            {
+                context.SetResult(context.File.ReadAllText());
+            }
+            return ValueTask.CompletedTask;
+        };
+
+        (await testDir.Info.SelectFilesAsync(converter, options: testOpt).ToArrayAsync()).Should().BeEquivalentTo(new[]
         {
             @"def/ghi/bbb.png",
             @"ccc.jpg",
@@ -389,4 +574,85 @@ public class CombinedDisposablesTest
         });
     }
 
+    [TestMethod]
+    public async Task TestDoFiles_Recurse()
+    {
+        using var testDir = new TempDirectory();
+
+        var testFiles = new[]
+        {
+            @"abc/aaa.txt",
+            @"def/ghi/bbb.txt",
+            @"ccc.txt",
+            @"abc/ddd.txt",
+            @"eee.txt",
+            @"abc/fff.txt",
+            @"asd/qwe/ggg.txt",
+            @"hhh.txt",
+        };
+
+        foreach (var data in testFiles)
+        {
+            var file = new FileInfo(Path.Combine(testDir.Info.FullName, data));
+            file.Directory.Create();
+            await file.WriteAllTextAsync(data);
+        }
+
+        var testOpt = new SelectFilesOptions
+        {
+            Recurse = true,
+            Buffered = false,
+            Sort = false,
+        };
+
+        var selector = (FileInfo file) => file.ReadAllText();
+        var converter = (IFileConverter<string> context) => context.SetResult(selector(context.File));
+
+        var testExpects = testDir.Info.EnumerateFiles("*", SearchOption.AllDirectories).Select(selector);
+
+        var actionLog = new List<string>();
+        testDir.Info.DoFiles(w => actionLog.Add(selector(w.File)), options: testOpt);
+        actionLog.Should().BeEquivalentTo(testExpects);
+    }
+
+    [TestMethod]
+    public async Task TestDoFilesAsync_Recurse()
+    {
+        using var testDir = new TempDirectory();
+
+        var testFiles = new[]
+        {
+            @"abc/aaa.txt",
+            @"def/ghi/bbb.txt",
+            @"ccc.txt",
+            @"abc/ddd.txt",
+            @"eee.txt",
+            @"abc/fff.txt",
+            @"asd/qwe/ggg.txt",
+            @"hhh.txt",
+        };
+
+        foreach (var data in testFiles)
+        {
+            var file = new FileInfo(Path.Combine(testDir.Info.FullName, data));
+            file.Directory.Create();
+            await file.WriteAllTextAsync(data);
+        }
+
+        var testOpt = new SelectFilesOptions
+        {
+            Recurse = true,
+            Buffered = false,
+            Sort = false,
+        };
+
+        var selector = (FileInfo file) => file.ReadAllText();
+        var converter = (IFileConverter<string> context) => { context.SetResult(selector(context.File)); return ValueTask.CompletedTask; };
+
+        var testExpects = testDir.Info.EnumerateFiles("*", SearchOption.AllDirectories).Select(selector);
+
+        var actionLog = new List<string>();
+        await testDir.Info.DoFilesAsync(w => { actionLog.Add(selector(w.File)); return ValueTask.CompletedTask; }, options: testOpt);
+        actionLog.Should().BeEquivalentTo(testExpects);
+    }
 }

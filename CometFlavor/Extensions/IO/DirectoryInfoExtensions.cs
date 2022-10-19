@@ -210,14 +210,10 @@ public static class DirectoryInfoExtensions
     /// </remarks>
     /// <typeparam name="TResult">ファイルに対する変換結果の型</typeparam>
     /// <param name="self">検索の起点ディレクトリ</param>
-    /// <param name="selector">ファイルに対する変換処理</param>
-    /// <param name="filter">
-    /// ファイル/ディレクトリを列挙するか否かを判定するフィルタ処理。
-    /// ディレクトリに対して列挙対象外と判定した場合、その配下の検索は行われない。
-    /// </param>
+    /// <param name="selector">ファイル/ディレクトリに対する変換処理。ステータスへの設定で列挙処理を制御する。</param>
     /// <param name="options">検索オプション</param>
     /// <returns>変換結果のシーケンス</returns>
-    public static IEnumerable<TResult> SelectFiles<TResult>(this DirectoryInfo self, Func<FileInfo, TResult> selector, Func<FileSystemInfo, bool>? filter = null, SelectFilesOptions? options = null)
+    public static IEnumerable<TResult?> SelectFiles<TResult>(this DirectoryInfo self, Action<IFileConverter<TResult?>> selector, SelectFilesOptions? options = null)
     {
         if (self == null) throw new ArgumentNullException(nameof(self));
         if (selector == null) throw new ArgumentNullException(nameof(selector));
@@ -226,7 +222,7 @@ public static class DirectoryInfoExtensions
         options ??= new();
 
         // ディレクトリ配下を検索するローカル関数
-        static IEnumerable<TResult> enumerate(DirectoryInfo directory, Func<FileInfo, TResult> selector, Func<FileSystemInfo, bool>? filter, SelectFilesOptions options)
+        static IEnumerable<TResult?> enumerate(SelectFilesContext<TResult?> context, DirectoryInfo directory, Action<IFileConverter<TResult?>> selector, SelectFilesOptions options)
         {
             // ファイルの列挙シーケンスを取得。オプションによってバッファリングとソート。
             var files = options.Buffered ? directory.GetFiles() : directory.EnumerateFiles();
@@ -235,12 +231,25 @@ public static class DirectoryInfoExtensions
             // ファイル列挙
             foreach (var file in files)
             {
-                // 列挙対象判定
-                var available = filter?.Invoke(file) ?? true;
-                if (!available) continue;
+                // ファイル処理上の状態初期化
+                context.SetFile(file);
 
-                // 変換結果を返却
-                yield return selector(file);
+                // ファイルに対する変換処理を呼び出し
+                selector(context);
+
+                // 結果が設定されていたら列挙する。
+                if (context.HasValue) yield return context.Value;
+
+                // 列挙終了が指定されているかを判定
+                if (context.Exit)
+                {
+                    yield break;    // 列挙終了
+                }
+                else
+                {
+                    // ファイル列挙中の中断指定はファイルの列挙を停止する。そのままディレクトリ列挙へ。
+                    if (context.Break) break;
+                }
             }
 
             // 再帰検索が指定されていればサブディレクトリを処理
@@ -253,21 +262,45 @@ public static class DirectoryInfoExtensions
                 // サブディレクトリ列挙
                 foreach (var subdir in subdirs)
                 {
-                    // 列挙対象判定
-                    var available = filter?.Invoke(subdir) ?? true;
-                    if (!available) continue;
+                    // ディレクトリに対するハンドリングが有効な場合は処理デリゲートを呼び出す
+                    if (options.DirectoryHandling)
+                    {
+                        // このディレクトリ処理のための状態初期化
+                        context.SetDirectory(subdir);
+
+                        // ディレクトリに対する変換処理(というか主に継続判定)を呼び出し
+                        selector(context);
+
+                        // ディレクトリに対してでも結果が設定されていたら列挙する。
+                        if (context.HasValue) yield return context.Value;
+
+                        // 列挙終了が指定されているかを判定
+                        if (context.Exit)
+                        {
+                            yield break;    // 列挙終了
+                        }
+                        else
+                        {
+                            // ディレクトリに対する中断指定はディレクトリのスキップ。次のディレクトリ列挙へ。
+                            if (context.Break) continue;
+                        }
+                    }
 
                     // サブディレクトリ配下を再帰検索し、変換結果を列挙
-                    foreach (var result in enumerate(subdir, selector, filter, options))
+                    foreach (var result in enumerate(context, subdir, selector, options))
                     {
                         yield return result;
                     }
+
+                    // ディレクトリ内で列挙終了が指定されていたらこの階層からも抜ける
+                    if (context.Exit) yield break;
                 }
             }
         }
 
         // 列挙
-        return enumerate(self, selector, filter, options);
+        var context = new SelectFilesContext<TResult?>(self);
+        return enumerate(context, self, selector, options);
     }
 
     /// <summary>ディレクトリ配下のファイルを検索して変換処理を行う</summary>
@@ -278,14 +311,10 @@ public static class DirectoryInfoExtensions
     /// </remarks>
     /// <typeparam name="TResult">ファイルに対する変換結果の型</typeparam>
     /// <param name="self">検索の起点ディレクトリ</param>
-    /// <param name="selector">ファイルに対する変換処理</param>
-    /// <param name="filter">
-    /// ファイル/ディレクトリを列挙するか否かを判定するフィルタ処理。
-    /// ディレクトリに対して列挙対象外と判定した場合、その配下の検索は行われない。
-    /// </param>
+    /// <param name="selector">ファイル/ディレクトリに対する変換処理</param>
     /// <param name="options">検索オプション</param>
-    /// <returns>変換結果のシーケンス</returns>
-    public static IAsyncEnumerable<TResult> SelectFilesAsync<TResult>(this DirectoryInfo self, Func<FileInfo, Task<TResult>> selector, Func<FileSystemInfo, bool>? filter = null, SelectFilesOptions? options = null)
+    /// <returns>変換結果の非同期シーケンス</returns>
+    public static IAsyncEnumerable<TResult?> SelectFilesAsync<TResult>(this DirectoryInfo self, Func<IFileConverter<TResult?>, ValueTask> selector, SelectFilesOptions? options = null)
     {
         if (self == null) throw new ArgumentNullException(nameof(self));
         if (selector == null) throw new ArgumentNullException(nameof(selector));
@@ -294,7 +323,7 @@ public static class DirectoryInfoExtensions
         options ??= new();
 
         // ディレクトリ配下を検索するローカル関数
-        static async IAsyncEnumerable<TResult> enumerate(DirectoryInfo directory, Func<FileInfo, Task<TResult>> selector, Func<FileSystemInfo, bool>? filter, SelectFilesOptions options)
+        static async IAsyncEnumerable<TResult?> enumerateAsync(SelectFilesContext<TResult?> context, DirectoryInfo directory, Func<IFileConverter<TResult?>, ValueTask> selector, SelectFilesOptions options)
         {
             // ファイルの列挙シーケンスを取得。オプションによってバッファリングとソート。
             var files = options.Buffered ? directory.GetFiles() : directory.EnumerateFiles();
@@ -303,12 +332,25 @@ public static class DirectoryInfoExtensions
             // ファイル列挙
             foreach (var file in files)
             {
-                // 列挙対象判定
-                var available = filter?.Invoke(file) ?? true;
-                if (!available) continue;
+                // ファイル処理上の状態初期化
+                context.SetFile(file);
 
-                // 変換結果を返却
-                yield return await selector(file);
+                // ファイルに対する変換処理を呼び出し
+                await selector(context).ConfigureAwait(false);
+
+                // 結果が設定されていたら列挙する。
+                if (context.HasValue) yield return context.Value;
+
+                // 列挙終了が指定されているかを判定
+                if (context.Exit)
+                {
+                    yield break;    // 列挙終了
+                }
+                else
+                {
+                    // ファイル列挙中の中断指定はファイルの列挙を停止する。そのままディレクトリ列挙へ。
+                    if (context.Break) break;
+                }
             }
 
             // 再帰検索が指定されていればサブディレクトリを処理
@@ -321,22 +363,146 @@ public static class DirectoryInfoExtensions
                 // サブディレクトリ列挙
                 foreach (var subdir in subdirs)
                 {
-                    // 列挙対象判定
-                    var available = filter?.Invoke(subdir) ?? true;
-                    if (!available) continue;
+                    // ディレクトリに対するハンドリングが有効な場合は処理デリゲートを呼び出す
+                    if (options.DirectoryHandling)
+                    {
+                        // このディレクトリ処理のための状態初期化
+                        context.SetDirectory(subdir);
+
+                        // ディレクトリに対する変換処理(というか主に継続判定)を呼び出し
+                        await selector(context).ConfigureAwait(false);
+
+                        // ディレクトリに対してでも結果が設定されていたら列挙する。
+                        if (context.HasValue) yield return context.Value;
+
+                        // 列挙終了が指定されているかを判定
+                        if (context.Exit)
+                        {
+                            yield break;    // 列挙終了
+                        }
+                        else
+                        {
+                            // ディレクトリに対する中断指定はディレクトリのスキップ。次のディレクトリ列挙へ。
+                            if (context.Break) continue;
+                        }
+                    }
 
                     // サブディレクトリ配下を再帰検索し、変換結果を列挙
-                    await foreach (var result in enumerate(subdir, selector, filter, options))
+                    await foreach (var result in enumerateAsync(context, subdir, selector, options))
                     {
                         yield return result;
                     }
+
+                    // ディレクトリ内で列挙終了が指定されていたらこの階層からも抜ける
+                    if (context.Exit) yield break;
                 }
             }
         }
 
         // 列挙
-        return enumerate(self, selector, filter, options);
+        var context = new SelectFilesContext<TResult?>(self);
+        return enumerateAsync(context, self, selector, options);
     }
+
+    /// <summary>ディレクトリ配下のファイルを検索して処理を行う</summary>
+    /// <param name="self">検索の起点ディレクトリ</param>
+    /// <param name="processor">ディレクトリに対する処理</param>
+    /// <param name="options">検索オプション</param>
+    public static void DoFiles(this DirectoryInfo self, Action<IFileWalker> processor, SelectFilesOptions? options = null)
+    {
+        if (self == null) throw new ArgumentNullException(nameof(self));
+        if (processor == null) throw new ArgumentNullException(nameof(processor));
+        foreach (var _ in self.SelectFiles<int>(c => processor(c), options)) ;
+    }
+
+    /// <summary>ディレクトリ配下のファイルを検索して処理を行う</summary>
+    /// <param name="self">検索の起点ディレクトリ</param>
+    /// <param name="processor">ディレクトリに対する処理</param>
+    /// <param name="options">検索オプション</param>
+    /// <returns>検索処理タスク</returns>
+    public static async Task DoFilesAsync(this DirectoryInfo self, Func<IFileWalker, ValueTask> processor, SelectFilesOptions? options = null)
+    {
+        if (self == null) throw new ArgumentNullException(nameof(self));
+        if (processor == null) throw new ArgumentNullException(nameof(processor));
+        await foreach (var _ in self.SelectFilesAsync<int>(c => processor(c), options).ConfigureAwait(false)) ;
+    }
+
+    /// <summary>ファイル列挙変換コンテキスト</summary>
+    /// <typeparam name="TResult">変換結果の型</typeparam>
+    private class SelectFilesContext<TResult> : IFileConverter<TResult>
+    {
+        // 構築
+        #region コンストラクタ
+        /// <summary>起点ディレクトリを指定するコンストラクタ</summary>
+        /// <param name="dir">起点ディレクトリ</param>
+        public SelectFilesContext(DirectoryInfo dir)
+        {
+            this.Directory = dir;
+        }
+        #endregion
+
+        // 公開プロパティ
+        #region IFileWalker インタフェース
+        /// <inheritdoc />
+        public DirectoryInfo Directory { get; private set; }
+
+        /// <inheritdoc />
+        public FileInfo? File { get; private set; }
+
+        /// <inheritdoc />
+        public bool Break { get; set; }
+
+        /// <inheritdoc />
+        public bool Exit { get; set; }
+        #endregion
+
+        #region 列挙処理向け
+        /// <summary>結果値が設定されたかどうか</summary>
+        public bool HasValue { get; private set; }
+
+        /// <summary>結果値</summary>
+        public TResult? Value { get; private set; }
+        #endregion
+
+        // 公開メソッド
+        #region IFileWalker インタフェース
+        /// <inheritdoc />
+        public void SetResult(TResult? value)
+        {
+            this.Value = value;
+            this.HasValue = true;
+        }
+        #endregion
+
+        #region 列挙処理向け
+        /// <summary>列挙対象ディレクトリを更新する</summary>
+        /// <param name="dir">ディレクトリ情報</param>
+        public void SetDirectory(DirectoryInfo dir)
+        {
+            Clear();
+            this.Directory = dir;
+            this.File = null;
+        }
+
+        /// <summary>列挙対象ファイルを更新する</summary>
+        /// <param name="file">ファイル情報</param>
+        public void SetFile(FileInfo file)
+        {
+            Clear();
+            this.Directory = file.Directory ?? new DirectoryInfo(Path.GetDirectoryName(file.FullName)!);
+            this.File = file;
+        }
+
+        /// <summary>状態をクリアする</summary>
+        public void Clear()
+        {
+            this.Break = false;
+            this.Value = default;
+            this.HasValue = false;
+        }
+        #endregion
+    }
+
 #endif
     #endregion
 
