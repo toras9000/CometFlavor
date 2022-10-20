@@ -202,15 +202,15 @@ public static class DirectoryInfoExtensions
 
     #region Search
 #if NET5_0_OR_GREATER
-    /// <summary>ディレクトリ配下のファイルを検索して変換処理を行う</summary>
+    /// <summary>ディレクトリ配下のファイル/ディレクトリを検索して変換処理を行う</summary>
     /// <remarks>
+    /// ディレクトリ内を列挙する際は最初にファイルを列挙し、オプションで指定されていれば次にサブディレクトリを列挙する。
     /// このメソッドではサブディレクトリ配下の検索に再帰呼び出しを利用する。
     /// ディレクトリ構成によってはスタックを大量に消費する可能性があることに注意。
-    /// ディレクトリ内を列挙する際、最初にファイルを列挙し、次に
     /// </remarks>
-    /// <typeparam name="TResult">ファイルに対する変換結果の型</typeparam>
+    /// <typeparam name="TResult">ファイル/ディレクトリに対する変換結果の型</typeparam>
     /// <param name="self">検索の起点ディレクトリ</param>
-    /// <param name="selector">ファイル/ディレクトリに対する変換処理。ステータスへの設定で列挙処理を制御する。</param>
+    /// <param name="selector">ファイル/ディレクトリに対する変換処理。</param>
     /// <param name="options">検索オプション</param>
     /// <returns>変換結果のシーケンス</returns>
     public static IEnumerable<TResult?> SelectFiles<TResult>(this DirectoryInfo self, Action<IFileConverter<TResult?>> selector, SelectFilesOptions? options = null)
@@ -303,13 +303,13 @@ public static class DirectoryInfoExtensions
         return enumerate(context, self, selector, options);
     }
 
-    /// <summary>ディレクトリ配下のファイルを検索して変換処理を行う</summary>
+    /// <summary>ディレクトリ配下のファイル/ディレクトリを検索して変換処理を行う</summary>
     /// <remarks>
+    /// ディレクトリ内を列挙する際は最初にファイルを列挙し、オプションで指定されていれば次にサブディレクトリを列挙する。
     /// このメソッドではサブディレクトリ配下の検索に再帰呼び出しを利用する。
     /// ディレクトリ構成によってはスタックを大量に消費する可能性があることに注意。
-    /// ディレクトリ内を列挙する際、最初にファイルを列挙し、次に
     /// </remarks>
-    /// <typeparam name="TResult">ファイルに対する変換結果の型</typeparam>
+    /// <typeparam name="TResult">ファイル/ディレクトリに対する変換結果の型</typeparam>
     /// <param name="self">検索の起点ディレクトリ</param>
     /// <param name="selector">ファイル/ディレクトリに対する変換処理</param>
     /// <param name="options">検索オプション</param>
@@ -404,9 +404,9 @@ public static class DirectoryInfoExtensions
         return enumerateAsync(context, self, selector, options);
     }
 
-    /// <summary>ディレクトリ配下のファイルを検索して処理を行う</summary>
+    /// <summary>ディレクトリ配下のファイル/ディレクトリを検索して処理を行う</summary>
     /// <param name="self">検索の起点ディレクトリ</param>
-    /// <param name="processor">ディレクトリに対する処理</param>
+    /// <param name="processor">ファイル/ディレクトリに対する処理</param>
     /// <param name="options">検索オプション</param>
     public static void DoFiles(this DirectoryInfo self, Action<IFileWalker> processor, SelectFilesOptions? options = null)
     {
@@ -415,9 +415,9 @@ public static class DirectoryInfoExtensions
         foreach (var _ in self.SelectFiles<int>(c => processor(c), options)) ;
     }
 
-    /// <summary>ディレクトリ配下のファイルを検索して処理を行う</summary>
+    /// <summary>ディレクトリ配下のファイル/ディレクトリを検索して処理を行う</summary>
     /// <param name="self">検索の起点ディレクトリ</param>
-    /// <param name="processor">ディレクトリに対する処理</param>
+    /// <param name="processor">ファイル/ディレクトリに対する処理</param>
     /// <param name="options">検索オプション</param>
     /// <returns>検索処理タスク</returns>
     public static async Task DoFilesAsync(this DirectoryInfo self, Func<IFileWalker, ValueTask> processor, SelectFilesOptions? options = null)
