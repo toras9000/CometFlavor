@@ -328,6 +328,18 @@ public static class FileInfoExtensions
 #endif
     #endregion
 
+    #region FileSystem
+    /// <summary>ファイルまでのディレクトリを作成する。</summary>
+    /// <param name="self">対象ファイル情報</param>
+    /// <returns>元のファイル情報</returns>
+    public static FileInfo WithCreate(this FileInfo self)
+    {
+        if (self == null) throw new ArgumentNullException(nameof(self));
+        self.Directory?.WithCreate();
+        return self;
+    }
+    #endregion
+
     #region Path
     /// <summary>
     /// ファイルパスの構成セグメントを取得する。

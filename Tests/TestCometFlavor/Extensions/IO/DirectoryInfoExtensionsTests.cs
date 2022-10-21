@@ -112,6 +112,17 @@ public class CombinedDisposablesTest
     }
 
     [TestMethod]
+    public void TestWithCreate()
+    {
+        using var testDir = new TempDirectory();
+
+        var tempDir = testDir.Info.FullName;
+        var subDir = Path.Combine(tempDir, "ttt");
+        new DirectoryInfo(subDir).WithCreate().FullName.Should().Be(subDir);
+        Directory.Exists(subDir).Should().BeTrue();
+    }
+
+    [TestMethod]
     public void TestGetPathSegments()
     {
         new DirectoryInfo(@"c:/abc/def/zxc/asd/qwe.txt").GetPathSegments()

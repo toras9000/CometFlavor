@@ -38,6 +38,18 @@ public static class DirectoryInfoExtensions
     }
     #endregion
 
+    #region FileSystem
+    /// <summary>ディレクトリを作成する。</summary>
+    /// <param name="self">対象ディレクトリ情報</param>
+    /// <returns>元のディレクトリ情報</returns>
+    public static DirectoryInfo WithCreate(this DirectoryInfo self)
+    {
+        if (self == null) throw new ArgumentNullException(nameof(self));
+        self.Create();
+        return self;
+    }
+    #endregion
+
     #region Path
     /// <summary>
     /// ディレクトリパスの構成セグメントを取得する。

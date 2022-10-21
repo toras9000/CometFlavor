@@ -519,6 +519,17 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
+    public void TestWithDirectoryCreate()
+    {
+        using var testDir = new TempDirectory();
+
+        var tempDir = testDir.Info.FullName;
+        var subDirFile = Path.GetFullPath(Path.Combine(tempDir, "abc/def.txt"));
+        new FileInfo(subDirFile).WithDirectoryCreate().FullName.Should().Be(subDirFile);
+        Directory.Exists(Path.GetDirectoryName(subDirFile)).Should().BeTrue();
+    }
+
+    [TestMethod]
     public void TestGetPathSegments()
     {
         new FileInfo(@"c:/abc/def/zxc/asd/qwe.txt").GetPathSegments()
