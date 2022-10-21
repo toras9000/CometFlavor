@@ -34,9 +34,7 @@ public class ReactiveTrigger<T> : TriggerBase<DependencyObject>
 
     // 保護メソッド
     #region 配置
-    /// <summary>
-    /// トリガを要素にアタッチした際の処理
-    /// </summary>
+    /// <summary>トリガを要素にアタッチした際の処理</summary>
     protected override void OnAttached()
     {
         // 基本クラス処理
@@ -46,9 +44,7 @@ public class ReactiveTrigger<T> : TriggerBase<DependencyObject>
         subscribeSource(this.Source);
     }
 
-    /// <summary>
-    /// トリガを要素からデタッチした際の処理
-    /// </summary>
+    /// <summary>トリガを要素からデタッチした際の処理</summary>
     protected override void OnDetaching()
     {
         // シーケンスの行動を解除する
@@ -61,16 +57,12 @@ public class ReactiveTrigger<T> : TriggerBase<DependencyObject>
 
     // 非公開型
     #region シーケンス
-    /// <summary>
-    /// シーケンスを購読してアクションを呼び出すオブザーバ
-    /// </summary>
+    /// <summary>シーケンスを購読してアクションを呼び出すオブザーバ</summary>
     private class TriggerObserver : IObserver<T>
     {
         // 構築
         #region コンストラクタ
-        /// <summary>
-        /// トリガインスタンスとの連携情報を指定するコンストラクタ
-        /// </summary>
+        /// <summary>トリガインスタンスとの連携情報を指定するコンストラクタ</summary>
         /// <param name="outer">所属するトリガ</param>
         /// <param name="completeHandler">シーケンス完了時コールバックデリゲート</param>
         public TriggerObserver(ReactiveTrigger<T> outer, Action completeHandler)
@@ -104,9 +96,7 @@ public class ReactiveTrigger<T> : TriggerBase<DependencyObject>
 
         // 非公開メソッド
         #region 連携情報
-        /// <summary>
-        /// シーケンス完了時処理
-        /// </summary>
+        /// <summary>シーケンス完了時処理</summary>
         private void notifyComplete()
         {
             this.completeHandler?.Invoke();
@@ -125,9 +115,7 @@ public class ReactiveTrigger<T> : TriggerBase<DependencyObject>
 
     // 非公開メソッド
     #region 依存プロパティ変更ハンドラ
-    /// <summary>
-    /// <see cref="Source"/> 依存プロパティ値の変更ハンドラ
-    /// </summary>
+    /// <summary><see cref="Source"/> 依存プロパティ値の変更ハンドラ</summary>
     /// <param name="d"></param>
     /// <param name="e"></param>
     private static void onSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -144,9 +132,7 @@ public class ReactiveTrigger<T> : TriggerBase<DependencyObject>
     #endregion
 
     #region 動作処理
-    /// <summary>
-    /// シーケンスの購読を開始する。
-    /// </summary>
+    /// <summary>シーケンスの購読を開始する。</summary>
     /// <param name="source">シーケンス</param>
     private void subscribeSource(IObservable<T> source)
     {
@@ -161,9 +147,9 @@ public class ReactiveTrigger<T> : TriggerBase<DependencyObject>
             this.sourceUnsubscriber = source.Subscribe(
                 new TriggerObserver(this, () =>
                 {
-                        // シーケンス終了時ハンドラ。
-                        // 必ずしも必要ではないが
-                        this.sourceUnsubscriber = null;
+                    // シーケンス終了時ハンドラ。
+                    // 必ずしも必要ではないが
+                    this.sourceUnsubscriber = null;
                 })
             );
         }

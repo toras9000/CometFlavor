@@ -12,9 +12,7 @@ public class ShellOpenFileDialogResult
 {
     // 構築
     #region コンストラクタ
-    /// <summary>
-    /// デフォルトコンストラクタ
-    /// </summary>
+    /// <summary>デフォルトコンストラクタ</summary>
     public ShellOpenFileDialogResult()
     {
         this.Items = new List<string>();

@@ -12,9 +12,7 @@ public class BooleanCombineToVisibilityConverter : IMultiValueConverter
 {
     // 公開型
     #region 種別定義
-    /// <summary>
-    /// 結合モード種別
-    /// </summary>
+    /// <summary>結合モード種別</summary>
     public enum CombineMode
     {
         /// <summary>全て true の場合に結果を Visible とする。それ以外は 非表示値(Collapsed/Hidden) とする。</summary>
@@ -44,9 +42,7 @@ public class BooleanCombineToVisibilityConverter : IMultiValueConverter
 
     // 公開メソッド
     #region 変換
-    /// <summary>
-    /// 値を変換する
-    /// </summary>
+    /// <summary>値を変換する</summary>
     /// <param name="values">変換元の値</param>
     /// <param name="targetType">対象の型</param>
     /// <param name="parameter">コンバータパラメータ</param>
@@ -63,32 +59,30 @@ public class BooleanCombineToVisibilityConverter : IMultiValueConverter
         // モード別の判定を行う。
         switch (this.Mode)
         {
-            case CombineMode.AllTrue:
-                // すべて true であるかを判定
-                return valuesAll(values, true);
+        case CombineMode.AllTrue:
+            // すべて true であるかを判定
+            return valuesAll(values, true);
 
-            case CombineMode.AllFalse:
-                // すべて false であるかを判定
-                return valuesAll(values, false);
+        case CombineMode.AllFalse:
+            // すべて false であるかを判定
+            return valuesAll(values, false);
 
-            case CombineMode.AnyTrue:
-                // 1つでも true があるかを判定
-                return valuesAny(values, true);
+        case CombineMode.AnyTrue:
+            // 1つでも true があるかを判定
+            return valuesAny(values, true);
 
-            case CombineMode.AnyFalse:
-                // 1つでも false があるかを判定
-                return valuesAny(values, false);
+        case CombineMode.AnyFalse:
+            // 1つでも false があるかを判定
+            return valuesAny(values, false);
 
-            default:
-                break;
+        default:
+            break;
         }
 
         return DependencyProperty.UnsetValue;
     }
 
-    /// <summary>
-    /// 値を逆変換する
-    /// </summary>
+    /// <summary>値を逆変換する</summary>
     /// <param name="value">変換元の値</param>
     /// <param name="targetTypes">対象の型</param>
     /// <param name="parameter">コンバータパラメータ</param>
@@ -102,9 +96,7 @@ public class BooleanCombineToVisibilityConverter : IMultiValueConverter
 
     // 非公開メソッド
     #region 判定処理
-    /// <summary>
-    /// 配列要素が全て条件を満たすかを判定する。
-    /// </summary>
+    /// <summary>配列要素が全て条件を満たすかを判定する。</summary>
     /// <param name="values">判定対象配列</param>
     /// <param name="expect">期待する値</param>
     /// <returns>判定結果。全て期待値であれば 表示, 期待値と論理が合わないものがあれば 非表示, 判定不可ならば DependencyProperty.UnsetValue</returns>
@@ -142,9 +134,7 @@ public class BooleanCombineToVisibilityConverter : IMultiValueConverter
         return DependencyProperty.UnsetValue;
     }
 
-    /// <summary>
-    /// 配列要素に条件を満たすものが含まれるを判定する。
-    /// </summary>
+    /// <summary>配列要素に条件を満たすものが含まれるを判定する。</summary>
     /// <param name="values">判定対象配列</param>
     /// <param name="expect">期待する値</param>
     /// <returns>判定結果。期待値と一致するものがあれば 表示, なければ 非表示, 判定不可ならば DependencyProperty.UnsetValue</returns>

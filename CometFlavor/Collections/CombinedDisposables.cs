@@ -87,9 +87,7 @@ public class CombinedDisposables : IDisposable, ICollection<IDisposable>
 
     // 公開メソッド
     #region 要素管理
-    /// <summary>
-    /// コレクションに要素を追加する。
-    /// </summary>
+    /// <summary>コレクションに要素を追加する。</summary>
     /// <param name="item">追加する要素</param>
     /// <exception cref="ArgumentNullException">引数がnullである場合</exception>
     public void Add(IDisposable item)
@@ -164,18 +162,14 @@ public class CombinedDisposables : IDisposable, ICollection<IDisposable>
         return this.disposables.Contains(item);
     }
 
-    /// <summary>
-    /// コレクション反復子を取得する。
-    /// </summary>
+    /// <summary>コレクション反復子を取得する。</summary>
     /// <returns>コレクション反復子</returns>
     public IEnumerator<IDisposable> GetEnumerator()
     {
         return this.disposables.GetEnumerator();
     }
 
-    /// <summary>
-    /// コレクション反復子を取得する。
-    /// </summary>
+    /// <summary>コレクション反復子を取得する。</summary>
     /// <returns>コレクション反復子</returns>
     IEnumerator IEnumerable.GetEnumerator()
     {
@@ -184,9 +178,7 @@ public class CombinedDisposables : IDisposable, ICollection<IDisposable>
     #endregion
 
     #region 補助
-    /// <summary>
-    /// コレクション内容をコピーする
-    /// </summary>
+    /// <summary>コレクション内容をコピーする</summary>
     /// <param name="array">コピー先配列</param>
     /// <param name="arrayIndex">コピー先配列の格納開始位置</param>
     void ICollection<IDisposable>.CopyTo(IDisposable[] array, int arrayIndex)
@@ -196,9 +188,7 @@ public class CombinedDisposables : IDisposable, ICollection<IDisposable>
     #endregion
 
     #region 破棄
-    /// <summary>
-    /// インスタンス及び管理要素を破棄する。
-    /// </summary>
+    /// <summary>インスタンス及び管理要素を破棄する。</summary>
     public void Dispose()
     {
         Dispose(true);
@@ -208,9 +198,7 @@ public class CombinedDisposables : IDisposable, ICollection<IDisposable>
 
     // 保護メソッド
     #region 破棄
-    /// <summary>
-    /// インスタンス及び管理要素を破棄する。
-    /// </summary>
+    /// <summary>インスタンス及び管理要素を破棄する。</summary>
     protected virtual void Dispose(bool disposing)
     {
         if (disposing)
@@ -227,9 +215,7 @@ public class CombinedDisposables : IDisposable, ICollection<IDisposable>
     private List<IDisposable> disposables;
     #endregion
 
-    /// <summary>
-    /// 管理しているコレクションをクリアする。
-    /// </summary>
+    /// <summary>管理しているコレクションをクリアする。</summary>
     /// <param name="disposeElements">要素を破棄するか否か</param>
     private void clearResources(bool disposeElements)
     {
@@ -256,9 +242,9 @@ public class CombinedDisposables : IDisposable, ICollection<IDisposable>
             // 破棄中にの例外発生状態をプロパティに反映
             switch (errors.Count)
             {
-                case 0: this.LatestException = null; break;
-                case 1: this.LatestException = errors[0]; break;
-                default: this.LatestException = new AggregateException(errors); break;
+            case 0: this.LatestException = null; break;
+            case 1: this.LatestException = errors[0]; break;
+            default: this.LatestException = new AggregateException(errors); break;
             }
         }
 

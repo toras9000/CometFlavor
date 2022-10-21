@@ -14,18 +14,14 @@ namespace CometFlavor.Wpf.Win32.Dialogs;
 /// </summary>
 internal static class ComUtility
 {
-    /// <summary>
-    /// COMオブジェクトを保持するためのリスト
-    /// </summary>
+    /// <summary>COMオブジェクトを保持するためのリスト</summary>
     public class ObjectList : List<object?>
     { }
 
     /// <summary>IShellItemのGuidインスタンスキャッシュ</summary>
     public static readonly Guid IShellItemID = new Guid(IID.IShellItem);
 
-    /// <summary>
-    /// COMオブジェクトをリストに追加してそのまま返却する拡張メソッド
-    /// </summary>
+    /// <summary>COMオブジェクトをリストに追加してそのまま返却する拡張メソッド</summary>
     /// <typeparam name="T">追加するオブジェクトの型</typeparam>
     /// <param name="self">リストに追加するオブジェクト</param>
     /// <param name="list">追加先リスト</param>
@@ -36,9 +32,7 @@ internal static class ComUtility
         return self;
     }
 
-    /// <summary>
-    /// パス文字列からシェルアイテムを生成する。
-    /// </summary>
+    /// <summary>パス文字列からシェルアイテムを生成する。</summary>
     /// <param name="path">パス文字列</param>
     /// <returns>シェルアイテム</returns>
     public static IShellItem CreateShellItemFromPath(string path)
@@ -52,9 +46,7 @@ internal static class ComUtility
         return item;
     }
 
-    /// <summary>
-    /// シェルアイテムのファイルシステムパスを取得する。
-    /// </summary>
+    /// <summary>シェルアイテムのファイルシステムパスを取得する。</summary>
     /// <param name="item">シェルアイテム</param>
     /// <returns>アイテムのファイルシステムパス</returns>
     public static string? GetFileSystemPath(IShellItem item)
@@ -78,9 +70,7 @@ internal static class ComUtility
         return path;
     }
 
-    /// <summary>
-    /// シェルアイテム配列の各アイテムのファイルパスを列挙する
-    /// </summary>
+    /// <summary>シェルアイテム配列の各アイテムのファイルパスを列挙する</summary>
     /// <param name="items">シェルアイテム配列</param>
     /// <returns>ファイルパスのシーケンス</returns>
     public static IEnumerable<string?> EnumerateItemPaths(IShellItemArray items)
@@ -112,9 +102,7 @@ internal static class ComUtility
         }
     }
 
-    /// <summary>
-    /// OLEメモリブロックがあれば解放する。
-    /// </summary>
+    /// <summary>OLEメモリブロックがあれば解放する。</summary>
     /// <param name="taskMem">メモリブロックのポインタ。NULLポインタでない場合のみ解放を行う。</param>
     public static void ReleaseExistTaskMemory(IntPtr taskMem)
     {
@@ -124,9 +112,7 @@ internal static class ComUtility
         }
     }
 
-    /// <summary>
-    /// COMオブジェクトの参照を解放(デクリメント)する。
-    /// </summary>
+    /// <summary>COMオブジェクトの参照を解放(デクリメント)する。</summary>
     /// <param name="obj">COMオブジェクトのRCWオブジェクト。nullでない場合のみ解放を行う。</param>
     public static void ReleaseExistComObject(object? obj)
     {
@@ -136,9 +122,7 @@ internal static class ComUtility
         }
     }
 
-    /// <summary>
-    /// COMオブジェクトリスト内のすべてのオブジェクトの参照を解放する。
-    /// </summary>
+    /// <summary>COMオブジェクトリスト内のすべてのオブジェクトの参照を解放する。</summary>
     /// <param name="list">COMオブジェクトリスト</param>
     /// <param name="reverse">逆順解放を行うか否か</param>
     public static void ReleaseAllComObject(ObjectList list, bool reverse = true)

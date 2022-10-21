@@ -19,9 +19,7 @@ public class EawMeasure : IEquatable<EawMeasure>
 {
     // 構築
     #region コンストラクタ
-    /// <summary>
-    /// 文字幅を評価する値を指定するコンストラクタ
-    /// </summary>
+    /// <summary>文字幅を評価する値を指定するコンストラクタ</summary>
     /// <param name="normal">Narrow，Halfwidth，Neutral キャラクタの仮想幅値</param>
     /// <param name="wide">Wide，Fullwidth キャラクタの仮想幅値</param>
     /// <param name="ambiguous">Ambiguous キャラクタの仮想幅値</param>
@@ -39,9 +37,7 @@ public class EawMeasure : IEquatable<EawMeasure>
         this.Ambiguous = ambiguous;
     }
 
-    /// <summary>
-    /// 文字幅を評価する値を指定するコンストラクタ
-    /// </summary>
+    /// <summary>文字幅を評価する値を指定するコンストラクタ</summary>
     /// <param name="narrow">Narrow，Halfwidth キャラクタの仮想幅値</param>
     /// <param name="wide">Wide，Fullwidth キャラクタの仮想幅値</param>
     /// <param name="neutral">Neutral キャラクタの仮想幅値</param>
@@ -61,9 +57,7 @@ public class EawMeasure : IEquatable<EawMeasure>
         this.Ambiguous = ambiguous;
     }
 
-    /// <summary>
-    /// 文字幅を評価する値を指定するコンストラクタ
-    /// </summary>
+    /// <summary>文字幅を評価する値を指定するコンストラクタ</summary>
     /// <param name="narrow">Narrow キャラクタの仮想幅値</param>
     /// <param name="wide">Wide キャラクタの仮想幅値</param>
     /// <param name="half">Halfwidth キャラクタの仮想幅値</param>
@@ -111,9 +105,7 @@ public class EawMeasure : IEquatable<EawMeasure>
 
     // 公開メソッド
     #region 計算
-    /// <summary>
-    /// EastAsianWidth に対する幅値を取得する。
-    /// </summary>
+    /// <summary>EastAsianWidth に対する幅値を取得する。</summary>
     /// <param name="eaw">EastAsianWidth 種別</param>
     /// <returns>
     /// EastAsianWidth に対する幅値。

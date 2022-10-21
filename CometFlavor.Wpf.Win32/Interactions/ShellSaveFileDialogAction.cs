@@ -28,9 +28,7 @@ public class ShellSaveFileDialogAction : TriggerAction<DependencyObject>
 
     // 保護メソッド
     #region アクション
-    /// <summary>
-    /// アクション呼び出し時処理
-    /// </summary>
+    /// <summary>アクション呼び出し時処理</summary>
     /// <param name="parameter">アクション呼び出しパラメータ。ShellSaveFileDialogActionParameter のインスタンスである必要がある。</param>
     protected override void Invoke(object parameter)
     {

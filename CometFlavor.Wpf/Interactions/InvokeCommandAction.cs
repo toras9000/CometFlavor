@@ -26,9 +26,7 @@ public class InvokeCommandAction : TriggerAction<DependencyObject>
 {
     // 公開型
     #region 種別定義
-    /// <summary>
-    /// コマンドパラメータ使用種別
-    /// </summary>
+    /// <summary>コマンドパラメータ使用種別</summary>
     public enum CommandParameterModeKind
     {
         /// <summary>自動</summary>
@@ -42,9 +40,7 @@ public class InvokeCommandAction : TriggerAction<DependencyObject>
 
     // 公開プロパティ
     #region 動作設定
-    /// <summary>
-    /// コマンドの有効状態をアタッチしているUI要素に反映する
-    /// </summary>
+    /// <summary>コマンドの有効状態をアタッチしているUI要素に反映する</summary>
     public bool AutoEnable
     {
         get { return (bool)GetValue(AutoEnableProperty); }
@@ -53,36 +49,28 @@ public class InvokeCommandAction : TriggerAction<DependencyObject>
     #endregion
 
     #region 呼び出し設定
-    /// <summary>
-    /// 呼び出しコマンド
-    /// </summary>
+    /// <summary>呼び出しコマンド</summary>
     public ICommand? Command
     {
         get { return (ICommand)GetValue(CommandProperty); }
         set { SetValue(CommandProperty, value); }
     }
 
-    /// <summary>
-    /// コマンドパラメータ
-    /// </summary>
+    /// <summary>コマンドパラメータ</summary>
     public object? CommandParameter
     {
         get { return (object)GetValue(CommandParameterProperty); }
         set { SetValue(CommandParameterProperty, value); }
     }
 
-    /// <summary>
-    /// パラメータコンバータ
-    /// </summary>
+    /// <summary>パラメータコンバータ</summary>
     public IValueConverter? ParameterConverter
     {
         get { return (IValueConverter)GetValue(ParameterConverterProperty); }
         set { SetValue(ParameterConverterProperty, value); }
     }
 
-    /// <summary>
-    /// コマンドパラメータ使用モード
-    /// </summary>
+    /// <summary>コマンドパラメータ使用モード</summary>
     public CommandParameterModeKind CommandParameterMode
     {
         get { return (CommandParameterModeKind)GetValue(CommandParameterModeProperty); }
@@ -131,9 +119,7 @@ public class InvokeCommandAction : TriggerAction<DependencyObject>
     #endregion
 
     #region アクション
-    /// <summary>
-    /// アクション呼び出し時処理
-    /// </summary>
+    /// <summary>アクション呼び出し時処理</summary>
     /// <param name="parameter">アクション呼び出しパラメータ</param>
     protected override void Invoke(object parameter)
     {
@@ -169,9 +155,7 @@ public class InvokeCommandAction : TriggerAction<DependencyObject>
 
     // 非公開フィールド
     #region コマンド呼び出し補助
-    /// <summary>
-    /// コマンドパラメータを決定する。
-    /// </summary>
+    /// <summary>コマンドパラメータを決定する。</summary>
     /// <param name="parameter">アクションパラメータ</param>
     /// <returns>決定されたパラメータ</returns>
     private object? getCommandParameter(object? parameter)
@@ -181,31 +165,31 @@ public class InvokeCommandAction : TriggerAction<DependencyObject>
         var otherParam = default(object);
         switch (this.CommandParameterMode)
         {
-            case CommandParameterModeKind.Argument: // 引数
-                cmdParam = parameter;
-                otherParam = this.CommandParameter;
-                break;
+        case CommandParameterModeKind.Argument: // 引数
+            cmdParam = parameter;
+            otherParam = this.CommandParameter;
+            break;
 
-            case CommandParameterModeKind.Property: // プロパティ
+        case CommandParameterModeKind.Property: // プロパティ
+            cmdParam = this.CommandParameter;
+            otherParam = parameter;
+            break;
+
+        case CommandParameterModeKind.Auto:     // 自動
+        default:
+            // プロパティに設定があればそれを、無ければ引数を。
+            cmdParam = this.ReadLocalValue(CommandParameterProperty);
+            if (cmdParam == DependencyProperty.UnsetValue)
+            {
+                cmdParam = parameter;
+                otherParam = null;
+            }
+            else
+            {
                 cmdParam = this.CommandParameter;
                 otherParam = parameter;
-                break;
-
-            case CommandParameterModeKind.Auto:     // 自動
-            default:
-                // プロパティに設定があればそれを、無ければ引数を。
-                cmdParam = this.ReadLocalValue(CommandParameterProperty);
-                if (cmdParam == DependencyProperty.UnsetValue)
-                {
-                    cmdParam = parameter;
-                    otherParam = null;
-                }
-                else
-                {
-                    cmdParam = this.CommandParameter;
-                    otherParam = parameter;
-                }
-                break;
+            }
+            break;
         }
 
         // コンバータが設定されていればパラメータ値を変換する
@@ -236,9 +220,7 @@ public class InvokeCommandAction : TriggerAction<DependencyObject>
     #endregion
 
     #region 依存プロパティ状態変更ハンドラ
-    /// <summary>
-    /// <see cref="AutoEnable"/> 依存プロパティ変更ハンドラ
-    /// </summary>
+    /// <summary><see cref="AutoEnable"/> 依存プロパティ変更ハンドラ</summary>
     /// <param name="d"></param>
     /// <param name="e"></param>
     private static void onAutoEnableChanged(DependencyObject? d, DependencyPropertyChangedEventArgs e)
@@ -254,9 +236,7 @@ public class InvokeCommandAction : TriggerAction<DependencyObject>
         }
     }
 
-    /// <summary>
-    /// <see cref="Command"/>  依存プロパティ変更ハンドラ
-    /// </summary>
+    /// <summary><see cref="Command"/>  依存プロパティ変更ハンドラ</summary>
     /// <param name="d"></param>
     /// <param name="e"></param>
     private static void onCommandChanged(DependencyObject? d, DependencyPropertyChangedEventArgs e)
@@ -271,9 +251,7 @@ public class InvokeCommandAction : TriggerAction<DependencyObject>
     #endregion
 
     #region 有効状態リンク対象状態変更ハンドラ
-    /// <summary>
-    /// 有効状態リンク対象のコマンド有効状態変化ハンドラ
-    /// </summary>
+    /// <summary>有効状態リンク対象のコマンド有効状態変化ハンドラ</summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
     private void onCommandCanExecuteChanged(object? sender, EventArgs? e)
@@ -290,9 +268,7 @@ public class InvokeCommandAction : TriggerAction<DependencyObject>
     #endregion
 
     #region 有効状態リンク
-    /// <summary>
-    /// 有効状態リンクを更新する
-    /// </summary>
+    /// <summary>有効状態リンクを更新する</summary>
     /// <param name="enableLink">状態リンクを有効とするか否か</param>
     /// <param name="command">有効状態参照元コマンド</param>
     /// <param name="element">有効状態反映先要素</param>

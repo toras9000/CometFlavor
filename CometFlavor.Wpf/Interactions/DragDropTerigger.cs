@@ -83,9 +83,7 @@ public class DragDropTerigger : TriggerBase<UIElement>
 
     // 保護メソッド
     #region 配置
-    /// <summary>
-    /// トリガを要素にアタッチした際の処理
-    /// </summary>
+    /// <summary>トリガを要素にアタッチした際の処理</summary>
     protected override void OnAttached()
     {
         // 基本クラス処理
@@ -108,9 +106,7 @@ public class DragDropTerigger : TriggerBase<UIElement>
         assosiated.Drop += AssociatedObject_Drop;
     }
 
-    /// <summary>
-    /// トリガを要素からデタッチした際の処理
-    /// </summary>
+    /// <summary>トリガを要素からデタッチした際の処理</summary>
     protected override void OnDetaching()
     {
         // エイリアス
@@ -146,9 +142,7 @@ public class DragDropTerigger : TriggerBase<UIElement>
 
     // 非公開メソッド
     #region 依存プロパティ変更ハンドラ
-    /// <summary>
-    /// <see cref="AcceptDropFormats"/> 依存プロパティの変更ハンドラ
-    /// </summary>
+    /// <summary><see cref="AcceptDropFormats"/> 依存プロパティの変更ハンドラ</summary>
     private static void onAcceptDropFormatsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is DragDropTerigger self)
@@ -158,9 +152,7 @@ public class DragDropTerigger : TriggerBase<UIElement>
         }
     }
 
-    /// <summary>
-    /// <see cref="ParameterConverter"/> 依存プロパティの変更ハンドラ
-    /// </summary>
+    /// <summary><see cref="ParameterConverter"/> 依存プロパティの変更ハンドラ</summary>
     private static void onParameterConverterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is DragDropTerigger self)
@@ -173,9 +165,7 @@ public class DragDropTerigger : TriggerBase<UIElement>
     #endregion
 
     #region イベントハンドラ
-    /// <summary>
-    /// 要素上へのドラッグオーバーイベントハンドラ
-    /// </summary>
+    /// <summary>要素上へのドラッグオーバーイベントハンドラ</summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
     private void AssociatedObject_DragOver(object sender, DragEventArgs e)
@@ -202,9 +192,7 @@ public class DragDropTerigger : TriggerBase<UIElement>
         e.Handled = true;
     }
 
-    /// <summary>
-    /// 要素上へのドロップイベントハンドラ
-    /// </summary>
+    /// <summary>要素上へのドロップイベントハンドラ</summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
     private void AssociatedObject_Drop(object sender, DragEventArgs e)

@@ -37,9 +37,7 @@ public class ObjectDisposeAction : TriggerAction<DependencyObject>
 
     // 保護メソッド
     #region インタラクション
-    /// <summary>
-    /// アクション呼び出し時処理
-    /// </summary>
+    /// <summary>アクション呼び出し時処理</summary>
     /// <param name="parameter">アクション呼び出しパラメータ</param>
     protected override void Invoke(object parameter)
     {

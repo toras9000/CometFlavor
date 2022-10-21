@@ -17,9 +17,7 @@ public class ShellSaveFileDialog
 {
     // 公開メソッド
     #region 表示
-    /// <summary>
-    /// ダイアログを表示する。
-    /// </summary>
+    /// <summary>ダイアログを表示する。</summary>
     /// <param name="owner">オーナーウィンドウハンドル。nullを指定するとオーナーウィンドウ無しとなる。</param>
     /// <param name="parameter">ダイアログ表示パラメータ</param>
     /// <returns>ダイアログの結果</returns>
@@ -37,9 +35,7 @@ public class ShellSaveFileDialog
         return showInternal(owner, parameter);
     }
 
-    /// <summary>
-    /// オーナーウィンドウ無しでダイアログを表示する。
-    /// </summary>
+    /// <summary>オーナーウィンドウ無しでダイアログを表示する。</summary>
     /// <param name="parameter">ダイアログ表示パラメータ</param>
     /// <returns>ダイアログの結果</returns>
     public ShellSaveFileDialogResult ShowDialog(ShellSaveFileDialogParameter parameter)
@@ -51,9 +47,7 @@ public class ShellSaveFileDialog
 
     // 非公開メソッド
     #region 表示
-    /// <summary>
-    /// ダイアログを表示する。
-    /// </summary>
+    /// <summary>ダイアログを表示する。</summary>
     /// <param name="owner">オーナーウィンドウハンドル。nullを指定するとオーナーウィンドウ無しとなる。</param>
     /// <param name="parameter">ダイアログ表示パラメータ</param>
     /// <returns>ダイアログの結果</returns>

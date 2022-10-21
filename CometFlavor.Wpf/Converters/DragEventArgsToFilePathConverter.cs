@@ -27,9 +27,7 @@ public class DragEventArgsToFilePathConverter : IDragDropTriggerParameterConvert
 
     // 公開メソッド
     #region 変換
-    /// <summary>
-    /// 値を変換する
-    /// </summary>
+    /// <summary>値を変換する</summary>
     /// <param name="value">変換元の値</param>
     /// <param name="targetType">対象の型</param>
     /// <param name="parameter">コンバータパラメータ</param>
@@ -69,9 +67,7 @@ public class DragEventArgsToFilePathConverter : IDragDropTriggerParameterConvert
         return DependencyProperty.UnsetValue;
     }
 
-    /// <summary>
-    /// 値を逆変換する。(非サポート)
-    /// </summary>
+    /// <summary>値を逆変換する。(非サポート)</summary>
     /// <param name="value">変換元の値</param>
     /// <param name="targetType">対象の型</param>
     /// <param name="parameter">コンバータパラメータ</param>

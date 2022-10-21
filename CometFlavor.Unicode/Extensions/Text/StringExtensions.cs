@@ -13,9 +13,7 @@ namespace CometFlavor.Unicode.Extensions.Text;
 public static class StringExtensions
 {
 #if NET5_0_OR_GREATER
-    /// <summary>
-    /// EastAsianWidth による文字列幅の算出
-    /// </summary>
+    /// <summary>EastAsianWidth による文字列幅の算出</summary>
     /// <remarks>
     /// 算出される文字列幅は表示幅というわけではない事に注意。(表示幅はフォントやレンダリングシステムによって決まるもの。)
     /// 単純にUnicodeの定義情報を利用し、幅の値に評価する。
@@ -55,9 +53,7 @@ public static class StringExtensions
         return totalWidth;
     }
 
-    /// <summary>
-    /// 文字列の先頭から指定された幅の文字要素を切り出す。
-    /// </summary>
+    /// <summary>文字列の先頭から指定された幅の文字要素を切り出す。</summary>
     /// <param name="self">元になる文字列</param>
     /// <param name="width">
     /// 切り出す文字要素の合計幅。
@@ -104,9 +100,7 @@ public static class StringExtensions
         return builder.ToString();
     }
 
-    /// <summary>
-    /// 文字列の末尾にある指定された幅の文字要素を切り出す。
-    /// </summary>
+    /// <summary>文字列の末尾にある指定された幅の文字要素を切り出す。</summary>
     /// <param name="self">元になる文字列</param>
     /// <param name="width">
     /// 切り出す文字要素の合計幅。
@@ -154,9 +148,7 @@ public static class StringExtensions
         return string.Concat(buffer.Select(q => q.elem));
     }
 
-    /// <summary>
-    /// 文字列を指定の幅に省略する。
-    /// </summary>
+    /// <summary>文字列を指定の幅に省略する。</summary>
     /// <param name="self">元の文字列</param>
     /// <param name="width">制限する文字列の幅</param>
     /// <param name="measure">文字の種別毎の仮想的な幅を指定する。</param>

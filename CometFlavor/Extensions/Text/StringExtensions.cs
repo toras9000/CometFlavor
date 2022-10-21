@@ -54,9 +54,7 @@ public static class StringExtensions
     /// <returns>nullや空白文字ならば代替文字列、それ以外ならば元の文字列</returns>
     public static string? WhenWhite(this string? self, Func<string?> alt) => string.IsNullOrWhiteSpace(self) ? alt.Invoke() : self;
 
-    /// <summary>
-    /// 文字列の最初の行を取得する。
-    /// </summary>
+    /// <summary>文字列の最初の行を取得する。</summary>
     /// <param name="self">対象文字列</param>
     /// <returns>最初の行文字列</returns>
     public static string? FirstLine(this string? self)
@@ -75,9 +73,7 @@ public static class StringExtensions
         return self.Substring(0, breakIdx);
     }
 
-    /// <summary>
-    /// 文字列の最後の行を取得する。
-    /// </summary>
+    /// <summary>文字列の最後の行を取得する。</summary>
     /// <param name="self">対象文字列</param>
     /// <returns>最後の行文字列</returns>
     public static string? LastLine(this string? self)
@@ -96,9 +92,7 @@ public static class StringExtensions
         return self.Substring(breakIdx + 1);
     }
 
-    /// <summary>
-    /// 文字列の行を列挙する。
-    /// </summary>
+    /// <summary>文字列の行を列挙する。</summary>
     /// <param name="self">対象文字列</param>
     /// <returns>テキスト行シーケンス</returns>
     /// <exception cref="ArgumentNullException"></exception>
@@ -182,9 +176,7 @@ public static class StringExtensions
         return self.Substring(idx + marker.Length);
     }
 
-    /// <summary>
-    /// 文字列を連結する。
-    /// </summary>
+    /// <summary>文字列を連結する。</summary>
     /// <param name="self">文字列のシーケンス</param>
     /// <param name="separator">連結する文字間に差し込む文字列</param>
     /// <returns></returns>
@@ -220,9 +212,7 @@ public static class StringExtensions
         return decorator(self);
     }
 
-    /// <summary>
-    /// 文字列をクォートする。
-    /// </summary>
+    /// <summary>文字列をクォートする。</summary>
     /// <param name="text">対象文字列。nullの場合は空文字列と同じ扱いとする。</param>
     /// <param name="quote">クォートキャラクタ</param>
     /// <param name="escape">対象文字列中のクォートキャラクタをエスケープするキャラクタ</param>
@@ -244,9 +234,7 @@ public static class StringExtensions
     }
 
 #if NET5_0_OR_GREATER
-    /// <summary>
-    /// 文字列のテキスト要素を列挙する。
-    /// </summary>
+    /// <summary>文字列のテキスト要素を列挙する。</summary>
     /// <param name="self">対象文字列</param>
     /// <returns>テキスト要素シーケンス</returns>
     /// <exception cref="ArgumentNullException"></exception>
@@ -263,9 +251,7 @@ public static class StringExtensions
         }
     }
 
-    /// <summary>
-    /// 文字列のテキスト要素数を取得する。
-    /// </summary>
+    /// <summary>文字列のテキスト要素数を取得する。</summary>
     /// <param name="self">対象文字列</param>
     /// <returns>テキスト要素数</returns>
     public static int TextElementCount(this string self)
@@ -276,9 +262,7 @@ public static class StringExtensions
         return StringInfo.ParseCombiningCharacters(self).Length;
     }
 
-    /// <summary>
-    /// 文字列の先頭から指定された長さの文字要素を切り出す。
-    /// </summary>
+    /// <summary>文字列の先頭から指定された長さの文字要素を切り出す。</summary>
     /// <param name="self">元になる文字列。nullまたは空の場合は元のインスタンスをそのまま返却する。</param>
     /// <param name="count">切り出す文字要素の長さ。</param>
     /// <returns>切り出された文字列</returns>
@@ -305,9 +289,7 @@ public static class StringExtensions
         return builder.ToString();
     }
 
-    /// <summary>
-    /// 文字列の末尾にある指定された長さの文字要素を切り出す。
-    /// </summary>
+    /// <summary>文字列の末尾にある指定された長さの文字要素を切り出す。</summary>
     /// <param name="self">元になる文字列。nullまたは空の場合は元のインスタンスをそのまま返却する。</param>
     /// <param name="count">切り出す文字要素の長さ。</param>
     /// <returns>切り出された文字列</returns>

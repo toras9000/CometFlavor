@@ -22,9 +22,7 @@ public class BooleanToVisibilityConverter : IValueConverter
 
     // 公開メソッド
     #region 変換
-    /// <summary>
-    /// 値を変換する
-    /// </summary>
+    /// <summary>値を変換する</summary>
     /// <param name="value">変換元の値</param>
     /// <param name="targetType">対象の型</param>
     /// <param name="parameter">コンバータパラメータ</param>
@@ -52,9 +50,7 @@ public class BooleanToVisibilityConverter : IValueConverter
         return DependencyProperty.UnsetValue;
     }
 
-    /// <summary>
-    /// 値を逆変換する
-    /// </summary>
+    /// <summary>値を逆変換する</summary>
     /// <param name="value"></param>
     /// <param name="targetType">対象の型</param>
     /// <param name="parameter">コンバータパラメータ</param>
@@ -68,15 +64,15 @@ public class BooleanToVisibilityConverter : IValueConverter
             // 値に応じて変換
             switch (visibility)
             {
-                case Visibility.Visible:
-                    return this.ReverseLogic ? false : true;
+            case Visibility.Visible:
+                return this.ReverseLogic ? false : true;
 
-                case Visibility.Hidden:
-                case Visibility.Collapsed:
-                    return this.ReverseLogic ? true : false;
+            case Visibility.Hidden:
+            case Visibility.Collapsed:
+                return this.ReverseLogic ? true : false;
 
-                default:
-                    break;
+            default:
+                break;
             }
         }
 

@@ -13,9 +13,7 @@ namespace CometFlavor.Extensions.IO;
 public static class FileInfoExtensions
 {
     #region Name
-    /// <summary>
-    /// 拡張子を除いたファイル名を取得する。
-    /// </summary>
+    /// <summary>拡張子を除いたファイル名を取得する。</summary>
     /// <param name="self">対象ファイルのFileInfo</param>
     /// <returns>拡張子を除いたファイル名</returns>
     public static string GetNameWithoutExtension(this FileInfo self)
@@ -24,9 +22,7 @@ public static class FileInfoExtensions
         return Path.GetFileNameWithoutExtension(self.Name);
     }
 
-    /// <summary>
-    /// 拡張子を取得する。
-    /// </summary>
+    /// <summary>拡張子を取得する。</summary>
     /// <param name="self">対象ファイルのFileInfo</param>
     /// <returns>拡張子</returns>
     public static string GetExtension(this FileInfo self)
@@ -35,9 +31,7 @@ public static class FileInfoExtensions
         return Path.GetExtension(self.Name);
     }
 
-    /// <summary>
-    /// 指定した拡張子ファイルを示すFileInfoを取得する。
-    /// </summary>
+    /// <summary>指定した拡張子ファイルを示すFileInfoを取得する。</summary>
     /// <param name="self">対象ファイルのFileInfo</param>
     /// <param name="extension">拡張子</param>
     /// <returns> 指定した拡張子ファイルを示すFileInfo</returns>
@@ -50,9 +44,7 @@ public static class FileInfoExtensions
     #endregion
 
     #region Read
-    /// <summary>
-    /// ファイル内容の全バイト列を読み出す。
-    /// </summary>
+    /// <summary>ファイル内容の全バイト列を読み出す。</summary>
     /// <param name="self">対象ファイルのFileInfo</param>
     /// <returns>ファイルから読みだしたバイト列</returns>
     public static byte[] ReadAllBytes(this FileInfo self)
@@ -61,9 +53,7 @@ public static class FileInfoExtensions
         return File.ReadAllBytes(self.FullName);
     }
 
-    /// <summary>
-    /// ファイル内容の全テキストを読み出す。
-    /// </summary>
+    /// <summary>ファイル内容の全テキストを読み出す。</summary>
     /// <param name="self">対象ファイルのFileInfo</param>
     /// <returns>ファイルから読みだした全テキスト</returns>
     public static string ReadAllText(this FileInfo self)
@@ -72,9 +62,7 @@ public static class FileInfoExtensions
         return File.ReadAllText(self.FullName);
     }
 
-    /// <summary>
-    /// ファイル内容の全テキストを読み出す。
-    /// </summary>
+    /// <summary>ファイル内容の全テキストを読み出す。</summary>
     /// <param name="self">対象ファイルのFileInfo</param>
     /// <param name="encoding">ファイル内容をデコードするテキストエンコーディング</param>
     /// <returns>ファイルから読みだした全テキスト</returns>
@@ -84,9 +72,7 @@ public static class FileInfoExtensions
         return File.ReadAllText(self.FullName, encoding);
     }
 
-    /// <summary>
-    /// ファイル内容の全テキスト行を読み出す。
-    /// </summary>
+    /// <summary>ファイル内容の全テキスト行を読み出す。</summary>
     /// <param name="self">対象ファイルのFileInfo</param>
     /// <returns>ファイルから読みだした全テキスト行</returns>
     public static string[] ReadAllLines(this FileInfo self)
@@ -95,9 +81,7 @@ public static class FileInfoExtensions
         return File.ReadAllLines(self.FullName);
     }
 
-    /// <summary>
-    /// ファイル内容の全テキスト行を読み出す。
-    /// </summary>
+    /// <summary>ファイル内容の全テキスト行を読み出す。</summary>
     /// <param name="self">対象ファイルのFileInfo</param>
     /// <param name="encoding">ファイル内容をデコードするテキストエンコーディング</param>
     /// <returns>ファイルから読みだした全テキスト行</returns>
@@ -107,9 +91,7 @@ public static class FileInfoExtensions
         return File.ReadAllLines(self.FullName, encoding);
     }
 
-    /// <summary>
-    /// ファイル内容のテキスト行を読み出す。
-    /// </summary>
+    /// <summary>ファイル内容のテキスト行を読み出す。</summary>
     /// <param name="self">対象ファイルのFileInfo</param>
     /// <returns>ファイルから読みだしたテキスト行</returns>
     public static IEnumerable<string> ReadLines(this FileInfo self)
@@ -118,9 +100,7 @@ public static class FileInfoExtensions
         return File.ReadLines(self.FullName);
     }
 
-    /// <summary>
-    /// ファイル内容の全テキスト行を読み出す。
-    /// </summary>
+    /// <summary>ファイル内容の全テキスト行を読み出す。</summary>
     /// <param name="self">対象ファイルのFileInfo</param>
     /// <param name="encoding">ファイル内容をデコードするテキストエンコーディング</param>
     /// <returns>ファイルから読みだしたテキスト行</returns>
@@ -131,9 +111,7 @@ public static class FileInfoExtensions
     }
 
 #if NETCOREAPP2_0_OR_GREATER
-    /// <summary>
-    /// ファイル内容の全バイト列を読み出す。
-    /// </summary>
+    /// <summary>ファイル内容の全バイト列を読み出す。</summary>
     /// <param name="self">対象ファイルのFileInfo</param>
     /// <param name="cancelToken">キャンセルトークン</param>
     /// <returns>ファイルから読みだしたバイト列</returns>
@@ -143,9 +121,7 @@ public static class FileInfoExtensions
         return File.ReadAllBytesAsync(self.FullName, cancelToken);
     }
 
-    /// <summary>
-    /// ファイル内容の全テキストを読み出す。
-    /// </summary>
+    /// <summary>ファイル内容の全テキストを読み出す。</summary>
     /// <param name="self">対象ファイルのFileInfo</param>
     /// <param name="cancelToken">キャンセルトークン</param>
     /// <returns>ファイルから読みだした全テキスト</returns>
@@ -155,9 +131,7 @@ public static class FileInfoExtensions
         return File.ReadAllTextAsync(self.FullName, cancelToken);
     }
 
-    /// <summary>
-    /// ファイル内容の全テキストを読み出す。
-    /// </summary>
+    /// <summary>ファイル内容の全テキストを読み出す。</summary>
     /// <param name="self">対象ファイルのFileInfo</param>
     /// <param name="encoding">ファイル内容をデコードするテキストエンコーディング</param>
     /// <param name="cancelToken">キャンセルトークン</param>
@@ -168,9 +142,7 @@ public static class FileInfoExtensions
         return File.ReadAllTextAsync(self.FullName, encoding, cancelToken);
     }
 
-    /// <summary>
-    /// ファイル内容の全テキスト行を読み出す。
-    /// </summary>
+    /// <summary>ファイル内容の全テキスト行を読み出す。</summary>
     /// <param name="self">対象ファイルのFileInfo</param>
     /// <param name="cancelToken">キャンセルトークン</param>
     /// <returns>ファイルから読みだした全テキスト行</returns>
@@ -180,9 +152,7 @@ public static class FileInfoExtensions
         return File.ReadAllLinesAsync(self.FullName, cancelToken);
     }
 
-    /// <summary>
-    /// ファイル内容の全テキスト行を読み出す。
-    /// </summary>
+    /// <summary>ファイル内容の全テキスト行を読み出す。</summary>
     /// <param name="self">対象ファイルのFileInfo</param>
     /// <param name="encoding">ファイル内容をデコードするテキストエンコーディング</param>
     /// <param name="cancelToken">キャンセルトークン</param>
@@ -196,9 +166,7 @@ public static class FileInfoExtensions
     #endregion
 
     #region Write
-    /// <summary>
-    /// ファイル内容が指定のバイト列となるように書き込む。
-    /// </summary>
+    /// <summary>ファイル内容が指定のバイト列となるように書き込む。</summary>
     /// <param name="self">対象ファイルのFileInfo</param>
     /// <param name="bytes">書き込むバイト列</param>
     public static void WriteAllBytes(this FileInfo self, byte[] bytes)
@@ -208,9 +176,7 @@ public static class FileInfoExtensions
         self.Refresh();
     }
 
-    /// <summary>
-    /// ファイル内容が指定のテキストとなるように書き込む。
-    /// </summary>
+    /// <summary>ファイル内容が指定のテキストとなるように書き込む。</summary>
     /// <param name="self">対象ファイルのFileInfo</param>
     /// <param name="contents">書き込むテキスト</param>
     public static void WriteAllText(this FileInfo self, string contents)
@@ -220,9 +186,7 @@ public static class FileInfoExtensions
         self.Refresh();
     }
 
-    /// <summary>
-    /// ファイル内容が指定のテキストとなるように書き込む。
-    /// </summary>
+    /// <summary>ファイル内容が指定のテキストとなるように書き込む。</summary>
     /// <param name="self">対象ファイルのFileInfo</param>
     /// <param name="contents">書き込むテキスト</param>
     /// <param name="encoding">書き込むテキストをエンコードするテキストエンコーディング</param>
@@ -233,9 +197,7 @@ public static class FileInfoExtensions
         self.Refresh();
     }
 
-    /// <summary>
-    /// ファイル内容が指定のテキスト行となるように書き込む。
-    /// </summary>
+    /// <summary>ファイル内容が指定のテキスト行となるように書き込む。</summary>
     /// <param name="self">対象ファイルのFileInfo</param>
     /// <param name="contents">書き込むテキスト行</param>
     public static void WriteAllLines(this FileInfo self, IEnumerable<string> contents)
@@ -245,9 +207,7 @@ public static class FileInfoExtensions
         self.Refresh();
     }
 
-    /// <summary>
-    /// ファイル内容が指定のテキスト行となるように書き込む。
-    /// </summary>
+    /// <summary>ファイル内容が指定のテキスト行となるように書き込む。</summary>
     /// <param name="self">対象ファイルのFileInfo</param>
     /// <param name="contents">書き込むテキスト行</param>
     /// <param name="encoding">書き込むテキストをエンコードするテキストエンコーディング</param>
@@ -259,9 +219,7 @@ public static class FileInfoExtensions
     }
 
 #if NETCOREAPP2_0_OR_GREATER
-    /// <summary>
-    /// ファイル内容が指定のバイト列となるように書き込む。
-    /// </summary>
+    /// <summary>ファイル内容が指定のバイト列となるように書き込む。</summary>
     /// <param name="self">対象ファイルのFileInfo</param>
     /// <param name="bytes">書き込むバイト列</param>
     /// <param name="cancelToken">キャンセルトークン</param>
@@ -272,9 +230,7 @@ public static class FileInfoExtensions
         self.Refresh();
     }
 
-    /// <summary>
-    /// ファイル内容が指定のテキストとなるように書き込む。
-    /// </summary>
+    /// <summary>ファイル内容が指定のテキストとなるように書き込む。</summary>
     /// <param name="self">対象ファイルのFileInfo</param>
     /// <param name="contents">書き込むテキスト</param>
     /// <param name="cancelToken">キャンセルトークン</param>
@@ -285,9 +241,7 @@ public static class FileInfoExtensions
         self.Refresh();
     }
 
-    /// <summary>
-    /// ファイル内容が指定のテキストとなるように書き込む。
-    /// </summary>
+    /// <summary>ファイル内容が指定のテキストとなるように書き込む。</summary>
     /// <param name="self">対象ファイルのFileInfo</param>
     /// <param name="contents">書き込むテキスト</param>
     /// <param name="encoding">書き込むテキストをエンコードするテキストエンコーディング</param>
@@ -299,9 +253,7 @@ public static class FileInfoExtensions
         self.Refresh();
     }
 
-    /// <summary>
-    /// ファイル内容が指定のテキスト行となるように書き込む。
-    /// </summary>
+    /// <summary>ファイル内容が指定のテキスト行となるように書き込む。</summary>
     /// <param name="self">対象ファイルのFileInfo</param>
     /// <param name="contents">書き込むテキスト行</param>
     /// <param name="cancelToken">キャンセルトークン</param>
@@ -312,9 +264,7 @@ public static class FileInfoExtensions
         self.Refresh();
     }
 
-    /// <summary>
-    /// ファイル内容が指定のテキスト行となるように書き込む。
-    /// </summary>
+    /// <summary>ファイル内容が指定のテキスト行となるように書き込む。</summary>
     /// <param name="self">対象ファイルのFileInfo</param>
     /// <param name="contents">書き込むテキスト行</param>
     /// <param name="encoding">書き込むテキストをエンコードするテキストエンコーディング</param>
@@ -332,7 +282,7 @@ public static class FileInfoExtensions
     /// <summary>ファイルまでのディレクトリを作成する。</summary>
     /// <param name="self">対象ファイル情報</param>
     /// <returns>元のファイル情報</returns>
-    public static FileInfo WithCreate(this FileInfo self)
+    public static FileInfo WithDirectoryCreate(this FileInfo self)
     {
         if (self == null) throw new ArgumentNullException(nameof(self));
         self.Directory?.WithCreate();
@@ -341,9 +291,7 @@ public static class FileInfoExtensions
     #endregion
 
     #region Path
-    /// <summary>
-    /// ファイルパスの構成セグメントを取得する。
-    /// </summary>
+    /// <summary>ファイルパスの構成セグメントを取得する。</summary>
     /// <param name="self">対象ファイルのFileInfo</param>
     /// <returns>パス構成セグメントのリスト</returns>
     public static IList<string> GetPathSegments(this FileInfo self)
@@ -395,9 +343,7 @@ public static class FileInfoExtensions
         return true;
     }
 
-    /// <summary>
-    /// 指定のディレクトリを起点としたファイルの相対パスを取得する。
-    /// </summary>
+    /// <summary>指定のディレクトリを起点としたファイルの相対パスを取得する。</summary>
     /// <remarks>
     /// 単純なパス文字列処理であり、リパースポイントなどを解釈することはない。
     /// </remarks>

@@ -3,7 +3,9 @@
 namespace CometFlavor.Extensions.IO;
 
 #if NET5_0_OR_GREATER
-/// <summary>列挙処理でのファイル/ディレクトリに対する処理情報</summary>
+/// <summary>
+/// 列挙処理でのファイル/ディレクトリに対する処理情報
+/// </summary>
 /// <remarks>
 /// この情報はファイル列挙処理にて、ファイルまたはディレクトリに対する処理デリゲートのパラメータとして渡される。
 /// 処理デリゲートではこのオブジェクトに対してフラグを設定することで列挙動作の中断を指示することができる。
@@ -26,7 +28,9 @@ public interface IFileWalker
     bool Exit { get; set; }
 }
 
-/// <summary>列挙処理でのファイル/ディレクトリに対する処理情報と結果設定</summary>
+/// <summary>
+/// 列挙処理でのファイル/ディレクトリに対する処理情報と結果設定
+/// </summary>
 public interface IFileConverter<TResult> : IFileWalker
 {
     /// <summary>列挙対象のファイル/ディレクトリに対する処理結果を設定する。</summary>

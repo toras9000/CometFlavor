@@ -13,9 +13,7 @@ namespace CometFlavor.Extensions.IO;
 public static class DirectoryInfoExtensions
 {
     #region FileSystemInfo
-    /// <summary>
-    /// ディレクトリからの相対パス位置に対する FileInfo を取得する。
-    /// </summary>
+    /// <summary>ディレクトリからの相対パス位置に対する FileInfo を取得する。</summary>
     /// <param name="self">基準となるディレクトリの DirectoryInfo</param>
     /// <param name="relativePath">基準ディレクトリからのパス。もし絶対パスの場合は基準ディレクトリは無関係にこの絶対パスが利用される。</param>
     /// <returns>対象ファイルパスの FileInfo</returns>
@@ -25,9 +23,7 @@ public static class DirectoryInfoExtensions
         return new FileInfo(Path.Combine(self.FullName, relativePath));
     }
 
-    /// <summary>
-    /// ディレクトリからの相対パス位置に対する DirectoryInfo を取得する。
-    /// </summary>
+    /// <summary>ディレクトリからの相対パス位置に対する DirectoryInfo を取得する。</summary>
     /// <param name="self">基準となるディレクトリのDirectoryInfo</param>
     /// <param name="relativePath">基準ディレクトリからのパス。もし絶対パスの場合は基準ディレクトリは無関係にこの絶対パスが利用される。</param>
     /// <returns>対象ディレクトリパスの DirectoryInfo</returns>
@@ -51,9 +47,7 @@ public static class DirectoryInfoExtensions
     #endregion
 
     #region Path
-    /// <summary>
-    /// ディレクトリパスの構成セグメントを取得する。
-    /// </summary>
+    /// <summary>ディレクトリパスの構成セグメントを取得する。</summary>
     /// <param name="self">対象ディレクトリのDirectoryInfo</param>
     /// <returns>パス構成セグメントのリスト</returns>
     public static IList<string> GetPathSegments(this DirectoryInfo self)
@@ -76,7 +70,6 @@ public static class DirectoryInfoExtensions
     }
 
     /// <summary>ディレクトリが指定のディレクトリの子孫であるかを判定する。</summary>
-    /// <remarks></remarks>
     /// <param name="self">対象ディレクトリ</param>
     /// <param name="other">比較するディレクトリ</param>
     /// <param name="sameIs">同一階層を真とするか否か</param>
@@ -118,9 +111,7 @@ public static class DirectoryInfoExtensions
         return other.IsDescendantOf(self, sameIs);
     }
 
-    /// <summary>
-    /// 指定のディレクトリを起点としたディレクトリの相対パスを取得する。
-    /// </summary>
+    /// <summary>指定のディレクトリを起点としたディレクトリの相対パスを取得する。</summary>
     /// <remarks>
     /// 単純なパス文字列処理であり、リパースポイントなどを解釈することはない。
     /// </remarks>
@@ -137,9 +128,7 @@ public static class DirectoryInfoExtensions
         return SegmentsToReletivePath(self.GetPathSegments(), baseDir, ignoreCase);
     }
 
-    /// <summary>
-    /// パスセグメントから指定のディレクトリを起点とした相対パスを取得する。
-    /// </summary>
+    /// <summary>パスセグメントから指定のディレクトリを起点とした相対パスを取得する。</summary>
     /// <param name="segments">パスセグメントリスト</param>
     /// <param name="baseDir">基準ディレクトリのDirectoryInfo</param>
     /// <param name="ignoreCase">大文字と小文字を同一視するか否か</param>

@@ -13,9 +13,7 @@ public class ShellOpenFileDialogParameter
 {
     // 構築
     #region コンストラクタ
-    /// <summary>
-    /// デフォルトコンストラクタ
-    /// </summary>
+    /// <summary>デフォルトコンストラクタ</summary>
     public ShellOpenFileDialogParameter()
     {
         this.Filters = new List<ShellFileDialogFilter>();
