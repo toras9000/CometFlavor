@@ -162,6 +162,24 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
+    public void TestDropEmpty()
+    {
+        new[] { "aaa", "bbb", "ccc" }.DropEmpty().Should().Equal("aaa", "bbb", "ccc");
+        new[] { "aaa", null, "ccc" }.DropEmpty().Should().Equal("aaa", "ccc");
+        new[] { "", "bbb", "ccc" }.DropEmpty().Should().Equal("bbb", "ccc");
+        new[] { "", "bbb", " " }.DropEmpty().Should().Equal("bbb", " ");
+    }
+
+    [TestMethod]
+    public void TestDropWhite()
+    {
+        new[] { "aaa", "bbb", "ccc" }.DropWhite().Should().Equal("aaa", "bbb", "ccc");
+        new[] { "aaa", null, "ccc" }.DropWhite().Should().Equal("aaa", "ccc");
+        new[] { "", "bbb", "ccc" }.DropWhite().Should().Equal("bbb", "ccc");
+        new[] { "", "bbb", " " }.DropWhite().Should().Equal("bbb");
+    }
+
+    [TestMethod]
     public void TestDecorate_Format()
     {
         "abc".Decorate("<{0}>").Should().Be("<abc>");
