@@ -56,7 +56,20 @@ public class CombinedDisposablesTest
     }
 
     [TestMethod]
-    public void TestGetRelativeFile_NullFail()
+    public void TestGetRelativeFile_EmptyRelativeFail()
+    {
+        FluentActions.Invoking(() => new DirectoryInfo(@"X:\abc\def").GetRelativeFile(""))
+            .Should().Throw<ArgumentException>();
+
+        FluentActions.Invoking(() => new DirectoryInfo(@"X:\abc\def").GetRelativeFile(" "))
+            .Should().Throw<ArgumentException>();
+
+        FluentActions.Invoking(() => new DirectoryInfo(@"X:\abc\def").GetRelativeFile(null))
+            .Should().Throw<ArgumentException>();
+    }
+
+    [TestMethod]
+    public void TestGetRelativeFile_NullSelfFail()
     {
         FluentActions.Invoking(() => default(DirectoryInfo).GetRelativeFile(@"V:\hoge\fuga"))
             .Should().Throw<ArgumentNullException>();
@@ -102,6 +115,20 @@ public class CombinedDisposablesTest
             .GetRelativeDirectory(@"V:\hoge\fuga")
             .Should().BeOfType<DirectoryInfo>()
             .Which.FullName.Should().Be(@"V:\hoge\fuga");
+    }
+
+    [TestMethod]
+    public void TestGetRelativeDirectory_EmptyRelative()
+    {
+        new DirectoryInfo(@"X:\abc\def")
+            .GetRelativeDirectory("")
+            .Should().BeOfType<DirectoryInfo>()
+            .Which.FullName.Should().Be(@"X:\abc\def");
+
+        new DirectoryInfo(@"X:\abc\def")
+            .GetRelativeDirectory(null)
+            .Should().BeOfType<DirectoryInfo>()
+            .Which.FullName.Should().Be(@"X:\abc\def");
     }
 
     [TestMethod]
