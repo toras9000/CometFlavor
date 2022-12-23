@@ -163,6 +163,20 @@ public static class FileInfoExtensions
         return File.ReadAllLinesAsync(self.FullName, encoding, cancelToken);
     }
 #endif
+
+#if NET6_0_OR_GREATER
+    /// <summary>ファイル内容をテキストで読み取るリーダーを生成する。</summary>
+    /// <param name="self">対象ファイルのFileInfo</param>
+    /// <param name="encoding">ファイル内容をデコードするテキストエンコーディング</param>
+    /// <param name="detectBom">BOMを検出してエンコーディングを決定するか否か</param>
+    /// <param name="options">元になるファイルストリームを開くオプション</param>
+    /// <returns>ストリームリーダー</returns>
+    public static StreamReader CreateTextReader(this FileInfo self, bool detectBom = true, FileStreamOptions? options = null, Encoding? encoding = null)
+    {
+        return (options == null) ? new StreamReader(self.FullName, encoding ?? Encoding.UTF8, detectBom)
+                                 : new StreamReader(self.FullName, encoding ?? Encoding.UTF8, detectBom, options);
+    }
+#endif
     #endregion
 
     #region Write
@@ -274,6 +288,28 @@ public static class FileInfoExtensions
         if (self == null) throw new ArgumentNullException(nameof(self));
         await File.WriteAllLinesAsync(self.FullName, contents, encoding).ConfigureAwait(false);
         self.Refresh();
+    }
+#endif
+
+#if NET6_0_OR_GREATER
+    /// <summary>ファイル内容をテキストで読み取るリーダーを生成する。</summary>
+    /// <param name="self">対象ファイルのFileInfo</param>
+    /// <param name="encoding">ファイル内容をデコードするテキストエンコーディング</param>
+    /// <param name="append">追記するか否か</param>
+    /// <returns>ストリームリーダー</returns>
+    public static StreamWriter CreateTextWriter(this FileInfo self, bool append = false, Encoding? encoding = null)
+    {
+        return new StreamWriter(self.FullName, append, encoding ?? Encoding.UTF8);
+    }
+
+    /// <summary>ファイル内容をテキストで読み取るリーダーを生成する。</summary>
+    /// <param name="self">対象ファイルのFileInfo</param>
+    /// <param name="encoding">ファイル内容をデコードするテキストエンコーディング</param>
+    /// <param name="options">元になるファイルストリームを開くオプション</param>
+    /// <returns>ストリームリーダー</returns>
+    public static StreamWriter CreateTextWriter(this FileInfo self, FileStreamOptions options, Encoding? encoding = null)
+    {
+        return new StreamWriter(self.FullName, encoding ?? Encoding.UTF8, options);
     }
 #endif
     #endregion

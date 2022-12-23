@@ -305,6 +305,26 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
+    public async Task TestCreateTextReader()
+    {
+        // テスト用に一時ディレクトリ
+        using var tempDir = new TempDirectory();
+
+        // テストファイル
+        var target = tempDir.Info.GetRelativeFile("test.txt");
+
+        // テスト対象にテストデータ書き込み
+        var enc = Encoding.GetEncoding("euc-jp");   // BOMのような判別方法がないもの
+        var text = "あいう\nえおか\nきくけ";
+        await File.WriteAllTextAsync(target.FullName, text, enc);
+
+        // テスト対象実行＆検証
+        using var reader = target.CreateTextReader(detectBom: false, options: null, enc);
+        var actual = await reader.ReadToEndAsync();
+        actual.Should().Be(text);
+    }
+
+    [TestMethod]
     public void TestWriteAllBytes()
     {
         // テスト用に一時ディレクトリ
@@ -519,6 +539,52 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
+    public async Task TestCreateTextWriter()
+    {
+        // テスト用に一時ディレクトリ
+        using var tempDir = new TempDirectory();
+
+        // テストファイル
+        var target = tempDir.Info.GetRelativeFile("test.txt");
+
+        // テストデータ
+        var enc = Encoding.GetEncoding("euc-jp");   // BOMのような判別方法がないもの
+        var text = "あいう\nえおか\nきくけ";
+
+        // テスト対象実行
+        using (var writer = target.CreateTextWriter(encoding: enc))
+        {
+            await writer.WriteAsync(text);
+        }
+
+        // 検証
+        File.ReadAllText(target.FullName, enc).Should().Be(text);
+    }
+
+    [TestMethod]
+    public async Task TestCreateTextWriter_append()
+    {
+        // テスト用に一時ディレクトリ
+        using var tempDir = new TempDirectory();
+
+        // テストファイル
+        var target = tempDir.Info.GetRelativeFile("test.txt");
+
+        // 準備
+        var enc = Encoding.GetEncoding("euc-jp");   // BOMのような判別方法がないもの
+        await File.WriteAllTextAsync(target.FullName, "あいう", enc);
+
+        // テスト対象実行
+        using (var writer = target.CreateTextWriter(append: true, encoding: enc))
+        {
+            await writer.WriteAsync("えおか");
+        }
+
+        // 検証
+        File.ReadAllText(target.FullName, enc).Should().Be("あいうえおか");
+    }
+
+    [TestMethod]
     public void TestWithDirectoryCreate()
     {
         using var testDir = new TempDirectory();
@@ -604,6 +670,5 @@ public class FileInfoExtensionsTests
         new FileInfo(@"c:/abc/def/Ghi/asd/qwe.txt").RelativePathFrom(new DirectoryInfo(@"c:/abc/def/ghi/"), ignoreCase: false)
             .Should().Be(@"..\Ghi\asd\qwe.txt");
     }
-
 
 }
