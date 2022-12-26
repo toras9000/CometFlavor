@@ -247,6 +247,58 @@ public static class StringExtensions
     }
 
 #if NET5_0_OR_GREATER
+    /// <summary>文字列をアンクォートする。</summary>
+    /// <param name="text">対象文字列。</param>
+    /// <param name="quotes">クォートキャラクタ候補。空の場合はダブル/シングルクォートキャラクタを候補とする。</param>
+    /// <param name="escape">クォートキャラクタをエスケープしているキャラクタ。指定がない場合はクォートキャラクタ2つで</param>
+    /// <returns>アンクォートされた文字列</returns>
+    public static string? Unquote(this string text, ReadOnlySpan<char> quotes = default, char? escape = null)
+    {
+        // nullやクォート分の幅がなければそのまま返す。
+        if (text == null || text.Length < 2) return text;
+
+        // クォートキャラクタ候補。指定があればそれを、無ければダブル・シングルクォートキャラクタを候補とする。
+        var candidates = (quotes.Length == 0) ? stackalloc char[] { '"', '\'', } : quotes;
+
+        // 最初の文字がクォート文字候補のいずれかであるかを判別
+        // クォート文字で始まらない場合は元の文字列を返す
+        if (candidates.IndexOf(text[0]) < 0) return text;
+
+        // 両端がクォートキャラクタであるかを判定。
+        var quoteChar = text[0];
+        if (quoteChar != text[^1]) return text;
+
+        // 前後クォートを除去した部分を取得
+        var core = text.AsSpan(1, text.Length - 2);
+
+        // クォートキャラクタのエスケープ表現
+        var escaped = (stackalloc char[] { escape ?? quoteChar, quoteChar, });
+
+        // エスケープ表見があるか検索
+        var escIdx = core.IndexOf(escaped);
+        if (escIdx < 0) return core.ToString();
+
+        // エスケープ解除した文字列を作成
+        var buffer = new StringBuilder(core.Length);
+        var scan = core;
+        do
+        {
+            // エスケープ文字位置前までとエスケープ解除文字を追加
+            buffer.Append(scan[0..escIdx]);
+            buffer.Append(quoteChar);
+
+            // 次の位置からエスケープ表現を検索
+            scan = scan[(escIdx + 2)..];
+            escIdx = scan.IndexOf(escaped);
+        }
+        while (0 <= escIdx);
+
+        // 残りの部分を追加
+        buffer.Append(scan);
+
+        return buffer.ToString();
+    }
+
     /// <summary>文字列のテキスト要素を列挙する。</summary>
     /// <param name="self">対象文字列</param>
     /// <returns>テキスト要素シーケンス</returns>

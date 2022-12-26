@@ -208,7 +208,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestQuotet()
+    public void TestQuote()
     {
         "abc".Quote().Should().Be("\"abc\"");
         "a\"bc".Quote().Should().Be("\"a\"\"bc\"");
@@ -219,6 +219,20 @@ public class StringExtensionsTests
 
         "abc".Quote(quote: '\'', escape: '/').Should().Be("'abc'");
         "ab'c".Quote(quote: '\'', escape: '/').Should().Be("'ab/'c'");
+    }
+
+    [TestMethod]
+    public void TestUnquote()
+    {
+        "\"abc\"".Unquote().Should().Be("abc");
+        "\"a\"\"bc\"".Unquote().Should().Be("a\"bc");
+
+        "'abc'".Unquote(quotes: new[] { '\'' }).Should().Be("abc");
+        "'ab''c'".Unquote(quotes: new[] { '\'' }).Should().Be("ab'c");
+        "'ab\"c'".Unquote(quotes: new[] { '\'' }).Should().Be("ab\"c");
+
+        "'abc'".Unquote(quotes: new[] { '\'' }, escape: '/').Should().Be("abc");
+        "'ab/'c'".Unquote(quotes: new[] { '\'' }, escape: '/').Should().Be("ab'c");
     }
 
     [TestMethod]
