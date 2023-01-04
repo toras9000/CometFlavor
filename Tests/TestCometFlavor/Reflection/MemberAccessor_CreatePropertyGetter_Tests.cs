@@ -368,4 +368,18 @@ public class MemberAccessor_CreatePropertyGetter_Tests
 
         new Action(() => CreatePropertyGetter<ReadOnlyItem>("PrivateRefProp", Flags.Static | Flags.NonPublic)).Should().Throw<Exception>();
     }
+
+    public record BaseItem(string Text);
+    public record DerivedItem(string Text, int Value) : BaseItem(Text);
+
+    [TestMethod]
+    public void CreatePropertyGetter_Derived()
+    {
+        var txtGetter = CreatePropertyGetter<DerivedItem>(nameof(DerivedItem.Text));
+        var valGetter = CreatePropertyGetter<DerivedItem>(nameof(DerivedItem.Value));
+
+        var item = new DerivedItem("asd", 123);
+        txtGetter(item).Should().Be("asd");
+        valGetter(item).Should().Be(123);
+    }
 }

@@ -35,7 +35,8 @@ public class MemberAccessor
     {
         // パラメータの検証
         if (propInfo == null) throw new ArgumentNullException(nameof(propInfo));
-        if (!typeof(T).IsAssignableFrom(propInfo.DeclaringType)) throw new InvalidOperationException("Receiver type mismatch");
+        if (propInfo.DeclaringType == null) throw new ArgumentException("Illegal receiver type");
+        if (!propInfo.DeclaringType.IsAssignableFrom(typeof(T))) throw new InvalidOperationException("Receiver type mismatch");
 
         // プロパティのゲッターメソッド情報取得
         var propGetterInfo = propInfo.GetGetMethod(nonPublic) ?? throw new ArgumentException("Cannot get getter");
