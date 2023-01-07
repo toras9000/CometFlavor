@@ -446,6 +446,9 @@ public static class DirectoryInfoExtensions
         // 公開プロパティ
         #region IFileWalker インタフェース
         /// <inheritdoc />
+        public FileSystemInfo Item => (FileSystemInfo?)this.File ?? this.Directory;
+
+        /// <inheritdoc />
         public DirectoryInfo Directory { get; private set; }
 
         /// <inheritdoc />

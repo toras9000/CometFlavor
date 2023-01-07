@@ -14,7 +14,9 @@ namespace CometFlavor.Extensions.IO;
 /// </remarks>
 public interface IFileWalker
 {
-    /// <summary>列挙対象ディレクトリ</summary>
+    /// <summary>列挙対象ディレクトリまたはファイル (列挙対象アイテム)</summary>
+    FileSystemInfo Item { get; }
+    /// <summary>列挙対象ディレクトリ、あるいは列挙対象ファイルの格納ディレクトリ</summary>
     DirectoryInfo Directory { get; }
     /// <summary>列挙対象ファイル。ディレクトリ対象の場合は null となる。</summary>
     FileInfo? File { get; }

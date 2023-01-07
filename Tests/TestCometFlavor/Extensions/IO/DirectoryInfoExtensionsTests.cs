@@ -336,8 +336,13 @@ public class CombinedDisposablesTest
         };
 
         var selector = (FileInfo file) => file.ReadAllText();
-        var converter = (IFileConverter<string> context) => context.SetResult(selector(context.File));
+        var converter = (IFileConverter<string> context) =>
+        {
+            if (context.File == null) context.Item.Should().BeOfType<DirectoryInfo>().And.Be(context.Directory);
+            else context.Item.Should().BeOfType<FileInfo>().And.Be(context.File);
 
+            context.SetResult(selector(context.File));
+        };
         var testExpects = testDir.Info.EnumerateFiles("*", SearchOption.AllDirectories).Select(selector);
 
         testDir.Info.SelectFiles(converter, options: testOpt).Should().BeEquivalentTo(testExpects);
