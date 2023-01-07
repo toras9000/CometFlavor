@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -14,50 +15,59 @@ public static class StringExtensions
     /// <summary>文字列がnullや空であるかを判定する。</summary>
     /// <param name="self">対象文字列</param>
     /// <returns>nullや空ならば true</returns>
-    public static bool IsEmpty(this string? self) => string.IsNullOrEmpty(self);
+    public static bool IsEmpty([NotNullWhen(false)] this string? self)
+        => string.IsNullOrEmpty(self);
 
     /// <summary>文字列がnullや空以外であるかを判定する。</summary>
     /// <param name="self">対象文字列</param>
     /// <returns>nullや空以外であれば true</returns>
-    public static bool IsNotEmpty(this string? self) => !string.IsNullOrEmpty(self);
+    public static bool IsNotEmpty([NotNullWhen(true)] this string? self)
+        => !string.IsNullOrEmpty(self);
 
     /// <summary>文字列がnullや空白文字であるかを判定する</summary>
     /// <param name="self">対象文字列</param>
     /// <returns>nullや空白文字ならば true</returns>
-    public static bool IsWhite(this string? self) => string.IsNullOrWhiteSpace(self);
+    public static bool IsWhite([NotNullWhen(false)] this string? self)
+        => string.IsNullOrWhiteSpace(self);
 
     /// <summary>文字列がnullや空白文字以外であるかを判定する</summary>
     /// <param name="self">対象文字列</param>
     /// <returns>nullや空白文字以外ならば true</returns>
-    public static bool IsNotWhite(this string? self) => !string.IsNullOrWhiteSpace(self);
+    public static bool IsNotWhite([NotNullWhen(true)] this string? self)
+        => !string.IsNullOrWhiteSpace(self);
 
     /// <summary>文字列がnullや空であれば代替文字列を返却する。</summary>
     /// <param name="self">対象文字列</param>
     /// <param name="alt">代替文字列</param>
     /// <returns>nullや空ならば代替文字列、それ以外ならば元の文字列</returns>
-    public static string? WhenEmpty(this string? self, string? alt) => string.IsNullOrEmpty(self) ? alt : self;
+    public static string WhenEmpty(this string? self, string alt)
+        => string.IsNullOrEmpty(self) ? alt : self!;
 
     /// <summary>文字列がnullや空であれば代替文字列を返却する。</summary>
     /// <param name="self">対象文字列</param>
     /// <param name="alt">代替文字列取得デリゲート</param>
     /// <returns>nullや空ならば代替文字列、それ以外ならば元の文字列</returns>
-    public static string? WhenEmpty(this string? self, Func<string?> alt) => string.IsNullOrEmpty(self) ? alt.Invoke() : self;
+    public static string WhenEmpty(this string? self, Func<string> alt)
+        => string.IsNullOrEmpty(self) ? alt() : self!;
 
     /// <summary>文字列がnullや空白文字であれば代替文字列を返却する。</summary>
     /// <param name="self">対象文字列</param>
     /// <param name="alt">代替文字列</param>
     /// <returns>nullや空白文字ならば代替文字列、それ以外ならば元の文字列</returns>
-    public static string? WhenWhite(this string? self, string? alt) => string.IsNullOrWhiteSpace(self) ? alt : self;
+    public static string WhenWhite(this string? self, string alt)
+        => string.IsNullOrWhiteSpace(self) ? alt : self!;
 
     /// <summary>文字列がnullや空白文字であれば代替文字列を返却する。</summary>
     /// <param name="self">対象文字列</param>
     /// <param name="alt">代替文字列取得デリゲート</param>
     /// <returns>nullや空白文字ならば代替文字列、それ以外ならば元の文字列</returns>
-    public static string? WhenWhite(this string? self, Func<string?> alt) => string.IsNullOrWhiteSpace(self) ? alt.Invoke() : self;
+    public static string WhenWhite(this string? self, Func<string> alt)
+        => string.IsNullOrWhiteSpace(self) ? alt() : self!;
 
     /// <summary>文字列の最初の行を取得する。</summary>
     /// <param name="self">対象文字列</param>
     /// <returns>最初の行文字列</returns>
+    [return: NotNullIfNotNull(nameof(self))]
     public static string? FirstLine(this string? self)
     {
         if (string.IsNullOrEmpty(self)) return self;
@@ -77,6 +87,7 @@ public static class StringExtensions
     /// <summary>文字列の最後の行を取得する。</summary>
     /// <param name="self">対象文字列</param>
     /// <returns>最後の行文字列</returns>
+    [return: NotNullIfNotNull(nameof(self))]
     public static string? LastLine(this string? self)
     {
         if (string.IsNullOrEmpty(self)) return self;
@@ -96,7 +107,6 @@ public static class StringExtensions
     /// <summary>文字列の行を列挙する。</summary>
     /// <param name="self">対象文字列</param>
     /// <returns>テキスト行シーケンス</returns>
-    /// <exception cref="ArgumentNullException"></exception>
     public static IEnumerable<string> AsTextLines(this string self)
     {
         // パラメータチェック
@@ -129,7 +139,11 @@ public static class StringExtensions
     /// <param name="self">対象文字列</param>
     /// <param name="marker">検索文字</param>
     /// <param name="defaultEmpty">検索文字列が見つからない場合に空を返すか否か</param>
-    /// <returns>処理結果文字列</returns>
+    /// <returns>
+    /// 検索文字が存在する場合はそれより前の文字列。
+    /// 見つからない場合はパラメータ指定により文字列全体または空文字列。
+    /// </returns>
+    [return: NotNullIfNotNull(nameof(self))]
     public static string? BeforeAt(this string? self, char marker, bool defaultEmpty = false)
     {
         if (self == null) return null;
@@ -142,7 +156,11 @@ public static class StringExtensions
     /// <param name="self">対象文字列</param>
     /// <param name="marker">検索文字列</param>
     /// <param name="defaultEmpty">検索文字列が見つからない場合に空を返すか否か</param>
-    /// <returns>処理結果文字列</returns>
+    /// <returns>
+    /// 検索文字が存在する場合はそれより前の文字列。
+    /// 見つからない場合はパラメータ指定により文字列全体または空文字列。
+    /// </returns>
+    [return: NotNullIfNotNull(nameof(self))]
     public static string? BeforeAt(this string? self, string marker, bool defaultEmpty = false)
     {
         if (self == null) return null;
@@ -155,7 +173,11 @@ public static class StringExtensions
     /// <param name="self">対象文字列</param>
     /// <param name="marker">検索文字</param>
     /// <param name="defaultEmpty">検索文字列が見つからない場合に空を返すか否か</param>
-    /// <returns>処理結果文字列</returns>
+    /// <returns>
+    /// 検索文字が存在する場合はそれより後の文字列。
+    /// 見つからない場合はパラメータ指定により文字列全体または空文字列。
+    /// </returns>
+    [return: NotNullIfNotNull(nameof(self))]
     public static string? AfterAt(this string? self, char marker, bool defaultEmpty = false)
     {
         if (self == null) return null;
@@ -168,7 +190,11 @@ public static class StringExtensions
     /// <param name="self">対象文字列</param>
     /// <param name="marker">検索文字列</param>
     /// <param name="defaultEmpty">検索文字列が見つからない場合に空を返すか否か</param>
-    /// <returns>処理結果文字列</returns>
+    /// <returns>
+    /// 検索文字が存在する場合はそれより後の文字列。
+    /// 見つからない場合はパラメータ指定により文字列全体または空文字列。
+    /// </returns>
+    [return: NotNullIfNotNull(nameof(self))]
     public static string? AfterAt(this string? self, string marker, bool defaultEmpty = false)
     {
         if (self == null) return null;
@@ -194,9 +220,7 @@ public static class StringExtensions
     /// <param name="separator">連結する文字間に差し込む文字列</param>
     /// <returns></returns>
     public static string JoinString(this IEnumerable<string?> self, string? separator = null)
-    {
-        return string.Join(separator, self);
-    }
+        => string.Join(separator, self);
 
     /// <summary>
     /// 文字列を装飾する。
@@ -205,11 +229,9 @@ public static class StringExtensions
     /// <param name="self">元になる文字列</param>
     /// <param name="format">文字列を装飾する書式。埋め込み位置0のプレースホルダ({{0}})が含まれる必要がある。</param>
     /// <returns>装飾された文字列。元がnullまたは空の場合はそのまま返却。</returns>
+    [return: NotNullIfNotNull(nameof(self))]
     public static string? Decorate(this string? self, string format)
-    {
-        if (string.IsNullOrEmpty(self)) return self;
-        return string.Format(format, self);
-    }
+        => string.IsNullOrEmpty(self) ? self : string.Format(format, self);
 
     /// <summary>
     /// 文字列を装飾する。
@@ -218,12 +240,9 @@ public static class StringExtensions
     /// <param name="self">元になる文字列</param>
     /// <param name="decorator">文字列を装飾するデリゲート</param>
     /// <returns>装飾された文字列。元がnullまたは空の場合はそのまま返却。</returns>
+    [return: NotNullIfNotNull(nameof(self))]
     public static string? Decorate(this string? self, Func<string, string> decorator)
-    {
-        if (string.IsNullOrEmpty(self)) return self;
-        if (decorator == null) return self;
-        return decorator(self);
-    }
+        => string.IsNullOrEmpty(self) ? self : decorator == null ? self : decorator.Invoke(self);
 
     /// <summary>文字列をクォートする。</summary>
     /// <param name="text">対象文字列。nullの場合は空文字列と同じ扱いとする。</param>
@@ -248,28 +267,29 @@ public static class StringExtensions
 
 #if NET5_0_OR_GREATER
     /// <summary>文字列をアンクォートする。</summary>
-    /// <param name="text">対象文字列。</param>
+    /// <param name="self">対象文字列。</param>
     /// <param name="quotes">クォートキャラクタ候補。空の場合はダブル/シングルクォートキャラクタを候補とする。</param>
     /// <param name="escape">クォートキャラクタをエスケープしているキャラクタ。指定がない場合はクォートキャラクタ2つで</param>
     /// <returns>アンクォートされた文字列</returns>
-    public static string? Unquote(this string text, ReadOnlySpan<char> quotes = default, char? escape = null)
+    [return: NotNullIfNotNull(nameof(self))]
+    public static string? Unquote(this string self, ReadOnlySpan<char> quotes = default, char? escape = null)
     {
         // nullやクォート分の幅がなければそのまま返す。
-        if (text == null || text.Length < 2) return text;
+        if (self == null || self.Length < 2) return self;
 
         // クォートキャラクタ候補。指定があればそれを、無ければダブル・シングルクォートキャラクタを候補とする。
         var candidates = (quotes.Length == 0) ? stackalloc char[] { '"', '\'', } : quotes;
 
         // 最初の文字がクォート文字候補のいずれかであるかを判別
         // クォート文字で始まらない場合は元の文字列を返す
-        if (candidates.IndexOf(text[0]) < 0) return text;
+        if (candidates.IndexOf(self[0]) < 0) return self;
 
         // 両端がクォートキャラクタであるかを判定。
-        var quoteChar = text[0];
-        if (quoteChar != text[^1]) return text;
+        var quoteChar = self[0];
+        if (quoteChar != self[^1]) return self;
 
         // 前後クォートを除去した部分を取得
-        var core = text.AsSpan(1, text.Length - 2);
+        var core = self.AsSpan(1, self.Length - 2);
 
         // クォートキャラクタのエスケープ表現
         var escaped = (stackalloc char[] { escape ?? quoteChar, quoteChar, });
@@ -302,7 +322,6 @@ public static class StringExtensions
     /// <summary>文字列のテキスト要素を列挙する。</summary>
     /// <param name="self">対象文字列</param>
     /// <returns>テキスト要素シーケンス</returns>
-    /// <exception cref="ArgumentNullException"></exception>
     public static IEnumerable<string> AsTextElements(this string self)
     {
         // パラメータチェック
@@ -331,6 +350,7 @@ public static class StringExtensions
     /// <param name="self">元になる文字列。nullまたは空の場合は元のインスタンスをそのまま返却する。</param>
     /// <param name="count">切り出す文字要素の長さ。</param>
     /// <returns>切り出された文字列</returns>
+    [return: NotNullIfNotNull(nameof(self))]
     public static string? CutLeftElements(this string? self, int count)
     {
         // パラメータチェック
@@ -358,6 +378,7 @@ public static class StringExtensions
     /// <param name="self">元になる文字列。nullまたは空の場合は元のインスタンスをそのまま返却する。</param>
     /// <param name="count">切り出す文字要素の長さ。</param>
     /// <returns>切り出された文字列</returns>
+    [return: NotNullIfNotNull(nameof(self))]
     public static string? CutRightElements(this string? self, int count)
     {
         // パラメータチェック
