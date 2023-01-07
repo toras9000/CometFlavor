@@ -138,9 +138,9 @@ public static class StringExtensions
     /// <summary>特定文字の前部分文字列を取得する</summary>
     /// <param name="self">対象文字列</param>
     /// <param name="marker">検索文字</param>
-    /// <param name="defaultEmpty">検索文字列が見つからない場合に空を返すか否か</param>
+    /// <param name="defaultEmpty">検索文字が見つからない場合に空を返すか否か</param>
     /// <returns>
-    /// 検索文字列が存在する場合はそれより前の文字列。
+    /// 検索文字が存在する場合はそれより前の文字列。
     /// 見つからない場合はパラメータ指定により文字列全体または空文字列。
     /// </returns>
     [return: NotNullIfNotNull(nameof(self))]
@@ -159,7 +159,7 @@ public static class StringExtensions
     /// <param name="marker">検索文字列</param>
     /// <param name="defaultEmpty">検索文字列が見つからない場合に空を返すか否か</param>
     /// <returns>
-    /// 検索文字が存在する場合はそれより前の文字列。
+    /// 検索文字列が存在する場合はそれより前の文字列。
     /// 見つからない場合はパラメータ指定により文字列全体または空文字列。
     /// </returns>
     [return: NotNullIfNotNull(nameof(self))]
@@ -176,7 +176,7 @@ public static class StringExtensions
     /// <summary>特定文字の後部分文字列を取得する</summary>
     /// <param name="self">対象文字列</param>
     /// <param name="marker">検索文字</param>
-    /// <param name="defaultEmpty">検索文字列が見つからない場合に空を返すか否か</param>
+    /// <param name="defaultEmpty">検索文字が見つからない場合に空を返すか否か</param>
     /// <returns>
     /// 検索文字が存在する場合はそれより後の文字列。
     /// 見つからない場合はパラメータ指定により文字列全体または空文字列。
@@ -214,9 +214,9 @@ public static class StringExtensions
     /// <summary>特定文字まで部分文字列を取得する</summary>
     /// <param name="self">対象文字列</param>
     /// <param name="marker">検索文字</param>
-    /// <param name="defaultEmpty">検索文字列が見つからない場合に空を返すか否か</param>
+    /// <param name="defaultEmpty">検索文字が見つからない場合に空を返すか否か</param>
     /// <returns>
-    /// 検索文字が存在する場合は検索文字列での文字列。
+    /// 検索文字が存在する場合は検索文字までの文字列。
     /// 見つからない場合はパラメータ指定により文字列全体または空文字列。
     /// </returns>
     [return: NotNullIfNotNull(nameof(self))]
@@ -252,9 +252,9 @@ public static class StringExtensions
     /// <summary>特定文字からの部分文字列を取得する</summary>
     /// <param name="self">対象文字列</param>
     /// <param name="marker">検索文字</param>
-    /// <param name="defaultEmpty">検索文字列が見つからない場合に空を返すか否か</param>
+    /// <param name="defaultEmpty">検索文字が見つからない場合に空を返すか否か</param>
     /// <returns>
-    /// 検索文字が存在する場合は検索文字列からの文字列。
+    /// 検索文字が存在する場合は検索文字からの文字列。
     /// 見つからない場合はパラメータ指定により文字列全体または空文字列。
     /// </returns>
     [return: NotNullIfNotNull(nameof(self))]
