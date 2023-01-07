@@ -115,39 +115,147 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestBeforeAt()
+    public void TestBeforeAt_Char()
     {
-        "abcdef".BeforeAt('a').Should().Be("");
-        "abcdef".BeforeAt('c').Should().Be("ab");
-        "abcdef".BeforeAt('f').Should().Be("abcde");
-
+        "abcdef".BeforeAt('a', defaultEmpty: false).Should().Be("");
+        "abcdef".BeforeAt('c', defaultEmpty: false).Should().Be("ab");
+        "abcdef".BeforeAt('f', defaultEmpty: false).Should().Be("abcde");
         "abcdef".BeforeAt('g', defaultEmpty: false).Should().Be("abcdef");
-        "abcdef".BeforeAt('g', defaultEmpty: true).Should().Be("");
+        "".BeforeAt('a', defaultEmpty: false).Should().BeEmpty();
+        default(string).BeforeAt('a', defaultEmpty: false).Should().BeNull();
 
-        "abcdef".BeforeAt("ab").Should().Be("");
-        "abcdef".BeforeAt("cd").Should().Be("ab");
-        "abcdef".BeforeAt("ef").Should().Be("abcd");
-
-        "abcdef".BeforeAt("ac", defaultEmpty: false).Should().Be("abcdef");
-        "abcdef".BeforeAt("ac", defaultEmpty: true).Should().Be("");
+        "abcdef".BeforeAt('a', defaultEmpty: true).Should().Be("");
+        "abcdef".BeforeAt('c', defaultEmpty: true).Should().Be("ab");
+        "abcdef".BeforeAt('f', defaultEmpty: true).Should().Be("abcde");
+        "abcdef".BeforeAt('g', defaultEmpty: true).Should().BeEmpty();
+        "".BeforeAt('a', defaultEmpty: true).Should().BeEmpty();
+        default(string).BeforeAt('a', defaultEmpty: true).Should().BeEmpty();
     }
 
     [TestMethod]
-    public void TestAfterAt()
+    public void TestBeforeAt_Str()
     {
-        "abcdef".AfterAt('a').Should().Be("bcdef");
-        "abcdef".AfterAt('c').Should().Be("def");
-        "abcdef".AfterAt('f').Should().Be("");
+        "abcdef".BeforeAt("ab", defaultEmpty: false).Should().Be("");
+        "abcdef".BeforeAt("cd", defaultEmpty: false).Should().Be("ab");
+        "abcdef".BeforeAt("ef", defaultEmpty: false).Should().Be("abcd");
+        "abcdef".BeforeAt("ac", defaultEmpty: false).Should().Be("abcdef");
+        "".BeforeAt("ab", defaultEmpty: false).Should().BeEmpty();
+        default(string).BeforeAt("ab", defaultEmpty: false).Should().BeNull();
 
+        "abcdef".BeforeAt("ab", defaultEmpty: true).Should().Be("");
+        "abcdef".BeforeAt("cd", defaultEmpty: true).Should().Be("ab");
+        "abcdef".BeforeAt("ef", defaultEmpty: true).Should().Be("abcd");
+        "abcdef".BeforeAt("ac", defaultEmpty: true).Should().BeEmpty();
+        "".BeforeAt("ab", defaultEmpty: true).Should().BeEmpty();
+        default(string).BeforeAt("ab", defaultEmpty: true).Should().BeEmpty();
+    }
+
+    [TestMethod]
+    public void TestAfterAt_Char()
+    {
+        "abcdef".AfterAt('a', defaultEmpty: false).Should().Be("bcdef");
+        "abcdef".AfterAt('c', defaultEmpty: false).Should().Be("def");
+        "abcdef".AfterAt('f', defaultEmpty: false).Should().Be("");
         "abcdef".AfterAt('g', defaultEmpty: false).Should().Be("abcdef");
-        "abcdef".AfterAt('g', defaultEmpty: true).Should().Be("");
+        "".AfterAt('a', defaultEmpty: false).Should().BeEmpty();
+        default(string).AfterAt('a', defaultEmpty: false).Should().BeNull();
 
-        "abcdef".AfterAt("ab").Should().Be("cdef");
-        "abcdef".AfterAt("cd").Should().Be("ef");
-        "abcdef".AfterAt("ef").Should().Be("");
+        "abcdef".AfterAt('a', defaultEmpty: true).Should().Be("bcdef");
+        "abcdef".AfterAt('c', defaultEmpty: true).Should().Be("def");
+        "abcdef".AfterAt('f', defaultEmpty: true).Should().Be("");
+        "abcdef".AfterAt('g', defaultEmpty: true).Should().BeEmpty();
+        "".AfterAt('a', defaultEmpty: true).Should().BeEmpty();
+        default(string).AfterAt('a', defaultEmpty: true).Should().BeEmpty();
+    }
 
+    [TestMethod]
+    public void TestAfterAt_Str()
+    {
+        "abcdef".AfterAt("ab", defaultEmpty: false).Should().Be("cdef");
+        "abcdef".AfterAt("cd", defaultEmpty: false).Should().Be("ef");
+        "abcdef".AfterAt("ef", defaultEmpty: false).Should().Be("");
         "abcdef".AfterAt("ac", defaultEmpty: false).Should().Be("abcdef");
-        "abcdef".AfterAt("ac", defaultEmpty: true).Should().Be("");
+        "".AfterAt("ab", defaultEmpty: false).Should().BeEmpty();
+        default(string).AfterAt("ab", defaultEmpty: false).Should().BeNull();
+
+        "abcdef".AfterAt("ab", defaultEmpty: true).Should().Be("cdef");
+        "abcdef".AfterAt("cd", defaultEmpty: true).Should().Be("ef");
+        "abcdef".AfterAt("ef", defaultEmpty: true).Should().Be("");
+        "abcdef".AfterAt("ac", defaultEmpty: true).Should().BeEmpty();
+        "".AfterAt("ab", defaultEmpty: true).Should().BeEmpty();
+        default(string).AfterAt("ab", defaultEmpty: true).Should().BeEmpty();
+    }
+
+    [TestMethod]
+    public void TestTakeTo_Char()
+    {
+        "abcdef".TakeTo('a', defaultEmpty: false).Should().Be("a");
+        "abcdef".TakeTo('c', defaultEmpty: false).Should().Be("abc");
+        "abcdef".TakeTo('f', defaultEmpty: false).Should().Be("abcdef");
+        "abcdef".TakeTo('g', defaultEmpty: false).Should().Be("abcdef");
+        "".TakeTo('a', defaultEmpty: false).Should().BeEmpty();
+        default(string).TakeTo('a', defaultEmpty: false).Should().BeNull();
+
+        "abcdef".TakeTo('a', defaultEmpty: true).Should().Be("a");
+        "abcdef".TakeTo('c', defaultEmpty: true).Should().Be("abc");
+        "abcdef".TakeTo('f', defaultEmpty: true).Should().Be("abcdef");
+        "abcdef".TakeTo('g', defaultEmpty: true).Should().BeEmpty();
+        "".TakeTo('a', defaultEmpty: true).Should().BeEmpty();
+        default(string).TakeTo('a', defaultEmpty: true).Should().BeEmpty();
+    }
+
+    [TestMethod]
+    public void TestTakeTo_Str()
+    {
+        "abcdef".TakeTo("ab", defaultEmpty: false).Should().Be("ab");
+        "abcdef".TakeTo("cd", defaultEmpty: false).Should().Be("abcd");
+        "abcdef".TakeTo("ef", defaultEmpty: false).Should().Be("abcdef");
+        "abcdef".TakeTo("ac", defaultEmpty: false).Should().Be("abcdef");
+        "".TakeTo("ab", defaultEmpty: false).Should().BeEmpty();
+        default(string).TakeTo("ab", defaultEmpty: false).Should().BeNull();
+
+        "abcdef".TakeTo("ab", defaultEmpty: true).Should().Be("ab");
+        "abcdef".TakeTo("cd", defaultEmpty: true).Should().Be("abcd");
+        "abcdef".TakeTo("ef", defaultEmpty: true).Should().Be("abcdef");
+        "abcdef".TakeTo("ac", defaultEmpty: true).Should().BeEmpty();
+        "".TakeTo("ab", defaultEmpty: true).Should().BeEmpty();
+        default(string).TakeTo("ab", defaultEmpty: true).Should().BeEmpty();
+    }
+
+    [TestMethod]
+    public void TestTakeFrom_Char()
+    {
+        "abcdef".TakeFrom('a', defaultEmpty: false).Should().Be("abcdef");
+        "abcdef".TakeFrom('c', defaultEmpty: false).Should().Be("cdef");
+        "abcdef".TakeFrom('f', defaultEmpty: false).Should().Be("f");
+        "abcdef".TakeFrom('g', defaultEmpty: false).Should().Be("abcdef");
+        "".TakeFrom('a', defaultEmpty: false).Should().BeEmpty();
+        default(string).TakeFrom('a', defaultEmpty: false).Should().BeNull();
+
+        "abcdef".TakeFrom('a', defaultEmpty: true).Should().Be("abcdef");
+        "abcdef".TakeFrom('c', defaultEmpty: true).Should().Be("cdef");
+        "abcdef".TakeFrom('f', defaultEmpty: true).Should().Be("f");
+        "abcdef".TakeFrom('g', defaultEmpty: true).Should().BeEmpty();
+        "".TakeFrom('a', defaultEmpty: true).Should().BeEmpty();
+        default(string).TakeFrom('a', defaultEmpty: true).Should().BeEmpty();
+    }
+
+    [TestMethod]
+    public void TestTakeFrom_Str()
+    {
+        "abcdef".TakeFrom("ab", defaultEmpty: false).Should().Be("abcdef");
+        "abcdef".TakeFrom("cd", defaultEmpty: false).Should().Be("cdef");
+        "abcdef".TakeFrom("ef", defaultEmpty: false).Should().Be("ef");
+        "abcdef".TakeFrom("ac", defaultEmpty: false).Should().Be("abcdef");
+        "".TakeFrom("ab", defaultEmpty: false).Should().BeEmpty();
+        default(string).TakeFrom("ab", defaultEmpty: false).Should().BeNull();
+
+        "abcdef".TakeFrom("ab", defaultEmpty: true).Should().Be("abcdef");
+        "abcdef".TakeFrom("cd", defaultEmpty: true).Should().Be("cdef");
+        "abcdef".TakeFrom("ef", defaultEmpty: true).Should().Be("ef");
+        "abcdef".TakeFrom("ac", defaultEmpty: true).Should().BeEmpty();
+        "".TakeFrom("ab", defaultEmpty: true).Should().BeEmpty();
+        default(string).TakeFrom("ab", defaultEmpty: true).Should().BeEmpty();
     }
 
     [TestMethod]

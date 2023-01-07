@@ -140,16 +140,18 @@ public static class StringExtensions
     /// <param name="marker">検索文字</param>
     /// <param name="defaultEmpty">検索文字列が見つからない場合に空を返すか否か</param>
     /// <returns>
-    /// 検索文字が存在する場合はそれより前の文字列。
+    /// 検索文字列が存在する場合はそれより前の文字列。
     /// 見つからない場合はパラメータ指定により文字列全体または空文字列。
     /// </returns>
     [return: NotNullIfNotNull(nameof(self))]
     public static string? BeforeAt(this string? self, char marker, bool defaultEmpty = false)
     {
-        if (self == null) return null;
-        var idx = self.IndexOf(marker);
-        if (idx < 0) return defaultEmpty ? "" : self;
-        return self.Substring(0, idx);
+        if (self != null)
+        {
+            var idx = self.IndexOf(marker);
+            if (0 <= idx) return self.Substring(0, idx);
+        }
+        return defaultEmpty ? "" : self;
     }
 
     /// <summary>特定文字列の前部分文字列を取得する</summary>
@@ -163,10 +165,12 @@ public static class StringExtensions
     [return: NotNullIfNotNull(nameof(self))]
     public static string? BeforeAt(this string? self, string marker, bool defaultEmpty = false)
     {
-        if (self == null) return null;
-        var idx = self.IndexOf(marker);
-        if (idx < 0) return defaultEmpty ? "" : self;
-        return self.Substring(0, idx);
+        if (self != null)
+        {
+            var idx = self.IndexOf(marker);
+            if (0 <= idx) return self.Substring(0, idx);
+        }
+        return defaultEmpty ? "" : self;
     }
 
     /// <summary>特定文字の後部分文字列を取得する</summary>
@@ -180,10 +184,12 @@ public static class StringExtensions
     [return: NotNullIfNotNull(nameof(self))]
     public static string? AfterAt(this string? self, char marker, bool defaultEmpty = false)
     {
-        if (self == null) return null;
-        var idx = self.IndexOf(marker);
-        if (idx < 0) return defaultEmpty ? "" : self;
-        return self.Substring(idx + 1);
+        if (self != null)
+        {
+            var idx = self.IndexOf(marker);
+            if (0 <= idx) return self.Substring(idx + 1);
+        }
+        return defaultEmpty ? "" : self;
     }
 
     /// <summary>特定文字列の後部分文字列を取得する</summary>
@@ -191,16 +197,94 @@ public static class StringExtensions
     /// <param name="marker">検索文字列</param>
     /// <param name="defaultEmpty">検索文字列が見つからない場合に空を返すか否か</param>
     /// <returns>
-    /// 検索文字が存在する場合はそれより後の文字列。
+    /// 検索文字列が存在する場合はそれより後の文字列。
     /// 見つからない場合はパラメータ指定により文字列全体または空文字列。
     /// </returns>
     [return: NotNullIfNotNull(nameof(self))]
     public static string? AfterAt(this string? self, string marker, bool defaultEmpty = false)
     {
-        if (self == null) return null;
-        var idx = self.IndexOf(marker);
-        if (idx < 0) return defaultEmpty ? "" : self;
-        return self.Substring(idx + marker.Length);
+        if (self != null)
+        {
+            var idx = self.IndexOf(marker);
+            if (0 <= idx) return self.Substring(idx + marker.Length);
+        }
+        return defaultEmpty ? "" : self;
+    }
+
+    /// <summary>特定文字まで部分文字列を取得する</summary>
+    /// <param name="self">対象文字列</param>
+    /// <param name="marker">検索文字</param>
+    /// <param name="defaultEmpty">検索文字列が見つからない場合に空を返すか否か</param>
+    /// <returns>
+    /// 検索文字が存在する場合は検索文字列での文字列。
+    /// 見つからない場合はパラメータ指定により文字列全体または空文字列。
+    /// </returns>
+    [return: NotNullIfNotNull(nameof(self))]
+    public static string? TakeTo(this string? self, char marker, bool defaultEmpty = false)
+    {
+        if (self != null)
+        {
+            var idx = self.IndexOf(marker);
+            if (0 <= idx) return self.Substring(0, idx + 1);
+        }
+        return defaultEmpty ? "" : self;
+    }
+
+    /// <summary>特定文字列までの部分文字列を取得する</summary>
+    /// <param name="self">対象文字列</param>
+    /// <param name="marker">検索文字列</param>
+    /// <param name="defaultEmpty">検索文字列が見つからない場合に空を返すか否か</param>
+    /// <returns>
+    /// 検索文字列が存在する場合は検索文字列までの文字列。
+    /// 見つからない場合はパラメータ指定により文字列全体または空文字列。
+    /// </returns>
+    [return: NotNullIfNotNull(nameof(self))]
+    public static string? TakeTo(this string? self, string marker, bool defaultEmpty = false)
+    {
+        if (self != null)
+        {
+            var idx = self.IndexOf(marker);
+            if (0 <= idx) return self.Substring(0, idx + marker.Length);
+        }
+        return defaultEmpty ? "" : self;
+    }
+
+    /// <summary>特定文字からの部分文字列を取得する</summary>
+    /// <param name="self">対象文字列</param>
+    /// <param name="marker">検索文字</param>
+    /// <param name="defaultEmpty">検索文字列が見つからない場合に空を返すか否か</param>
+    /// <returns>
+    /// 検索文字が存在する場合は検索文字列からの文字列。
+    /// 見つからない場合はパラメータ指定により文字列全体または空文字列。
+    /// </returns>
+    [return: NotNullIfNotNull(nameof(self))]
+    public static string? TakeFrom(this string? self, char marker, bool defaultEmpty = false)
+    {
+        if (self != null)
+        {
+            var idx = self.IndexOf(marker);
+            if (0 <= idx) return self.Substring(idx);
+        }
+        return defaultEmpty ? "" : self;
+    }
+
+    /// <summary>特定文字列からの部分文字列を取得する</summary>
+    /// <param name="self">対象文字列</param>
+    /// <param name="marker">検索文字列</param>
+    /// <param name="defaultEmpty">検索文字列が見つからない場合に空を返すか否か</param>
+    /// <returns>
+    /// 検索文字列が存在する場合は検索文字列からの文字列。
+    /// 見つからない場合はパラメータ指定により文字列全体または空文字列。
+    /// </returns>
+    [return: NotNullIfNotNull(nameof(self))]
+    public static string? TakeFrom(this string? self, string marker, bool defaultEmpty = false)
+    {
+        if (self != null)
+        {
+            var idx = self.IndexOf(marker);
+            if (0 <= idx) return self.Substring(idx);
+        }
+        return defaultEmpty ? "" : self;
     }
 
     /// <summary>文字列のシーケンスからnull/空を取り除く。</summary>
