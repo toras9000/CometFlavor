@@ -108,4 +108,47 @@ public class StringBuilderExtensionsTests
         data.StartsWith(Enumerable.Repeat("abcdef", 50).JoinString() + "A", StringComparison.Ordinal).Should().BeFalse();
         data.StartsWith(Enumerable.Repeat("abcdef", 50).JoinString() + "B", StringComparison.OrdinalIgnoreCase).Should().BeFalse();
     }
+
+    [TestMethod()]
+    public void PadLeft()
+    {
+        new StringBuilder().PadLeft(3).ToString().Should().Be("   ");
+        new StringBuilder("").PadLeft(3).ToString().Should().Be("   ");
+        new StringBuilder("x").PadLeft(3).ToString().Should().Be("  x");
+        new StringBuilder("asd").PadLeft(3).ToString().Should().Be("asd");
+        new StringBuilder("qwer").PadLeft(3).ToString().Should().Be("qwer");
+        new StringBuilder("").PadLeft(0).ToString().Should().Be("");
+
+        new StringBuilder().PadLeft(3, 'P').ToString().Should().Be("PPP");
+        new StringBuilder("").PadLeft(3, 'P').ToString().Should().Be("PPP");
+        new StringBuilder("x").PadLeft(3, 'P').ToString().Should().Be("PPx");
+        new StringBuilder("asd").PadLeft(3, 'P').ToString().Should().Be("asd");
+        new StringBuilder("qwer").PadLeft(3, 'P').ToString().Should().Be("qwer");
+        new StringBuilder("").PadLeft(0, 'P').ToString().Should().Be("");
+
+        new Action(() => new StringBuilder("").PadLeft(-1)).Should().Throw<Exception>();
+        new Action(() => default(StringBuilder).PadLeft(2)).Should().Throw<Exception>();
+    }
+
+    [TestMethod()]
+    public void PadRight()
+    {
+        new StringBuilder().PadRight(3).ToString().Should().Be("   ");
+        new StringBuilder("").PadRight(3).ToString().Should().Be("   ");
+        new StringBuilder("x").PadRight(3).ToString().Should().Be("x  ");
+        new StringBuilder("asd").PadRight(3).ToString().Should().Be("asd");
+        new StringBuilder("qwer").PadRight(3).ToString().Should().Be("qwer");
+        new StringBuilder("").PadRight(0).ToString().Should().Be("");
+
+        new StringBuilder().PadRight(3, 'P').ToString().Should().Be("PPP");
+        new StringBuilder("").PadRight(3, 'P').ToString().Should().Be("PPP");
+        new StringBuilder("x").PadRight(3, 'P').ToString().Should().Be("xPP");
+        new StringBuilder("asd").PadRight(3, 'P').ToString().Should().Be("asd");
+        new StringBuilder("qwer").PadRight(3, 'P').ToString().Should().Be("qwer");
+        new StringBuilder("").PadRight(0, 'P').ToString().Should().Be("");
+
+        new Action(() => new StringBuilder("").PadRight(-1)).Should().Throw<Exception>();
+        new Action(() => default(StringBuilder).PadRight(2)).Should().Throw<Exception>();
+    }
+
 }

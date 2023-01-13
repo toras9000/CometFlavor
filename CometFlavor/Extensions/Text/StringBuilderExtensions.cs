@@ -171,5 +171,57 @@ public static class StringBuilderExtensions
         }
     }
 #endif
+
+    /// <summary>文字列の先頭に指定の幅まで文字を埋める</summary>
+    /// <param name="self">対象の文字列ビルダ</param>
+    /// <param name="totalWidth">埋め込み後の最大文字数。対象がこの文字数以上であれば埋め込みは行われない。</param>
+    /// <param name="paddingChar">埋め込み文字</param>
+    /// <returns>対象インスタンスをそのまま返却する</returns>
+    public static StringBuilder PadLeft(this StringBuilder self, int totalWidth, char paddingChar = ' ')
+    {
+        // パラメータの検証 
+        if (self == null) throw new ArgumentNullException(nameof(self));
+        if (totalWidth < 0) throw new ArgumentException($"Invalid {nameof(totalWidth)}");
+
+        // 元々指定サイズ以上の長さであれば追加しない
+        if (totalWidth <= self.Length) return self;
+
+        // 必要なサイズを算出
+        var padCount = totalWidth - self.Length;
+#if NETCOREAPP2_1_OR_GREATER
+        if (padCount < 128)
+        {
+            // 必要数が小さい場合はスタック上で。
+            var padding = (stackalloc char[padCount]);
+            padding.Fill(paddingChar);
+            return self.Insert(0, padding);
+        }
+        else
+#endif
+        {
+            // 一定以上の長さが必要ならば普通に。
+            return self.Insert(0, new string(paddingChar, padCount));
+        }
+    }
+
+    /// <summary>文字列の末尾に指定の幅まで文字を埋める</summary>
+    /// <param name="self">対象の文字列ビルダ</param>
+    /// <param name="totalWidth">埋め込み後の最大文字数。対象がこの文字数以上であれば埋め込みは行われない。</param>
+    /// <param name="paddingChar">埋め込み文字</param>
+    /// <returns>対象インスタンスをそのまま返却する</returns>
+    public static StringBuilder PadRight(this StringBuilder self, int totalWidth, char paddingChar = ' ')
+    {
+        // パラメータの検証 
+        if (self == null) throw new ArgumentNullException(nameof(self));
+        if (totalWidth < 0) throw new ArgumentException($"Invalid {nameof(totalWidth)}");
+
+        // 元々指定サイズ以上の長さであれば追加しない
+        if (totalWidth < self.Length) return self;
+
+        // 必要なサイズ分のキャラクタを追加
+        var padCount = totalWidth - self.Length;
+        return self.Append(paddingChar, padCount);
+    }
+
 }
 
