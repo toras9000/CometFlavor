@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -292,6 +293,58 @@ public static class FileInfoExtensions
 #endif
 
 #if NET6_0_OR_GREATER
+    /// <summary>ファイル内容が指定のバイト列となるように書き込む。</summary>
+    /// <param name="self">対象ファイルのFileInfo</param>
+    /// <param name="bytes">書き込むバイト列</param>
+    /// <param name="options">ファイルストリームを開くオプション。Access プロパティは無視する。</param>
+    public static void WriteAllBytes(this FileInfo self, ReadOnlySpan<byte> bytes, FileStreamOptions? options = null)
+    {
+        if (self == null) throw new ArgumentNullException(nameof(self));
+        using var stream = new FileStream(self.FullName, createStreamWriteOptions(options));
+        stream.Write(bytes);
+        self.Refresh();
+    }
+
+    /// <summary>ファイル内容が指定のバイト列となるように書き込む。</summary>
+    /// <param name="self">対象ファイルのFileInfo</param>
+    /// <param name="bytes">書き込むバイト列</param>
+    /// <param name="options">ファイルストリームを開くオプション。Access プロパティは無視する。</param>
+    /// <param name="cancelToken">キャンセルトークン</param>
+    public static async ValueTask WriteAllBytesAsync(this FileInfo self, ReadOnlyMemory<byte> bytes, FileStreamOptions? options = null, CancellationToken cancelToken = default)
+    {
+        if (self == null) throw new ArgumentNullException(nameof(self));
+        using var stream = new FileStream(self.FullName, createStreamWriteOptions(options));
+        await stream.WriteAsync(bytes, cancelToken);
+        self.Refresh();
+    }
+
+    /// <summary>ファイル内容が指定のテキストとなるように書き込む。</summary>
+    /// <param name="self">対象ファイルのFileInfo</param>
+    /// <param name="contents">書き込むテキスト</param>
+    /// <param name="options">ファイルストリームを開くオプション。Access プロパティは無視する。</param>
+    /// <param name="encoding">書き込むテキストをエンコードするテキストエンコーディング</param>
+    public static void WriteAllText(this FileInfo self, ReadOnlySpan<char> contents, FileStreamOptions? options = null, Encoding? encoding = null)
+    {
+        if (self == null) throw new ArgumentNullException(nameof(self));
+        using var writer = self.CreateTextWriter(createStreamWriteOptions(options), encoding);
+        writer.Write(contents);
+        self.Refresh();
+    }
+
+    /// <summary>ファイル内容が指定のバイト列となるように書き込む。</summary>
+    /// <param name="self">対象ファイルのFileInfo</param>
+    /// <param name="contents">書き込むテキスト</param>
+    /// <param name="options">ファイルストリームを開くオプション。Access プロパティは無視する。</param>
+    /// <param name="encoding">書き込むテキストをエンコードするテキストエンコーディング</param>
+    /// <param name="cancelToken">キャンセルトークン</param>
+    public static async ValueTask WriteAllTextAsync(this FileInfo self, ReadOnlyMemory<char> contents, FileStreamOptions? options = null, Encoding? encoding = null, CancellationToken cancelToken = default)
+    {
+        if (self == null) throw new ArgumentNullException(nameof(self));
+        using var writer = self.CreateTextWriter(createStreamWriteOptions(options), encoding);
+        await writer.WriteAsync(contents, cancelToken);
+        self.Refresh();
+    }
+
     /// <summary>ファイル内容をテキストで読み取るリーダーを生成する。</summary>
     /// <param name="self">対象ファイルのFileInfo</param>
     /// <param name="encoding">ファイル内容をデコードするテキストエンコーディング</param>
@@ -395,5 +448,34 @@ public static class FileInfoExtensions
 
         return DirectoryInfoExtensions.SegmentsToReletivePath(self.GetPathSegments(), baseDir, ignoreCase);
     }
+    #endregion
+
+    // 非公開メソッド
+    #region Helper
+#if NET6_0_OR_GREATER
+    /// <summary>Write向けのストリームオプションを生成する。</summary>
+    /// <param name="options">元にするオプション。nullの場合はデフォルトの値とする。</param>
+    /// <returns>生成したオプション</returns>
+    private static FileStreamOptions createStreamWriteOptions(FileStreamOptions? options = null)
+    {
+        var writeOpt = new FileStreamOptions();
+        writeOpt.Mode = FileMode.Create;
+        writeOpt.Access = FileAccess.Write;
+        writeOpt.Share = FileShare.Read;
+        if (options != null)
+        {
+            writeOpt.Mode = options.Mode;
+            writeOpt.Share = options.Share;
+            writeOpt.Options = options.Options;
+            writeOpt.PreallocationSize = options.PreallocationSize;
+            writeOpt.BufferSize = options.BufferSize;
+#if NET7_0_OR_GREATER
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) writeOpt.UnixCreateMode = options.UnixCreateMode;
+#endif
+        }
+
+        return writeOpt;
+    }
+#endif
     #endregion
 }

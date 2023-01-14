@@ -344,6 +344,25 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
+    public void TestWriteAllBytes_span()
+    {
+        // テスト用に一時ディレクトリ
+        using var tempDir = new TempDirectory();
+
+        // テストデータ
+        var data = Enumerable.Range(30, 256).Select(n => (byte)n).ToArray();
+
+        // テストファイル
+        var target = tempDir.Info.GetRelativeFile("test.txt");
+
+        // テスト対象実行
+        target.WriteAllBytes(data.AsSpan(), options: new() { Mode = FileMode.Create, BufferSize = 1, });
+
+        // 検証
+        File.ReadAllBytes(target.FullName).Should().Equal(data);
+    }
+
+    [TestMethod]
     public void TestWriteAllText()
     {
         // テスト用に一時ディレクトリ
@@ -377,6 +396,26 @@ public class FileInfoExtensionsTests
 
         // テスト対象実行
         target.WriteAllText(text, enc);
+
+        // 検証
+        File.ReadAllText(target.FullName, enc).Should().Be(text);
+    }
+
+    [TestMethod]
+    public void TestWriteAllText_span()
+    {
+        // テスト用に一時ディレクトリ
+        using var tempDir = new TempDirectory();
+
+        // テストデータ
+        var enc = Encoding.GetEncoding("euc-jp");   // BOMのような判別方法がないもの
+        var text = "あいう\nえおか";
+
+        // テストファイル
+        var target = tempDir.Info.GetRelativeFile("test.txt");
+
+        // テスト対象実行
+        target.WriteAllText(text.AsSpan(), encoding: enc, options: new() { Mode = FileMode.Create, BufferSize = 1, });
 
         // 検証
         File.ReadAllText(target.FullName, enc).Should().Be(text);
@@ -451,6 +490,25 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
+    public async Task TestWriteAllBytesAsync_span()
+    {
+        // テスト用に一時ディレクトリ
+        using var tempDir = new TempDirectory();
+
+        // テストデータ
+        var data = Enumerable.Range(30, 256).Select(n => (byte)n).ToArray();
+
+        // テストファイル
+        var target = tempDir.Info.GetRelativeFile("test.txt");
+
+        // テスト対象実行
+        await target.WriteAllBytesAsync(data, options: new() { Mode = FileMode.Create, BufferSize = 1, });
+
+        // 検証
+        File.ReadAllBytes(target.FullName).Should().Equal(data);
+    }
+
+    [TestMethod]
     public async Task TestWriteAllTextAsync()
     {
         // テスト用に一時ディレクトリ
@@ -515,6 +573,31 @@ public class FileInfoExtensionsTests
 
     [TestMethod]
     public async Task TestWriteAllLinesAsync_enc()
+    {
+        // テスト用に一時ディレクトリ
+        using var tempDir = new TempDirectory();
+
+        // テストデータ
+        var enc = Encoding.GetEncoding("euc-jp");   // BOMのような判別方法がないもの
+        var texts = new[]
+        {
+            "あいう",
+            "えおか",
+            "きくけ",
+        };
+
+        // テストファイル
+        var target = tempDir.Info.GetRelativeFile("test.txt");
+
+        // テスト対象実行
+        await target.WriteAllLinesAsync(texts, enc);
+
+        // 検証
+        File.ReadAllLines(target.FullName, enc).Should().Equal(texts);
+    }
+
+    [TestMethod]
+    public async Task TestWriteAllLinesAsync_span()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
