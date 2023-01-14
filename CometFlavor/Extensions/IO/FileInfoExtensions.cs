@@ -286,7 +286,7 @@ public static class FileInfoExtensions
     public static async ValueTask WriteAllLinesAsync(this FileInfo self, IEnumerable<string> contents, Encoding encoding, CancellationToken cancelToken = default)
     {
         if (self == null) throw new ArgumentNullException(nameof(self));
-        await File.WriteAllLinesAsync(self.FullName, contents, encoding).ConfigureAwait(false);
+        await File.WriteAllLinesAsync(self.FullName, contents, encoding, cancelToken).ConfigureAwait(false);
         self.Refresh();
     }
 #endif
