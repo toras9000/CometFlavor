@@ -23,7 +23,6 @@
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
   <PropertyGroup>
-    <PackageOutputPath>$(MSBuildThisFileDirectory)/../packages</PackageOutputPath>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <EmbedAllSources>true</EmbedAllSources>
@@ -35,11 +34,15 @@
   <PropertyGroup>
     <DeterministicSourcePaths>true</DeterministicSourcePaths>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="System.Memory" Version="4.5.5" Condition="'$(TargetFramework)'=='netstandard2.0'" />
-  </ItemGroup>
+  <PropertyGroup>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)/../packages/$(Configuration)</PackageOutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <SourceRoot Include="$(MSBuildThisFileDirectory)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Memory" Version="4.5.5" Condition="'$(TargetFramework)'=='netstandard2.0'" />
   </ItemGroup>
   <PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
     <NoWarn>1701;1702;8602;8604</NoWarn>

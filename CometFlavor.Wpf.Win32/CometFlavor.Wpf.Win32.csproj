@@ -25,7 +25,6 @@
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
   <PropertyGroup>
-    <PackageOutputPath>$(MSBuildThisFileDirectory)/../packages</PackageOutputPath>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <EmbedAllSources>true</EmbedAllSources>
@@ -36,6 +35,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <DeterministicSourcePaths>true</DeterministicSourcePaths>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)/../packages/$(Configuration)</PackageOutputPath>
   </PropertyGroup>
   <ItemGroup>
     <SourceRoot Include="$(MSBuildThisFileDirectory)" />
