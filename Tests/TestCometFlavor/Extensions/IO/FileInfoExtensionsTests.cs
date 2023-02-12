@@ -60,7 +60,7 @@ public class FileInfoExtensionsTests
         using var tempDir = new TempDirectory();
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テスト対象にテストデータ書き込み
         var data = Enumerable.Range(30, 256).Select(n => (byte)n).ToArray();
@@ -78,7 +78,7 @@ public class FileInfoExtensionsTests
         using var tempDir = new TempDirectory();
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テスト対象にテストデータ書き込み
         var text = "あいう\nえおか";
@@ -96,7 +96,7 @@ public class FileInfoExtensionsTests
         using var tempDir = new TempDirectory();
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テスト対象にテストデータ書き込み
         var enc = Encoding.GetEncoding("euc-jp");   // BOMのような判別方法がないもの
@@ -115,7 +115,7 @@ public class FileInfoExtensionsTests
         using var tempDir = new TempDirectory();
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テスト対象にテストデータ書き込み
         var texts = new[]
@@ -138,7 +138,7 @@ public class FileInfoExtensionsTests
         using var tempDir = new TempDirectory();
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テスト対象にテストデータ書き込み
         var enc = Encoding.GetEncoding("euc-jp");   // BOMのような判別方法がないもの
@@ -162,7 +162,7 @@ public class FileInfoExtensionsTests
         using var tempDir = new TempDirectory();
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テスト対象にテストデータ書き込み
         var texts = new[]
@@ -185,7 +185,7 @@ public class FileInfoExtensionsTests
         using var tempDir = new TempDirectory();
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テスト対象にテストデータ書き込み
         var enc = Encoding.GetEncoding("euc-jp");   // BOMのような判別方法がないもの
@@ -209,7 +209,7 @@ public class FileInfoExtensionsTests
         using var tempDir = new TempDirectory();
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テスト対象にテストデータ書き込み
         var data = Enumerable.Range(30, 256).Select(n => (byte)n).ToArray();
@@ -227,7 +227,7 @@ public class FileInfoExtensionsTests
         using var tempDir = new TempDirectory();
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テスト対象にテストデータ書き込み
         var text = "あいう\nえおか";
@@ -245,7 +245,7 @@ public class FileInfoExtensionsTests
         using var tempDir = new TempDirectory();
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テスト対象にテストデータ書き込み
         var enc = Encoding.GetEncoding("euc-jp");   // BOMのような判別方法がないもの
@@ -264,7 +264,7 @@ public class FileInfoExtensionsTests
         using var tempDir = new TempDirectory();
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テスト対象にテストデータ書き込み
         var texts = new[]
@@ -287,7 +287,7 @@ public class FileInfoExtensionsTests
         using var tempDir = new TempDirectory();
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テスト対象にテストデータ書き込み
         var enc = Encoding.GetEncoding("euc-jp");   // BOMのような判別方法がないもの
@@ -311,7 +311,7 @@ public class FileInfoExtensionsTests
         using var tempDir = new TempDirectory();
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テスト対象にテストデータ書き込み
         var enc = Encoding.GetEncoding("euc-jp");   // BOMのような判別方法がないもの
@@ -334,7 +334,7 @@ public class FileInfoExtensionsTests
         var data = Enumerable.Range(30, 256).Select(n => (byte)n).ToArray();
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テスト対象実行
         target.WriteAllBytes(data);
@@ -353,7 +353,7 @@ public class FileInfoExtensionsTests
         var data = Enumerable.Range(30, 256).Select(n => (byte)n).ToArray();
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テスト対象実行
         target.WriteAllBytes(data.AsSpan(), options: new() { Mode = FileMode.Create, BufferSize = 1, });
@@ -372,7 +372,7 @@ public class FileInfoExtensionsTests
         var text = "あいう\nえおか";
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テスト対象実行
         target.WriteAllText(text);
@@ -392,7 +392,7 @@ public class FileInfoExtensionsTests
         var text = "あいう\nえおか";
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テスト対象実行
         target.WriteAllText(text, enc);
@@ -412,7 +412,7 @@ public class FileInfoExtensionsTests
         var text = "あいう\nえおか";
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テスト対象実行
         target.WriteAllText(text.AsSpan(), encoding: enc, options: new() { Mode = FileMode.Create, BufferSize = 1, });
@@ -436,7 +436,7 @@ public class FileInfoExtensionsTests
         };
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テスト対象実行
         target.WriteAllLines(texts);
@@ -461,7 +461,7 @@ public class FileInfoExtensionsTests
         };
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テスト対象実行
         target.WriteAllLines(texts, enc);
@@ -480,7 +480,7 @@ public class FileInfoExtensionsTests
         var data = Enumerable.Range(30, 256).Select(n => (byte)n).ToArray();
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テスト対象実行
         await target.WriteAllBytesAsync(data);
@@ -499,7 +499,7 @@ public class FileInfoExtensionsTests
         var data = Enumerable.Range(30, 256).Select(n => (byte)n).ToArray();
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テスト対象実行
         await target.WriteAllBytesAsync(data, options: new() { Mode = FileMode.Create, BufferSize = 1, });
@@ -518,7 +518,7 @@ public class FileInfoExtensionsTests
         var text = "あいう\nえおか";
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テスト対象実行
         await target.WriteAllTextAsync(text);
@@ -538,7 +538,7 @@ public class FileInfoExtensionsTests
         var text = "あいう\nえおか";
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テスト対象実行
         await target.WriteAllTextAsync(text, enc);
@@ -562,7 +562,7 @@ public class FileInfoExtensionsTests
         };
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テスト対象実行
         await target.WriteAllLinesAsync(texts);
@@ -587,7 +587,7 @@ public class FileInfoExtensionsTests
         };
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テスト対象実行
         await target.WriteAllLinesAsync(texts, enc);
@@ -612,7 +612,7 @@ public class FileInfoExtensionsTests
         };
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テスト対象実行
         await target.WriteAllLinesAsync(texts, enc);
@@ -628,7 +628,7 @@ public class FileInfoExtensionsTests
         using var tempDir = new TempDirectory();
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // テストデータ
         var enc = Encoding.GetEncoding("euc-jp");   // BOMのような判別方法がないもの
@@ -651,7 +651,7 @@ public class FileInfoExtensionsTests
         using var tempDir = new TempDirectory();
 
         // テストファイル
-        var target = tempDir.Info.GetRelativeFile("test.txt");
+        var target = tempDir.Info.RelativeFile("test.txt");
 
         // 準備
         var enc = Encoding.GetEncoding("euc-jp");   // BOMのような判別方法がないもの
