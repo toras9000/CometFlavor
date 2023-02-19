@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CometFlavor.Utility;
 
 namespace CometFlavor.Extensions.IO;
 
@@ -17,10 +18,21 @@ public static class DirectoryInfoExtensions
     /// <param name="self">基準となるディレクトリの DirectoryInfo</param>
     /// <param name="relativePath">基準ディレクトリからのパス。もし絶対パスの場合は基準ディレクトリは無関係にこの絶対パスが利用される。</param>
     /// <returns>対象ファイルパスの FileInfo。相対パスが空や空白の場合は null を返却。</returns>
-    public static FileInfo? RelativeFile(this DirectoryInfo self, string relativePath)
+    public static FileInfo? RelativeFileAt(this DirectoryInfo self, string? relativePath)
     {
         if (self == null) throw new ArgumentNullException(nameof(self));
         if (string.IsNullOrWhiteSpace(relativePath)) return default;
+        return new FileInfo(Path.Combine(self.FullName, relativePath));
+    }
+
+    /// <summary>ディレクトリからの相対パス位置に対する FileInfo を取得する。</summary>
+    /// <param name="self">基準となるディレクトリの DirectoryInfo</param>
+    /// <param name="relativePath">基準ディレクトリからのパス。もし絶対パスの場合は基準ディレクトリは無関係にこの絶対パスが利用される。</param>
+    /// <returns>対象ファイルパスの FileInfo。</returns>
+    public static FileInfo RelativeFile(this DirectoryInfo self, string relativePath)
+    {
+        if (self == null) throw new ArgumentNullException(nameof(self));
+        if (string.IsNullOrWhiteSpace(relativePath)) throw new ArgumentException($"Invalid relative path.");
         return new FileInfo(Path.Combine(self.FullName, relativePath));
     }
 
@@ -28,10 +40,21 @@ public static class DirectoryInfoExtensions
     /// <param name="self">基準となるディレクトリのDirectoryInfo</param>
     /// <param name="relativePath">基準ディレクトリからのパス。もし絶対パスの場合は基準ディレクトリは無関係にこの絶対パスが利用される。</param>
     /// <returns>対象ディレクトリパスの DirectoryInfo。相対パスが空や空白の場合は null を返却。</returns>
-    public static DirectoryInfo? RelativeDirectory(this DirectoryInfo self, string? relativePath)
+    public static DirectoryInfo? RelativeDirectoryAt(this DirectoryInfo self, string? relativePath)
     {
         if (self == null) throw new ArgumentNullException(nameof(self));
         if (string.IsNullOrWhiteSpace(relativePath)) return default;
+        return new DirectoryInfo(Path.Combine(self.FullName, relativePath));
+    }
+
+    /// <summary>ディレクトリからの相対パス位置に対する DirectoryInfo を取得する。</summary>
+    /// <param name="self">基準となるディレクトリのDirectoryInfo</param>
+    /// <param name="relativePath">基準ディレクトリからのパス。もし絶対パスの場合は基準ディレクトリは無関係にこの絶対パスが利用される。</param>
+    /// <returns>対象ディレクトリパスの DirectoryInfo。相対パスが空や空白の場合は基準ディレクトリを返却。</returns>
+    public static DirectoryInfo RelativeDirectory(this DirectoryInfo self, string? relativePath)
+    {
+        if (self == null) throw new ArgumentNullException(nameof(self));
+        if (string.IsNullOrWhiteSpace(relativePath)) return self;
         return new DirectoryInfo(Path.Combine(self.FullName, relativePath));
     }
     #endregion
@@ -435,17 +458,17 @@ public static class DirectoryInfoExtensions
     private class SelectFilesContext<TResult> : IFileConverter<TResult>
     {
         // 構築
-        #region コンストラクタ
+    #region コンストラクタ
         /// <summary>起点ディレクトリを指定するコンストラクタ</summary>
         /// <param name="dir">起点ディレクトリ</param>
         public SelectFilesContext(DirectoryInfo dir)
         {
             this.Directory = dir;
         }
-        #endregion
+    #endregion
 
         // 公開プロパティ
-        #region IFileWalker インタフェース
+    #region IFileWalker インタフェース
         /// <inheritdoc />
         public FileSystemInfo Item => (FileSystemInfo?)this.File ?? this.Directory;
 
@@ -460,27 +483,27 @@ public static class DirectoryInfoExtensions
 
         /// <inheritdoc />
         public bool Exit { get; set; }
-        #endregion
+    #endregion
 
-        #region 列挙処理向け
+    #region 列挙処理向け
         /// <summary>結果値が設定されたかどうか</summary>
         public bool HasValue { get; private set; }
 
         /// <summary>結果値</summary>
         public TResult? Value { get; private set; }
-        #endregion
+    #endregion
 
         // 公開メソッド
-        #region IFileWalker インタフェース
+    #region IFileWalker インタフェース
         /// <inheritdoc />
         public void SetResult(TResult? value)
         {
             this.Value = value;
             this.HasValue = true;
         }
-        #endregion
+    #endregion
 
-        #region 列挙処理向け
+    #region 列挙処理向け
         /// <summary>列挙対象ディレクトリを更新する</summary>
         /// <param name="dir">ディレクトリ情報</param>
         public void SetDirectory(DirectoryInfo dir)
@@ -506,7 +529,7 @@ public static class DirectoryInfoExtensions
             this.Value = default;
             this.HasValue = false;
         }
-        #endregion
+    #endregion
     }
 
 #endif
