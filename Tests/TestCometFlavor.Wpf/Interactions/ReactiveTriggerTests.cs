@@ -13,7 +13,7 @@ namespace TestCometFlavor.Wpf.Interactions;
 public class ReactiveTriggerTests
 {
     [TestMethod]
-    public void Test_Construct()
+    public void Construct()
     {
         new ReactiveTrigger<string>().Source.Should().BeNull();
         new ReactiveTrigger<int>().Source.Should().BeNull();
@@ -21,7 +21,7 @@ public class ReactiveTriggerTests
     }
 
     [TestMethod]
-    public void Test_InvokeActions_int()
+    public void InvokeActions_int()
     {
         // テスト用トリガソース
         var cause = new Action<int>((_) => { });
@@ -52,7 +52,7 @@ public class ReactiveTriggerTests
     }
 
     [TestMethod]
-    public void Test_InvokeActions_int_SourceChange()
+    public void InvokeActions_int_SourceChange()
     {
         // テスト用トリガソース
         var cause1 = new Action<int>((_) => { });
@@ -91,7 +91,7 @@ public class ReactiveTriggerTests
     }
 
     [TestMethod]
-    public void Test_InvokeActions_string()
+    public void InvokeActions_string()
     {
         // テスト用トリガソース
         var cause = new Action<string>((_) => { });
@@ -122,7 +122,7 @@ public class ReactiveTriggerTests
     }
 
     [TestMethod]
-    public void Test_InvokeActions_string_SourceChange()
+    public void InvokeActions_string_SourceChange()
     {
         // テスト用トリガソース
         var cause1 = new Action<string>((_) => { });
@@ -161,7 +161,7 @@ public class ReactiveTriggerTests
     }
 
     [TestMethod]
-    public void Test_InvokeActions_any()
+    public void InvokeActions_any()
     {
         // テスト用トリガソース
         var cause = new Action<object>((_) => { });
@@ -196,7 +196,7 @@ public class ReactiveTriggerTests
     }
 
     [TestMethod]
-    public void Test_InvokeActions_any_SourceChange()
+    public void InvokeActions_any_SourceChange()
     {
         // テスト用トリガソース
         var cause1 = new Action<object>((_) => { });
@@ -238,7 +238,7 @@ public class ReactiveTriggerTests
     }
 
     [TestMethod]
-    public void Test_InvokeActions_Detach()
+    public void InvokeActions_Detach()
     {
         // テスト用トリガソース
         var cause = new Action<int>((_) => { });
@@ -269,7 +269,7 @@ public class ReactiveTriggerTests
     }
 
     [TestMethod]
-    public void Test_Source_OnCompleted()
+    public void Source_OnCompleted()
     {
         // テスト用トリガソース
         var subject = new Subject<int>();
@@ -302,7 +302,7 @@ public class ReactiveTriggerTests
     }
 
     [TestMethod]
-    public void Test_Source_OnError()
+    public void Source_OnError()
     {
         // テスト用トリガソース
         var subject = new Subject<int>();

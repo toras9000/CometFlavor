@@ -14,14 +14,14 @@ namespace TestCometFlavor.Wpf.Interactions;
 public class ViewValidationErrorBehaviorTests
 {
     [TestMethod]
-    public void Test_Construct()
+    public void Construct()
     {
         var target = new ViewValidationErrorBehavior();
         target.HasViewError.Should().BeFalse();
     }
 
     [STATestMethod]
-    public void Test_HasViewError_BeforeAttach()
+    public void HasViewError_BeforeAttach()
     {
         // テスト対象の準備
         var target = new ViewValidationErrorBehavior();
@@ -58,7 +58,7 @@ public class ViewValidationErrorBehaviorTests
     }
 
     [STATestMethod]
-    public void Test_HasViewError_BeforeAttach_NoInitScan()
+    public void HasViewError_BeforeAttach_NoInitScan()
     {
         // テスト対象の準備
         var target = new ViewValidationErrorBehavior();
@@ -108,7 +108,7 @@ public class ViewValidationErrorBehaviorTests
     }
 
     [STATestMethod]
-    public void Test_HasViewError_AfterAttach()
+    public void HasViewError_AfterAttach()
     {
         // テスト対象の準備
         var target = new ViewValidationErrorBehavior();
@@ -148,7 +148,7 @@ public class ViewValidationErrorBehaviorTests
     }
 
     [STATestMethod]
-    public void Test_HasViewError_Detach()
+    public void HasViewError_Detach()
     {
         // テスト対象の準備
         var target = new ViewValidationErrorBehavior();
@@ -188,7 +188,7 @@ public class ViewValidationErrorBehaviorTests
     }
 
     [STATestMethod]
-    public void Test_HasViewError_BeforeAttach_SourceError()
+    public void HasViewError_BeforeAttach_SourceError()
     {
         // テスト対象の準備
         var target = new ViewValidationErrorBehavior();
@@ -233,7 +233,7 @@ public class ViewValidationErrorBehaviorTests
     }
 
     [STATestMethod]
-    public void Test_HasViewError_BeforeAttach_SourceError_NoInitScan()
+    public void HasViewError_BeforeAttach_SourceError_NoInitScan()
     {
         // テスト対象の準備
         var target = new ViewValidationErrorBehavior();
@@ -290,7 +290,7 @@ public class ViewValidationErrorBehaviorTests
     }
 
     [STATestMethod]
-    public void Test_HasViewError_AfterAttach_SourceError()
+    public void HasViewError_AfterAttach_SourceError()
     {
         // テスト対象の準備
         var target = new ViewValidationErrorBehavior();
@@ -338,7 +338,7 @@ public class ViewValidationErrorBehaviorTests
     }
 
     [STATestMethod]
-    public void Test_HasViewError_Multiple_BeforeAttach()
+    public void HasViewError_Multiple_BeforeAttach()
     {
         // テスト対象の準備
         var target = new ViewValidationErrorBehavior();
@@ -389,7 +389,7 @@ public class ViewValidationErrorBehaviorTests
     }
 
     [STATestMethod]
-    public void Test_HasViewError_Multiple_AfterAttach()
+    public void HasViewError_Multiple_AfterAttach()
     {
         // テスト対象の準備
         var target = new ViewValidationErrorBehavior();

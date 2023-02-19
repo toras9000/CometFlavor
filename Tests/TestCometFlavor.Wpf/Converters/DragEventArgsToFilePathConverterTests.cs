@@ -12,7 +12,7 @@ namespace TestCometFlavor.Wpf.Converters;
 public class DragEventArgsToFilePathConverterTests
 {
     [TestMethod]
-    public void Test_Construct()
+    public void Construct()
     {
         var target = new DragEventArgsToFilePathConverter();
         target.AcceptFormats.Should().Contain(DataFormats.FileDrop);
@@ -20,7 +20,7 @@ public class DragEventArgsToFilePathConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_ToString()
+    public void Convert_ToString()
     {
         // ドロップテストデータ
         var paths = new string[] { @"c:\directory\file.ext", @"d:\path\to\data" };
@@ -43,7 +43,7 @@ public class DragEventArgsToFilePathConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_ToString_Empty()
+    public void Convert_ToString_Empty()
     {
         // ドロップテストデータ
         var paths = new string[] { };
@@ -66,7 +66,7 @@ public class DragEventArgsToFilePathConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_ToUri()
+    public void Convert_ToUri()
     {
         // ドロップテストデータ
         var paths = new string[] { @"c:\directory\file.ext", @"d:\path\to\data" };
@@ -92,7 +92,7 @@ public class DragEventArgsToFilePathConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_ToUri_Empty()
+    public void Convert_ToUri_Empty()
     {
         // ドロップテストデータ
         var paths = new string[] { };
@@ -118,7 +118,7 @@ public class DragEventArgsToFilePathConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_ToUri_NotConvert()
+    public void Convert_ToUri_NotConvert()
     {
         // ドロップテストデータ
         var paths = new string[] { @"::::::::::", @"d:\path\to\data" };
@@ -144,7 +144,7 @@ public class DragEventArgsToFilePathConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_ByTargetType_Uri()
+    public void Convert_ByTargetType_Uri()
     {
         // ドロップテストデータ
         var paths = new string[] { @"c:\directory\file.ext", @"d:\path\to\data" };
@@ -170,7 +170,7 @@ public class DragEventArgsToFilePathConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_ByTargetType_NotUri()
+    public void Convert_ByTargetType_NotUri()
     {
         // ドロップテストデータ
         var paths = new string[] { @"c:\directory\file.ext", @"d:\path\to\data" };
@@ -196,7 +196,7 @@ public class DragEventArgsToFilePathConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_NotFileDrop1()
+    public void Convert_NotFileDrop1()
     {
         // モック
         var dataMock = new TestDataObject();
@@ -214,7 +214,7 @@ public class DragEventArgsToFilePathConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_NotFileDrop2()
+    public void Convert_NotFileDrop2()
     {
         // モック
         var dataMock = new TestDataObject();
@@ -232,7 +232,7 @@ public class DragEventArgsToFilePathConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_UnexpectType()
+    public void Convert_UnexpectType()
     {
         // ドロップテストデータ
         var paths = new string[] { @"c:\directory\file.ext", @"d:\path\to\data" };
@@ -245,7 +245,7 @@ public class DragEventArgsToFilePathConverterTests
     }
 
     [TestMethod]
-    public void Test_ConvertBack_NotSupport()
+    public void ConvertBack_NotSupport()
     {
         // ドロップテストデータ
         var paths = new string[] { @"c:\directory\file.ext", @"d:\path\to\data" };

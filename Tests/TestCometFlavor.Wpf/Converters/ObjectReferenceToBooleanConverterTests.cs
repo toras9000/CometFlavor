@@ -9,7 +9,7 @@ namespace TestCometFlavor.Wpf.Converters;
 public class ObjectReferenceToBooleanConverterTests
 {
     [TestMethod]
-    public void Test_Convert_NormalLogic()
+    public void Convert_NormalLogic()
     {
         var target = new ObjectReferenceToBooleanConverter();
         target.ReverseLogic = false;
@@ -18,7 +18,7 @@ public class ObjectReferenceToBooleanConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_ReverseLogic()
+    public void Convert_ReverseLogic()
     {
         var target = new ObjectReferenceToBooleanConverter();
         target.ReverseLogic = true;
@@ -27,7 +27,7 @@ public class ObjectReferenceToBooleanConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_NullableType()
+    public void Convert_NullableType()
     {
         var target = new ObjectReferenceToBooleanConverter();
         target.ReverseLogic = false;
@@ -36,7 +36,7 @@ public class ObjectReferenceToBooleanConverterTests
     }
 
     [TestMethod]
-    public void Test_ConvertBack_NormalLogic()
+    public void ConvertBack_NormalLogic()
     {
         var target = new ObjectReferenceToBooleanConverter();
         target.ReverseLogic = false;
@@ -45,7 +45,7 @@ public class ObjectReferenceToBooleanConverterTests
     }
 
     [TestMethod]
-    public void Test_ConvertBack_ReverseLogic()
+    public void ConvertBack_ReverseLogic()
     {
         var target = new ObjectReferenceToBooleanConverter();
         target.ReverseLogic = false;

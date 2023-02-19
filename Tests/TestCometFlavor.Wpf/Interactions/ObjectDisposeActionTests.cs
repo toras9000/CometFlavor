@@ -12,7 +12,7 @@ namespace TestCometFlavor.Wpf.Interactions;
 public class ObjectDisposeActionTests
 {
     [TestMethod]
-    public void Test_Construct()
+    public void Construct()
     {
         // プロパティデフォルト値検証
         var target = new ObjectDisposeAction();
@@ -21,7 +21,7 @@ public class ObjectDisposeActionTests
     }
 
     [TestMethod]
-    public void Test_Invoke_without_Param()
+    public void Invoke_without_Param()
     {
         // テスト用データモック
         var propMock = new Mock<IDisposable>();
@@ -47,7 +47,7 @@ public class ObjectDisposeActionTests
     }
 
     [TestMethod]
-    public void Test_Invoke_with_Param()
+    public void Invoke_with_Param()
     {
         // テスト用データモック
         var propMock = new Mock<IDisposable>();
@@ -73,7 +73,7 @@ public class ObjectDisposeActionTests
     }
 
     [TestMethod]
-    public void Test_Invoke_Multiple()
+    public void Invoke_Multiple()
     {
         // テスト用データモック
         var propMock = new Mock<IDisposable>();
@@ -100,7 +100,7 @@ public class ObjectDisposeActionTests
     }
 
     [TestMethod]
-    public void Test_Invoke_DisposeError()
+    public void Invoke_DisposeError()
     {
         // テスト用データモック
         var propMock = new Mock<IDisposable>();

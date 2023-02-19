@@ -9,7 +9,7 @@ namespace TestCometFlavor.Wpf.Converters;
 public class ObjectReferenceToVisibilityConverterTests
 {
     [TestMethod]
-    public void Test_Convert_NormalLogic_InvisibleCollapse()
+    public void Convert_NormalLogic_InvisibleCollapse()
     {
         var target = new ObjectReferenceToVisibilityConverter();
         target.ReverseLogic = false;
@@ -19,7 +19,7 @@ public class ObjectReferenceToVisibilityConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_NormalLogic_InvisibleHidden()
+    public void Convert_NormalLogic_InvisibleHidden()
     {
         var target = new ObjectReferenceToVisibilityConverter();
         target.ReverseLogic = false;
@@ -29,7 +29,7 @@ public class ObjectReferenceToVisibilityConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_ReverseLogic_InvisibleCollapse()
+    public void Convert_ReverseLogic_InvisibleCollapse()
     {
         var target = new ObjectReferenceToVisibilityConverter();
         target.ReverseLogic = true;
@@ -39,7 +39,7 @@ public class ObjectReferenceToVisibilityConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_ReverseLogic_InvisibleHidden()
+    public void Convert_ReverseLogic_InvisibleHidden()
     {
         var target = new ObjectReferenceToVisibilityConverter();
         target.ReverseLogic = true;
@@ -49,7 +49,7 @@ public class ObjectReferenceToVisibilityConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_NullableType()
+    public void Convert_NullableType()
     {
         var target = new ObjectReferenceToVisibilityConverter();
         target.ReverseLogic = false;
@@ -59,7 +59,7 @@ public class ObjectReferenceToVisibilityConverterTests
     }
 
     [TestMethod]
-    public void Test_ConvertBack_NormalLogic_InvisibleCollapse()
+    public void ConvertBack_NormalLogic_InvisibleCollapse()
     {
         var target = new ObjectReferenceToVisibilityConverter();
         target.ReverseLogic = false;
@@ -70,7 +70,7 @@ public class ObjectReferenceToVisibilityConverterTests
     }
 
     [TestMethod]
-    public void Test_ConvertBack_NormalLogic_InvisibleHidden()
+    public void ConvertBack_NormalLogic_InvisibleHidden()
     {
         var target = new ObjectReferenceToVisibilityConverter();
         target.ReverseLogic = false;
@@ -81,7 +81,7 @@ public class ObjectReferenceToVisibilityConverterTests
     }
 
     [TestMethod]
-    public void Test_ConvertBack_ReverseLogic_InvisibleCollapse()
+    public void ConvertBack_ReverseLogic_InvisibleCollapse()
     {
         var target = new ObjectReferenceToVisibilityConverter();
         target.ReverseLogic = true;
@@ -92,7 +92,7 @@ public class ObjectReferenceToVisibilityConverterTests
     }
 
     [TestMethod]
-    public void Test_ConvertBack_ReverseLogic_InvisibleHidden()
+    public void ConvertBack_ReverseLogic_InvisibleHidden()
     {
         var target = new ObjectReferenceToVisibilityConverter();
         target.ReverseLogic = true;

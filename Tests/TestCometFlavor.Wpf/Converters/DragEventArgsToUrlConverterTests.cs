@@ -14,7 +14,7 @@ namespace TestCometFlavor.Wpf.Converters;
 public class DragEventArgsToUrlConverterTests
 {
     [TestMethod]
-    public void Test_Construct()
+    public void Construct()
     {
         var target = new DragEventArgsToUrlConverter();
         target.AcceptFormats.Should().Contain("UniformResourceLocatorW", "UniformResourceLocator");
@@ -22,7 +22,7 @@ public class DragEventArgsToUrlConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_ToString_FromUnicode()
+    public void Convert_ToString_FromUnicode()
     {
         // ドロップテストデータ
         var url = "https://www.google.com";
@@ -45,7 +45,7 @@ public class DragEventArgsToUrlConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_ToString_FromAnsi()
+    public void Convert_ToString_FromAnsi()
     {
         // ドロップテストデータ
         var url = "https://www.google.com";
@@ -68,7 +68,7 @@ public class DragEventArgsToUrlConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_ToString_PriorityUnicode()
+    public void Convert_ToString_PriorityUnicode()
     {
         // ドロップテストデータ
         var urlUnicode = "https://www.google.com/unicode";
@@ -94,7 +94,7 @@ public class DragEventArgsToUrlConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_ToString_Fallback1()
+    public void Convert_ToString_Fallback1()
     {
         // ドロップテストデータ
         var url = "https://www.google.com";
@@ -119,7 +119,7 @@ public class DragEventArgsToUrlConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_ToString_Fallback2()
+    public void Convert_ToString_Fallback2()
     {
         // ドロップテストデータ
         var url = "https://www.google.com";
@@ -146,7 +146,7 @@ public class DragEventArgsToUrlConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_ToUri_FromUnicode()
+    public void Convert_ToUri_FromUnicode()
     {
         // ドロップテストデータ
         var url = "https://www.google.com";
@@ -172,7 +172,7 @@ public class DragEventArgsToUrlConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_ToUri_FromAnsi()
+    public void Convert_ToUri_FromAnsi()
     {
         // ドロップテストデータ
         var url = "https://www.google.com";
@@ -198,7 +198,7 @@ public class DragEventArgsToUrlConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_ToUri_NotConvert()
+    public void Convert_ToUri_NotConvert()
     {
         // ドロップテストデータ
         var url = "::::::::::::";
@@ -219,7 +219,7 @@ public class DragEventArgsToUrlConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_ByTargetType_Uri()
+    public void Convert_ByTargetType_Uri()
     {
         // ドロップテストデータ
         var url = "https://www.google.com";
@@ -242,7 +242,7 @@ public class DragEventArgsToUrlConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_ByTargetType_NotUri()
+    public void Convert_ByTargetType_NotUri()
     {
         // ドロップテストデータ
         var url = "https://www.google.com";
@@ -265,7 +265,7 @@ public class DragEventArgsToUrlConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_NotUrlDrop1()
+    public void Convert_NotUrlDrop1()
     {
         // モック
         var dataMock = new TestDataObject();
@@ -283,7 +283,7 @@ public class DragEventArgsToUrlConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_NotUrlDrop2()
+    public void Convert_NotUrlDrop2()
     {
         // モック
         var dataMock = new TestDataObject();
@@ -301,7 +301,7 @@ public class DragEventArgsToUrlConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_UnexpectType()
+    public void Convert_UnexpectType()
     {
         // ドロップテストデータ
         var url = "https://www.google.com";
@@ -314,7 +314,7 @@ public class DragEventArgsToUrlConverterTests
     }
 
     [TestMethod]
-    public void Test_ConvertBack_NotSupport()
+    public void ConvertBack_NotSupport()
     {
         // ドロップテストデータ
         var url = "https://www.google.com";
@@ -327,7 +327,7 @@ public class DragEventArgsToUrlConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_Dispose()
+    public void Convert_Dispose()
     {
         // モック
         var resourceUnicodeMock = new Mock<IDisposable>();

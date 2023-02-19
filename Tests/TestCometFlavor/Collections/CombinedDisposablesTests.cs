@@ -12,7 +12,7 @@ namespace TestCometFlavor.Collections;
 public class CombinedDisposablesTest
 {
     [TestMethod]
-    public void TestConstructor_Default()
+    public void Constructor_Default()
     {
         var target = new CombinedDisposables();
         target.ReverseDispose.Should().Be(true);
@@ -25,7 +25,7 @@ public class CombinedDisposablesTest
     }
 
     [TestMethod]
-    public void TestConstructor_Param1()
+    public void Constructor_Param1()
     {
         {
             var target = new CombinedDisposables(true);
@@ -50,7 +50,7 @@ public class CombinedDisposablesTest
     }
 
     [TestMethod]
-    public void TestConstructor_Param2()
+    public void Constructor_Param2()
     {
         {
             var target = new CombinedDisposables(true, true);
@@ -95,7 +95,7 @@ public class CombinedDisposablesTest
     }
 
     [TestMethod]
-    public void TestAdd()
+    public void Add()
     {
         var item1 = new Mock<IDisposable>();
         var item2 = new Mock<IDisposable>();
@@ -109,7 +109,7 @@ public class CombinedDisposablesTest
     }
 
     [TestMethod]
-    public void TestAdd_ArgNull()
+    public void Add_ArgNull()
     {
         var target = new CombinedDisposables();
 
@@ -117,7 +117,7 @@ public class CombinedDisposablesTest
     }
 
     [TestMethod]
-    public void TestRemove_NoDispose()
+    public void Remove_NoDispose()
     {
         var item1 = new Mock<IDisposable>();
         var item2 = new Mock<IDisposable>();
@@ -165,7 +165,7 @@ public class CombinedDisposablesTest
     }
 
     [TestMethod]
-    public void TestRemove_WithDispose()
+    public void Remove_WithDispose()
     {
         var item1 = new Mock<IDisposable>();
         var item2 = new Mock<IDisposable>();
@@ -217,7 +217,7 @@ public class CombinedDisposablesTest
     }
 
     [TestMethod]
-    public void TestRemove_ArgNull()
+    public void Remove_ArgNull()
     {
         var target = new CombinedDisposables();
 
@@ -225,7 +225,7 @@ public class CombinedDisposablesTest
     }
 
     [TestMethod]
-    public void TestClear_NoDispose()
+    public void Clear_NoDispose()
     {
         var item1 = new Mock<IDisposable>();
         var item2 = new Mock<IDisposable>();
@@ -253,7 +253,7 @@ public class CombinedDisposablesTest
     }
 
     [TestMethod]
-    public void TestClear_WithDispose_Forward()
+    public void Clear_WithDispose_Forward()
     {
         var item1 = new Mock<IDisposable>();
         var item2 = new Mock<IDisposable>();
@@ -297,7 +297,7 @@ public class CombinedDisposablesTest
     }
 
     [TestMethod]
-    public void TestClear_WithDispose_Reverse()
+    public void Clear_WithDispose_Reverse()
     {
         var item1 = new Mock<IDisposable>();
         var item2 = new Mock<IDisposable>();
@@ -341,7 +341,7 @@ public class CombinedDisposablesTest
     }
 
     [TestMethod]
-    public void TestContains()
+    public void Contains()
     {
         var item1 = new Mock<IDisposable>();
         var item2 = new Mock<IDisposable>();
@@ -383,7 +383,7 @@ public class CombinedDisposablesTest
     }
 
     [TestMethod]
-    public void TestContains_ArgNull()
+    public void Contains_ArgNull()
     {
         var target = new CombinedDisposables();
 
@@ -391,7 +391,7 @@ public class CombinedDisposablesTest
     }
 
     [TestMethod]
-    public void TestEnumerate()
+    public void Enumerate()
     {
         var item1 = new Mock<IDisposable>();
         var item2 = new Mock<IDisposable>();
@@ -430,7 +430,7 @@ public class CombinedDisposablesTest
     }
 
     [TestMethod]
-    public void TestCopyTo()
+    public void CopyTo()
     {
         var item1 = new Mock<IDisposable>();
         var item2 = new Mock<IDisposable>();
@@ -474,7 +474,7 @@ public class CombinedDisposablesTest
     }
 
     [TestMethod]
-    public void TestDispose_Forward()
+    public void Dispose_Forward()
     {
         var item1 = new Mock<IDisposable>();
         var item2 = new Mock<IDisposable>();
@@ -520,7 +520,7 @@ public class CombinedDisposablesTest
     }
 
     [TestMethod]
-    public void TestDispose_Reverse()
+    public void Dispose_Reverse()
     {
         var item1 = new Mock<IDisposable>();
         var item2 = new Mock<IDisposable>();
@@ -566,7 +566,7 @@ public class CombinedDisposablesTest
     }
 
     [TestMethod]
-    public void TestLatestException_Remove()
+    public void LatestException_Remove()
     {
         var item1 = new Mock<IDisposable>();
         var item2 = new Mock<IDisposable>();
@@ -604,7 +604,7 @@ public class CombinedDisposablesTest
     }
 
     [TestMethod]
-    public void TestLatestException_Clear_Single()
+    public void LatestException_Clear_Single()
     {
         var item1 = new Mock<IDisposable>();
         var item2 = new Mock<IDisposable>();
@@ -629,7 +629,7 @@ public class CombinedDisposablesTest
     }
 
     [TestMethod]
-    public void TestLatestException_Clear_Forward()
+    public void LatestException_Clear_Forward()
     {
         var item1 = new Mock<IDisposable>();
         var item2 = new Mock<IDisposable>();
@@ -657,7 +657,7 @@ public class CombinedDisposablesTest
     }
 
     [TestMethod]
-    public void TestLatestException_Clear_Reverse()
+    public void LatestException_Clear_Reverse()
     {
         var item1 = new Mock<IDisposable>();
         var item2 = new Mock<IDisposable>();
@@ -685,7 +685,7 @@ public class CombinedDisposablesTest
     }
 
     [TestMethod]
-    public void TestLatestException_Dispose_Forward()
+    public void LatestException_Dispose_Forward()
     {
         var item1 = new Mock<IDisposable>();
         var item2 = new Mock<IDisposable>();
@@ -713,7 +713,7 @@ public class CombinedDisposablesTest
     }
 
     [TestMethod]
-    public void TestLatestException_Dispose_Reserve()
+    public void LatestException_Dispose_Reserve()
     {
         var item1 = new Mock<IDisposable>();
         var item2 = new Mock<IDisposable>();

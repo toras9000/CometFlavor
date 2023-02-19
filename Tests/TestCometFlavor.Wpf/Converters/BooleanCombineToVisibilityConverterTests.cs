@@ -9,7 +9,7 @@ namespace TestCometFlavor.Wpf.Converters;
 public class BooleanCombineToVisibilityConverterTests
 {
     [TestMethod]
-    public void Test_Construct()
+    public void Construct()
     {
         var target = new BooleanCombineToVisibilityConverter();
         target.Mode.Should().Be(BooleanCombineToVisibilityConverter.CombineMode.AllTrue);
@@ -18,7 +18,7 @@ public class BooleanCombineToVisibilityConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_AllTrue_NeedBool()
+    public void Convert_AllTrue_NeedBool()
     {
         var target = new BooleanCombineToVisibilityConverter();
         target.Mode = BooleanCombineToVisibilityConverter.CombineMode.AllTrue;
@@ -44,7 +44,7 @@ public class BooleanCombineToVisibilityConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_AllTrue_IgnoreNotBool()
+    public void Convert_AllTrue_IgnoreNotBool()
     {
         var target = new BooleanCombineToVisibilityConverter();
         target.Mode = BooleanCombineToVisibilityConverter.CombineMode.AllTrue;
@@ -73,7 +73,7 @@ public class BooleanCombineToVisibilityConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_AllFalse_NeedBool()
+    public void Convert_AllFalse_NeedBool()
     {
         var target = new BooleanCombineToVisibilityConverter();
         target.Mode = BooleanCombineToVisibilityConverter.CombineMode.AllFalse;
@@ -99,7 +99,7 @@ public class BooleanCombineToVisibilityConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_AllFalse_IgnoreNotBool()
+    public void Convert_AllFalse_IgnoreNotBool()
     {
         var target = new BooleanCombineToVisibilityConverter();
         target.Mode = BooleanCombineToVisibilityConverter.CombineMode.AllFalse;
@@ -128,7 +128,7 @@ public class BooleanCombineToVisibilityConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_AnyTrue_NeedBool()
+    public void Convert_AnyTrue_NeedBool()
     {
         var target = new BooleanCombineToVisibilityConverter();
         target.Mode = BooleanCombineToVisibilityConverter.CombineMode.AnyTrue;
@@ -154,7 +154,7 @@ public class BooleanCombineToVisibilityConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_AnyTrue_IgnoreNotBool()
+    public void Convert_AnyTrue_IgnoreNotBool()
     {
         var target = new BooleanCombineToVisibilityConverter();
         target.Mode = BooleanCombineToVisibilityConverter.CombineMode.AnyTrue;
@@ -183,7 +183,7 @@ public class BooleanCombineToVisibilityConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_AnyFalse_NeedBool()
+    public void Convert_AnyFalse_NeedBool()
     {
         var target = new BooleanCombineToVisibilityConverter();
         target.Mode = BooleanCombineToVisibilityConverter.CombineMode.AnyFalse;
@@ -209,7 +209,7 @@ public class BooleanCombineToVisibilityConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_AnyFalse_IgnoreNotBool()
+    public void Convert_AnyFalse_IgnoreNotBool()
     {
         var target = new BooleanCombineToVisibilityConverter();
         target.Mode = BooleanCombineToVisibilityConverter.CombineMode.AnyFalse;
@@ -238,7 +238,7 @@ public class BooleanCombineToVisibilityConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_InvisibleToHidden()
+    public void Convert_InvisibleToHidden()
     {
         var target = new BooleanCombineToVisibilityConverter();
         target.IgnoreNotBool = true;
@@ -262,7 +262,7 @@ public class BooleanCombineToVisibilityConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_NotSupport()
+    public void Convert_NotSupport()
     {
         var target = new BooleanCombineToVisibilityConverter();
         target.Mode = (BooleanCombineToVisibilityConverter.CombineMode)(-1);
@@ -290,7 +290,7 @@ public class BooleanCombineToVisibilityConverterTests
     }
 
     [TestMethod]
-    public void Test_ConvertBack()
+    public void ConvertBack()
     {
         var target = new BooleanCombineToVisibilityConverter();
 

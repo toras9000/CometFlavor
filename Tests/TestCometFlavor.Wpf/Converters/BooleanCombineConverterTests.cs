@@ -9,7 +9,7 @@ namespace TestCometFlavor.Wpf.Converters;
 public class BooleanCombineConverterTests
 {
     [TestMethod]
-    public void Test_Construct()
+    public void Construct()
     {
         var target = new BooleanCombineConverter();
         target.Mode.Should().Be(BooleanCombineConverter.CombineMode.AllTrue);
@@ -17,7 +17,7 @@ public class BooleanCombineConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_AllTrue_NeedBool()
+    public void Convert_AllTrue_NeedBool()
     {
         var target = new BooleanCombineConverter();
         target.Mode = BooleanCombineConverter.CombineMode.AllTrue;
@@ -42,7 +42,7 @@ public class BooleanCombineConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_AllTrue_IgnoreNotBool()
+    public void Convert_AllTrue_IgnoreNotBool()
     {
         var target = new BooleanCombineConverter();
         target.Mode = BooleanCombineConverter.CombineMode.AllTrue;
@@ -70,7 +70,7 @@ public class BooleanCombineConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_AllFalse_NeedBool()
+    public void Convert_AllFalse_NeedBool()
     {
         var target = new BooleanCombineConverter();
         target.Mode = BooleanCombineConverter.CombineMode.AllFalse;
@@ -95,7 +95,7 @@ public class BooleanCombineConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_AllFalse_IgnoreNotBool()
+    public void Convert_AllFalse_IgnoreNotBool()
     {
         var target = new BooleanCombineConverter();
         target.Mode = BooleanCombineConverter.CombineMode.AllFalse;
@@ -123,7 +123,7 @@ public class BooleanCombineConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_AnyTrue_NeedBool()
+    public void Convert_AnyTrue_NeedBool()
     {
         var target = new BooleanCombineConverter();
         target.Mode = BooleanCombineConverter.CombineMode.AnyTrue;
@@ -148,7 +148,7 @@ public class BooleanCombineConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_AnyTrue_IgnoreNotBool()
+    public void Convert_AnyTrue_IgnoreNotBool()
     {
         var target = new BooleanCombineConverter();
         target.Mode = BooleanCombineConverter.CombineMode.AnyTrue;
@@ -176,7 +176,7 @@ public class BooleanCombineConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_AnyFalse_NeedBool()
+    public void Convert_AnyFalse_NeedBool()
     {
         var target = new BooleanCombineConverter();
         target.Mode = BooleanCombineConverter.CombineMode.AnyFalse;
@@ -201,7 +201,7 @@ public class BooleanCombineConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_AnyFalse_IgnoreNotBool()
+    public void Convert_AnyFalse_IgnoreNotBool()
     {
         var target = new BooleanCombineConverter();
         target.Mode = BooleanCombineConverter.CombineMode.AnyFalse;
@@ -229,7 +229,7 @@ public class BooleanCombineConverterTests
     }
 
     [TestMethod]
-    public void Test_Convert_NotSupport()
+    public void Convert_NotSupport()
     {
         var target = new BooleanCombineConverter();
         target.Mode = (BooleanCombineConverter.CombineMode)(-1);
@@ -256,7 +256,7 @@ public class BooleanCombineConverterTests
     }
 
     [TestMethod]
-    public void Test_ConvertBack()
+    public void ConvertBack()
     {
         var target = new BooleanCombineConverter();
 

@@ -15,7 +15,7 @@ public class StringExtensionsTests
     // 　https://qiita.com/_sobataro/items/47989ee4b573e0c2adfc
 
     [TestMethod]
-    public void TestEvaluateEaw_Kind()
+    public void EvaluateEaw_Kind()
     {
         var measure = new EawMeasure(
             narrow: 1,
@@ -76,7 +76,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestEvaluateEaw_Width()
+    public void EvaluateEaw_Width()
     {
         // Empty
         "".EvaluateEaw(new EawMeasure(1, 1, 1, 1, 1, 1)).Should().Be(0);
@@ -120,7 +120,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestEvaluateEaw_Error()
+    public void EvaluateEaw_Error()
     {
         var measure = new EawMeasure(1, 1, 1);
 
@@ -130,7 +130,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestCutLeftEaw_Kind()
+    public void CutLeftEaw_Kind()
     {
         var measure = new EawMeasure(
             narrow: 1,
@@ -224,7 +224,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestCutLeftEaw_Width()
+    public void CutLeftEaw_Width()
     {
         // Empty
         "".CutLeftEaw(3, new EawMeasure(1, 1, 1, 1, 1, 1)).Should().BeEmpty();
@@ -269,7 +269,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestCutLeftEaw_Error()
+    public void CutLeftEaw_Error()
     {
         var measure = new EawMeasure(1, 1, 1);
 
@@ -280,7 +280,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestCutRightEaw_Kind()
+    public void CutRightEaw_Kind()
     {
         var measure = new EawMeasure(
             narrow: 1,
@@ -374,7 +374,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestCutRightEaw_Width()
+    public void CutRightEaw_Width()
     {
         // Empty
         "".CutRightEaw(3, new EawMeasure(1, 1, 1, 1, 1, 1)).Should().BeEmpty();
@@ -419,7 +419,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestCutRightEaw_Error()
+    public void CutRightEaw_Error()
     {
         var measure = new EawMeasure(1, 1, 1);
 
@@ -430,7 +430,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestEllipsisByWidth_Marker()
+    public void EllipsisByWidth_Marker()
     {
         // Narrow
         "abcdef".EllipsisByWidth(7, new EawMeasure(1, 0, 0, 0, 0, 0), "xyz").Should().Be("abcdef");
@@ -506,7 +506,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestEllipsisByWidth_NoMarker()
+    public void EllipsisByWidth_NoMarker()
     {
         // Narrow
         "abcdef".EllipsisByWidth(7, new EawMeasure(1, 0, 0, 0, 0, 0)).Should().Be("abcdef");
@@ -612,7 +612,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestEllipsisByWidth_Mix()
+    public void EllipsisByWidth_Mix()
     {
         "aアｱａ©®".EllipsisByWidth(21, new EawMeasure(6, 5, 4, 3, 2, 1)).Should().Be("aアｱａ©®");
         "aアｱａ©®".EllipsisByWidth(20, new EawMeasure(6, 5, 4, 3, 2, 1)).Should().Be("aアｱａ©");
@@ -639,7 +639,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestEllipsisByWidth_Grapheme()
+    public void EllipsisByWidth_Grapheme()
     {
         var measure = new EawMeasure(
             narrow: 10,
@@ -718,7 +718,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestEllipsisByWidth_Zero()
+    public void EllipsisByWidth_Zero()
     {
         var zero = new EawMeasure(0, 0, 0, 0, 0, 0);
 
@@ -731,7 +731,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestEllipsisByWidth_Error()
+    public void EllipsisByWidth_Error()
     {
         var measure = new EawMeasure(1, 1, 1);
 

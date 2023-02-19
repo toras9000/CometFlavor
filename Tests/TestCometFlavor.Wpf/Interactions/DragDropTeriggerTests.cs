@@ -12,7 +12,7 @@ namespace TestCometFlavor.Wpf.Interactions;
 public class DragDropTeriggerTests
 {
     [TestMethod]
-    public void Test_Construct()
+    public void Construct()
     {
         var target = new DragDropTerigger();
         target.AcceptDropFormats.Should().BeNull();
@@ -22,7 +22,7 @@ public class DragDropTeriggerTests
     }
 
     [TestMethod]
-    public void Test_AcceptDropFormats_NoSpecify()
+    public void AcceptDropFormats_NoSpecify()
     {
         // テスト対象のアクションを呼び出すためのトリガ作成
         var element = new UIElement();
@@ -74,7 +74,7 @@ public class DragDropTeriggerTests
     }
 
     [TestMethod]
-    public void Test_AcceptDropFormats_FromProperty()
+    public void AcceptDropFormats_FromProperty()
     {
         // テスト対象のアクションを呼び出すためのトリガ作成
         var element = new UIElement();
@@ -143,7 +143,7 @@ public class DragDropTeriggerTests
     }
 
     [TestMethod]
-    public void Test_AcceptDropFormats_FromConverter()
+    public void AcceptDropFormats_FromConverter()
     {
         // テスト対象のアクションを呼び出すためのトリガ作成
         var element = new UIElement();
@@ -216,7 +216,7 @@ public class DragDropTeriggerTests
     }
 
     [TestMethod]
-    public void Test_AcceptDropFormats_FromBoth()
+    public void AcceptDropFormats_FromBoth()
     {
         // テスト対象のアクションを呼び出すためのトリガ作成
         var element = new UIElement();
@@ -300,7 +300,7 @@ public class DragDropTeriggerTests
     }
 
     [TestMethod]
-    public void Test_AcceptDropFormats_UnrelatedConverter()
+    public void AcceptDropFormats_UnrelatedConverter()
     {
         // テスト対象のアクションを呼び出すためのトリガ作成
         var element = new UIElement();
@@ -343,7 +343,7 @@ public class DragDropTeriggerTests
     }
 
     [TestMethod]
-    public void Test_AutoAllowDrop_Enable()
+    public void AutoAllowDrop_Enable()
     {
         // テスト対象のアクションを呼び出すためのトリガ作成
         var element = new UIElement();
@@ -373,7 +373,7 @@ public class DragDropTeriggerTests
     }
 
     [TestMethod]
-    public void Test_AutoAllowDrop_Disable1()
+    public void AutoAllowDrop_Disable1()
     {
         // テスト対象のアクションを呼び出すためのトリガ作成
         var element = new UIElement();
@@ -397,7 +397,7 @@ public class DragDropTeriggerTests
     }
 
     [TestMethod]
-    public void Test_AutoAllowDrop_Disable2()
+    public void AutoAllowDrop_Disable2()
     {
         // テスト対象のアクションを呼び出すためのトリガ作成
         var element = new UIElement();
@@ -422,7 +422,7 @@ public class DragDropTeriggerTests
     }
 
     [TestMethod]
-    public void Test_DragOver_Accept()
+    public void DragOver_Accept()
     {
         // テスト対象のアクションを呼び出すためのトリガ作成
         var element = new UIElement();
@@ -454,7 +454,7 @@ public class DragDropTeriggerTests
     }
 
     [TestMethod]
-    public void Test_DragOver_Accept_EffectNoMatch()
+    public void DragOver_Accept_EffectNoMatch()
     {
         // テスト対象のアクションを呼び出すためのトリガ作成
         var element = new UIElement();
@@ -486,7 +486,7 @@ public class DragDropTeriggerTests
     }
 
     [TestMethod]
-    public void Test_DragOver_AllAccept()
+    public void DragOver_AllAccept()
     {
         // テスト対象のアクションを呼び出すためのトリガ作成
         var element = new UIElement();
@@ -518,7 +518,7 @@ public class DragDropTeriggerTests
     }
 
     [TestMethod]
-    public void Test_DragOver_Reject()
+    public void DragOver_Reject()
     {
         // テスト対象のアクションを呼び出すためのトリガ作成
         var element = new UIElement();
@@ -550,7 +550,7 @@ public class DragDropTeriggerTests
     }
 
     [TestMethod]
-    public void Test_DragDrop_Direct()
+    public void DragDrop_Direct()
     {
         // テスト対象のアクションを呼び出すためのトリガ作成
         var element = new UIElement();
@@ -585,7 +585,7 @@ public class DragDropTeriggerTests
     }
 
     [TestMethod]
-    public void Test_DragDrop_Convert()
+    public void DragDrop_Convert()
     {
         // テスト対象のアクションを呼び出すためのトリガ作成
         var element = new UIElement();

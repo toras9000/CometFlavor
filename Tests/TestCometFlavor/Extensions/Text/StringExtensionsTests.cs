@@ -13,7 +13,7 @@ public class StringExtensionsTests
     // 　https://qiita.com/_sobataro/items/47989ee4b573e0c2adfc
 
     [TestMethod()]
-    public void TestIsEmpty()
+    public void IsEmpty()
     {
         "".IsEmpty().Should().BeTrue();
         default(string).IsEmpty().Should().BeTrue();
@@ -22,7 +22,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod()]
-    public void TestIsNotEmpty()
+    public void IsNotEmpty()
     {
         "".IsNotEmpty().Should().BeFalse();
         default(string).IsNotEmpty().Should().BeFalse();
@@ -31,7 +31,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod()]
-    public void TestIsWhite()
+    public void IsWhite()
     {
         "".IsWhite().Should().BeTrue();
         default(string).IsWhite().Should().BeTrue();
@@ -40,7 +40,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod()]
-    public void TestIsNotWhite()
+    public void IsNotWhite()
     {
         "".IsNotWhite().Should().BeFalse();
         default(string).IsNotWhite().Should().BeFalse();
@@ -49,7 +49,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod()]
-    public void TestWhenEmpty()
+    public void WhenEmpty()
     {
         "".WhenEmpty("x").Should().Be("x");
         default(string).WhenEmpty("x").Should().Be("x");
@@ -69,7 +69,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod()]
-    public void TestWhenWhite()
+    public void WhenWhite()
     {
         "".WhenWhite("x").Should().Be("x");
         default(string).WhenWhite("x").Should().Be("x");
@@ -89,7 +89,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestFirstLine()
+    public void FirstLine()
     {
         "abc\ndef".FirstLine().Should().Be("abc");
         "aaa\rbbb".FirstLine().Should().Be("aaa");
@@ -102,7 +102,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestLastLine()
+    public void LastLine()
     {
         "abc\ndef".LastLine().Should().Be("def");
         "aaa\rbbb".LastLine().Should().Be("bbb");
@@ -115,7 +115,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestBeforeAt_Char()
+    public void BeforeAt_Char()
     {
         "abcdef".BeforeAt('a', defaultEmpty: false).Should().Be("");
         "abcdef".BeforeAt('c', defaultEmpty: false).Should().Be("ab");
@@ -133,7 +133,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestBeforeAt_Str()
+    public void BeforeAt_Str()
     {
         "abcdef".BeforeAt("ab", defaultEmpty: false).Should().Be("");
         "abcdef".BeforeAt("cd", defaultEmpty: false).Should().Be("ab");
@@ -151,7 +151,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestAfterAt_Char()
+    public void AfterAt_Char()
     {
         "abcdef".AfterAt('a', defaultEmpty: false).Should().Be("bcdef");
         "abcdef".AfterAt('c', defaultEmpty: false).Should().Be("def");
@@ -169,7 +169,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestAfterAt_Str()
+    public void AfterAt_Str()
     {
         "abcdef".AfterAt("ab", defaultEmpty: false).Should().Be("cdef");
         "abcdef".AfterAt("cd", defaultEmpty: false).Should().Be("ef");
@@ -187,7 +187,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestTakeTo_Char()
+    public void TakeTo_Char()
     {
         "abcdef".TakeTo('a', defaultEmpty: false).Should().Be("a");
         "abcdef".TakeTo('c', defaultEmpty: false).Should().Be("abc");
@@ -205,7 +205,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestTakeTo_Str()
+    public void TakeTo_Str()
     {
         "abcdef".TakeTo("ab", defaultEmpty: false).Should().Be("ab");
         "abcdef".TakeTo("cd", defaultEmpty: false).Should().Be("abcd");
@@ -223,7 +223,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestTakeFrom_Char()
+    public void TakeFrom_Char()
     {
         "abcdef".TakeFrom('a', defaultEmpty: false).Should().Be("abcdef");
         "abcdef".TakeFrom('c', defaultEmpty: false).Should().Be("cdef");
@@ -241,7 +241,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestTakeFrom_Str()
+    public void TakeFrom_Str()
     {
         "abcdef".TakeFrom("ab", defaultEmpty: false).Should().Be("abcdef");
         "abcdef".TakeFrom("cd", defaultEmpty: false).Should().Be("cdef");
@@ -259,7 +259,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestJoinString()
+    public void JoinString()
     {
         new[] { "aaa", "bbb", "ccc" }.JoinString().Should().Be("aaabbbccc");
         new[] { "aaa", "bbb", "ccc" }.JoinString("/").Should().Be("aaa/bbb/ccc");
@@ -270,7 +270,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestDropEmpty()
+    public void DropEmpty()
     {
         new[] { "aaa", "bbb", "ccc" }.DropEmpty().Should().Equal("aaa", "bbb", "ccc");
         new[] { "aaa", null, "ccc" }.DropEmpty().Should().Equal("aaa", "ccc");
@@ -279,7 +279,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestDropWhite()
+    public void DropWhite()
     {
         new[] { "aaa", "bbb", "ccc" }.DropWhite().Should().Equal("aaa", "bbb", "ccc");
         new[] { "aaa", null, "ccc" }.DropWhite().Should().Equal("aaa", "ccc");
@@ -288,7 +288,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestDecorate_Format()
+    public void Decorate_Format()
     {
         "abc".Decorate("<{0}>").Should().Be("<abc>");
         "abc".Decorate("<xxx>").Should().Be("<xxx>");
@@ -302,7 +302,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestDecorate_Delegate()
+    public void Decorate_Delegate()
     {
         "abc".Decorate(s => "@" + s).Should().Be("@abc");
         "abc".Decorate(s => "@xxx").Should().Be("@xxx");
@@ -316,7 +316,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestQuote()
+    public void Quote()
     {
         "abc".Quote().Should().Be("\"abc\"");
         "a\"bc".Quote().Should().Be("\"a\"\"bc\"");
@@ -330,7 +330,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestUnquote()
+    public void Unquote()
     {
         "\"abc\"".Unquote().Should().Be("abc");
         "\"a\"\"bc\"".Unquote().Should().Be("a\"bc");
@@ -344,7 +344,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestAsTextLines()
+    public void AsTextLines()
     {
         "".AsTextLines().Should().Equal("");
         "a".AsTextLines().Should().Equal("a");
@@ -358,7 +358,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestAsTextElements()
+    public void AsTextElements()
     {
         "".AsTextElements().Should().BeEmpty();
 
@@ -383,7 +383,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestTextElementCount()
+    public void TextElementCount()
     {
         "".TextElementCount().Should().Be(0);
 
@@ -406,7 +406,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestCutLeftElements()
+    public void CutLeftElements()
     {
         // Empty
         "".CutLeftElements(0).Should().BeEmpty();
@@ -454,7 +454,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestCutRightElements()
+    public void CutRightElements()
     {
         // Empty
         "".CutRightElements(0).Should().BeEmpty();
@@ -501,7 +501,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestEllipsisByLength_Marker()
+    public void EllipsisByLength_Marker()
     {
         "a".Length.Should().Be(1);
         "abcdefghi".EllipsisByLength(10, "...").Should().Be("abcdefghi");
@@ -567,7 +567,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestEllipsisByLength_NoMarker()
+    public void EllipsisByLength_NoMarker()
     {
         "a".Length.Should().Be(1);
         "abcdefghi".EllipsisByLength(10).Should().Be("abcdefghi");
@@ -620,7 +620,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestEllipsisByLength_Error()
+    public void EllipsisByLength_Error()
     {
         new Action(() => default(string).EllipsisByLength(3)).Should().Throw<Exception>();
 
@@ -631,7 +631,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestEllipsisByElements_Marker()
+    public void EllipsisByElements_Marker()
     {
         "a".TextElementCount().Should().Be(1);
         "abcdefghi".EllipsisByElements(10, "...").Should().Be("abcdefghi");
@@ -693,7 +693,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestEllipsisByElements_NoMarker()
+    public void EllipsisByElements_NoMarker()
     {
         "a".TextElementCount().Should().Be(1);
         "abcdefghi".EllipsisByElements(10).Should().Be("abcdefghi");
@@ -746,7 +746,7 @@ public class StringExtensionsTests
     }
 
     [TestMethod]
-    public void TestEllipsisByElements_Error()
+    public void EllipsisByElements_Error()
     {
         new Action(() => default(string).EllipsisByElements(3)).Should().Throw<Exception>();
 

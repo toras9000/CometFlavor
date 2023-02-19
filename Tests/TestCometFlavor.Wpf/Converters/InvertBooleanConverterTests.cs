@@ -9,7 +9,7 @@ namespace TestCometFlavor.Wpf.Converters;
 public class InvertBooleanConverterTests
 {
     [TestMethod]
-    public void Test_Convert()
+    public void Convert()
     {
         var target = new InvertBooleanConverter();
         target.Convert(true, null, null, null).Should().Be(false);
@@ -19,7 +19,7 @@ public class InvertBooleanConverterTests
     }
 
     [TestMethod]
-    public void Test_ConvertBack()
+    public void ConvertBack()
     {
         var target = new InvertBooleanConverter();
         target.ConvertBack(true, null, null, null).Should().Be(false);

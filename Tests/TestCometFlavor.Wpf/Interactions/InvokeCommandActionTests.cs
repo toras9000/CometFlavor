@@ -15,7 +15,7 @@ namespace TestCometFlavor.Wpf.Interactions;
 public class InvokeCommandActionTests
 {
     [TestMethod]
-    public void Test_Construct()
+    public void Construct()
     {
         // プロパティデフォルト値検証
         var target = new InvokeCommandAction();
@@ -26,7 +26,7 @@ public class InvokeCommandActionTests
     }
 
     [TestMethod]
-    public void Test_Invoke_ParamModeAuto1()
+    public void Invoke_ParamModeAuto1()
     {
         // Mode=Auto, プロパティ設定あり時
 
@@ -59,7 +59,7 @@ public class InvokeCommandActionTests
     }
 
     [TestMethod]
-    public void Test_Invoke_ParamModeAuto2()
+    public void Invoke_ParamModeAuto2()
     {
         // Mode=Auto, プロパティ設定なし時
 
@@ -92,7 +92,7 @@ public class InvokeCommandActionTests
     }
 
     [TestMethod]
-    public void Test_Invoke_ParamModeArgument()
+    public void Invoke_ParamModeArgument()
     {
         // Mode=Argument
 
@@ -125,7 +125,7 @@ public class InvokeCommandActionTests
     }
 
     [TestMethod]
-    public void Test_Invoke_ParamModeProperty1()
+    public void Invoke_ParamModeProperty1()
     {
         // Mode=Property
 
@@ -158,7 +158,7 @@ public class InvokeCommandActionTests
     }
 
     [TestMethod]
-    public void Test_Invoke_ParamModeProperty2()
+    public void Invoke_ParamModeProperty2()
     {
         // Mode=Property (null)
 
@@ -191,7 +191,7 @@ public class InvokeCommandActionTests
     }
 
     [TestMethod]
-    public void Test_Invoke_ParamBinding_Auto()
+    public void Invoke_ParamBinding_Auto()
     {
         // Mode=Auto
 
@@ -230,7 +230,7 @@ public class InvokeCommandActionTests
     }
 
     [TestMethod]
-    public void Test_Invoke_ParamBinding_Property()
+    public void Invoke_ParamBinding_Property()
     {
         // Mode=Auto
 
@@ -269,7 +269,7 @@ public class InvokeCommandActionTests
     }
 
     [TestMethod]
-    public void Test_Invoke_NoCommand()
+    public void Invoke_NoCommand()
     {
         // 呼び出しコマンドが設定されていないとき
 
@@ -297,7 +297,7 @@ public class InvokeCommandActionTests
     }
 
     [STATestMethod]
-    public void Test_AutoEnable_Disable_SetCommand_AttachElem()
+    public void AutoEnable_Disable_SetCommand_AttachElem()
     {
         // AutoEnable=Disable -> Set Command -> Attach Element
 
@@ -336,7 +336,7 @@ public class InvokeCommandActionTests
     }
 
     [STATestMethod]
-    public void Test_AutoEnable_Disable_AttachElem_SetCommand()
+    public void AutoEnable_Disable_AttachElem_SetCommand()
     {
         // AutoEnable=Disable -> Attach Element -> Set Command
 
@@ -375,7 +375,7 @@ public class InvokeCommandActionTests
     }
 
     [STATestMethod]
-    public void Test_AutoEnable_Disable_to_Enable()
+    public void AutoEnable_Disable_to_Enable()
     {
         // AutoEnable=Disable -> Enable -> Disable
 
@@ -427,7 +427,7 @@ public class InvokeCommandActionTests
     }
 
     [STATestMethod]
-    public void Test_AutoEnable_Enable_SetCommand_AttachElem()
+    public void AutoEnable_Enable_SetCommand_AttachElem()
     {
         // AutoEnable=Enable -> Set Command -> Attach Element
 
@@ -474,7 +474,7 @@ public class InvokeCommandActionTests
     }
 
     [STATestMethod]
-    public void Test_AutoEnable_Enable_AttachElem_SetCommand()
+    public void AutoEnable_Enable_AttachElem_SetCommand()
     {
         // AutoEnable=Enable -> Attach Element -> Set Command
 
@@ -521,7 +521,7 @@ public class InvokeCommandActionTests
     }
 
     [STATestMethod]
-    public void Test_AutoEnable_Enable_SwitchCommand()
+    public void AutoEnable_Enable_SwitchCommand()
     {
         // AutoEnable=Enable -> Attach Element -> Set Command -> Switch Command
 
@@ -572,7 +572,7 @@ public class InvokeCommandActionTests
     }
 
     [STATestMethod]
-    public void Test_AutoEnable_Restore_by_Disable()
+    public void AutoEnable_Restore_by_Disable()
     {
         // コマンドのモック
         var cmdMock = new TestCommand();
@@ -605,7 +605,7 @@ public class InvokeCommandActionTests
     }
 
     [STATestMethod]
-    public void Test_AutoEnable_Restore_by_Detach()
+    public void AutoEnable_Restore_by_Detach()
     {
         // コマンドのモック
         var cmdMock = new TestCommand();
@@ -638,7 +638,7 @@ public class InvokeCommandActionTests
     }
 
     [STATestMethod]
-    public void Test_AutoEnable_Restore_by_ClearCommand()
+    public void AutoEnable_Restore_by_ClearCommand()
     {
         // コマンドのモック
         var cmdMock = new TestCommand();
@@ -671,7 +671,7 @@ public class InvokeCommandActionTests
     }
 
     [TestMethod]
-    public void Test_ParameterConverter_ModeArgument()
+    public void ParameterConverter_ModeArgument()
     {
         // Mode=Auto, プロパティ設定あり時
 
@@ -711,7 +711,7 @@ public class InvokeCommandActionTests
     }
 
     [TestMethod]
-    public void Test_ParameterConverter_ModeProperty()
+    public void ParameterConverter_ModeProperty()
     {
         // Mode=Auto, プロパティ設定あり時
 
@@ -751,7 +751,7 @@ public class InvokeCommandActionTests
     }
 
     [TestMethod]
-    public void Test_ParameterConverter_ModeAuto1()
+    public void ParameterConverter_ModeAuto1()
     {
         // Mode=Auto, プロパティ設定あり時
 
@@ -791,7 +791,7 @@ public class InvokeCommandActionTests
     }
 
     [TestMethod]
-    public void Test_ParameterConverter_ModeAuto2()
+    public void ParameterConverter_ModeAuto2()
     {
         // Mode=Auto, プロパティ設定あり時
 
@@ -831,7 +831,7 @@ public class InvokeCommandActionTests
     }
 
     [TestMethod]
-    public void Test_ParameterConverter_Error()
+    public void ParameterConverter_Error()
     {
         // Mode=Auto, プロパティ設定あり時
 

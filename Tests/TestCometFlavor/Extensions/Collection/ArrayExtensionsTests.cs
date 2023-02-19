@@ -8,7 +8,7 @@ namespace TestCometFlavor.Extensions.Collection;
 public class ArrayExtensionsTests
 {
     [TestMethod]
-    public void TestGetRelativeFile()
+    public void GetRelativeFile()
     {
         var source = new[] { 1, 2, 3, };
         var wrapper = source.AsReadOnly();

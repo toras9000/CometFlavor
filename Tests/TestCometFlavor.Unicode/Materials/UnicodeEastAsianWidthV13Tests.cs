@@ -9,7 +9,7 @@ namespace TestCometFlavor.Unicode.Materials;
 public class UnicodeEastAsianWidthV13Tests
 {
     [TestMethod]
-    public void TestGetEastAsianWidth()
+    public void GetEastAsianWidth_Pattern()
     {
         GetEastAsianWidth(-1).Should().Be(EastAsianWidth.Unknown);
         GetEastAsianWidth(0x000000).Should().Be(EastAsianWidth.Neutral);

@@ -20,7 +20,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public void TestGetNameWithoutExtension()
+    public void GetNameWithoutExtension()
     {
         new FileInfo("testfile.ext").GetNameWithoutExtension().Should().Be("testfile");
         new FileInfo("testfile.tar.gz").GetNameWithoutExtension().Should().Be("testfile.tar");
@@ -32,7 +32,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public void TestGetExtension()
+    public void GetExtension()
     {
         new FileInfo("testfile.ext").GetExtension().Should().Be(".ext");
         new FileInfo("testfile.tar.gz").GetExtension().Should().Be(".gz");
@@ -44,7 +44,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public void TestGetAnotherExtension()
+    public void GetAnotherExtension()
     {
         new FileInfo("testfile.ext").GetAnotherExtension(".other").Name.Should().Be("testfile.other");
         new FileInfo("testfile.ext").GetAnotherExtension("other").Name.Should().Be("testfile.other");
@@ -54,7 +54,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public void TestReadAllBytes()
+    public void ReadAllBytes()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -72,7 +72,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public void TestReadAllText()
+    public void ReadAllText()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -90,7 +90,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public void TestReadAllText_enc()
+    public void ReadAllText_enc()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -109,7 +109,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public void TestReadAllLines()
+    public void ReadAllLines()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -132,7 +132,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public void TestReadAllLines_enc()
+    public void ReadAllLines_enc()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -156,7 +156,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public void TestReadLines()
+    public void ReadLines()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -179,7 +179,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public void TestReadLines_enc()
+    public void ReadLines_enc()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -203,7 +203,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public async Task TestReadAllBytesAsync()
+    public async Task ReadAllBytesAsync()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -221,7 +221,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public async Task TestReadAllTextAsync()
+    public async Task ReadAllTextAsync()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -239,7 +239,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public async Task TestReadAllTextAsync_enc()
+    public async Task ReadAllTextAsync_enc()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -258,7 +258,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public async Task TestReadAllLinesAsync()
+    public async Task ReadAllLinesAsync()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -281,7 +281,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public async Task TestReadAllLinesAsync_enc()
+    public async Task ReadAllLinesAsync_enc()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -305,7 +305,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public async Task TestCreateTextReader()
+    public async Task CreateTextReader()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -325,7 +325,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public void TestWriteAllBytes()
+    public void WriteAllBytes()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -344,7 +344,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public void TestWriteAllBytes_span()
+    public void WriteAllBytes_span()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -363,7 +363,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public void TestWriteAllText()
+    public void WriteAllText()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -382,7 +382,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public void TestWriteAllText_enc()
+    public void WriteAllText_enc()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -402,7 +402,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public void TestWriteAllText_span()
+    public void WriteAllText_span()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -422,7 +422,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public void TestWriteAllLines()
+    public void WriteAllLines()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -446,7 +446,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public void TestWriteAllLines_enc()
+    public void WriteAllLines_enc()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -471,7 +471,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public async Task TestWriteAllBytesAsync()
+    public async Task WriteAllBytesAsync()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -490,7 +490,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public async Task TestWriteAllBytesAsync_span()
+    public async Task WriteAllBytesAsync_span()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -509,7 +509,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public async Task TestWriteAllTextAsync()
+    public async Task WriteAllTextAsync()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -528,7 +528,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public async Task TestWriteAllTextAsync_enc()
+    public async Task WriteAllTextAsync_enc()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -548,7 +548,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public async Task TestWriteAllLinesAsync()
+    public async Task WriteAllLinesAsync()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -572,7 +572,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public async Task TestWriteAllLinesAsync_enc()
+    public async Task WriteAllLinesAsync_enc()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -597,7 +597,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public async Task TestWriteAllLinesAsync_span()
+    public async Task WriteAllLinesAsync_span()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -622,7 +622,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public async Task TestCreateTextWriter()
+    public async Task CreateTextWriter()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -645,7 +645,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public async Task TestCreateTextWriter_append()
+    public async Task CreateTextWriter_append()
     {
         // テスト用に一時ディレクトリ
         using var tempDir = new TempDirectory();
@@ -668,7 +668,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public void TestWithDirectoryCreate()
+    public void WithDirectoryCreate()
     {
         using var testDir = new TempDirectory();
 
@@ -679,7 +679,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public void TestGetPathSegments()
+    public void GetPathSegments()
     {
         new FileInfo(@"c:/abc/def/zxc/asd/qwe.txt").GetPathSegments()
             .Should().Equal(new[] { @"c:\", "abc", "def", "zxc", "asd", "qwe.txt", });
@@ -696,7 +696,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public void TestIsDescendantOf()
+    public void IsDescendantOf()
     {
         new FileInfo(@"c:/abc/def/zxc/asd/qwe.txt")
             .IsDescendantOf(new DirectoryInfo(@"c:/abc/def/zxc/asd"))
@@ -720,7 +720,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public void TestRelativePathFrom()
+    public void RelativePathFrom()
     {
         new FileInfo(@"c:/abc/def/ghi/asd/qwe.txt").RelativePathFrom(new DirectoryInfo(@"c:/abc/def/ghi/"), ignoreCase: true)
             .Should().Be(@"asd\qwe.txt");
@@ -745,7 +745,7 @@ public class FileInfoExtensionsTests
     }
 
     [TestMethod]
-    public void TestRelativePathFrom_IgnoreCase()
+    public void RelativePathFrom_IgnoreCase()
     {
         new FileInfo(@"c:/abc/def/ghi/asd/qwe.txt").RelativePathFrom(new DirectoryInfo(@"c:/abc/def/ghi/"), ignoreCase: false)
             .Should().Be(@"asd\qwe.txt");

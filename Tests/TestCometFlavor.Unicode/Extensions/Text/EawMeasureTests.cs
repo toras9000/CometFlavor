@@ -10,7 +10,7 @@ namespace TestCometFlavor.Unicode.Extensions.Text;
 public class EawMeasureTests
 {
     [TestMethod]
-    public void TestConstructor()
+    public void Constructor()
     {
         var param6 = new EawMeasure(1, 2, 3, 4, 5, 6);
         param6.Narrow.Should().Be(1);
@@ -38,7 +38,7 @@ public class EawMeasureTests
     }
 
     [TestMethod]
-    public void TestConstructor_Error()
+    public void Constructor_Error()
     {
         new Action(() => new EawMeasure(-1, 1, 1, 1, 1, 1)).Should().Throw<Exception>();
         new Action(() => new EawMeasure(1, -1, 1, 1, 1, 1)).Should().Throw<Exception>();
@@ -58,7 +58,7 @@ public class EawMeasureTests
     }
 
     [TestMethod]
-    public void TestGetWidth()
+    public void GetWidth()
     {
         var measure = new EawMeasure(1, 2, 3, 4, 5, 6);
         measure.GetWidth(EastAsianWidth.Narrow).Should().Be(1);

@@ -8,9 +8,8 @@ namespace TestCometFlavor.Extensions.Linq;
 [TestClass]
 public class EnumerableExtensionsTests
 {
-
     [TestMethod]
-    public void TestWhereElse()
+    public void WhereElse()
     {
         var source = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, };
         var skipped = new List<int>();
