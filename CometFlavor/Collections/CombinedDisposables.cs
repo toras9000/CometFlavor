@@ -43,7 +43,7 @@ public class CombinedDisposables : IDisposable, ICollection<IDisposable>
     /// <param name="removeDispose">コレクションから取り除いた要素を破棄するか否か</param>
     public CombinedDisposables(bool reverse, bool removeDispose)
     {
-        this.disposables = new List<IDisposable>();
+        this.Disposables = new List<IDisposable>();
         this.ReverseDispose = reverse;
         this.DisposeOnRemove = removeDispose;
     }
@@ -52,7 +52,7 @@ public class CombinedDisposables : IDisposable, ICollection<IDisposable>
     // 公開プロパティ
     #region コレクション情報
     /// <summary>コレクション要素数</summary>
-    public int Count => this.disposables.Count;
+    public int Count => this.Disposables.Count;
 
     /// <summary>コレクションが読み取り専用であるか否か。常に false を返却する。</summary>
     public bool IsReadOnly => false;
@@ -70,9 +70,7 @@ public class CombinedDisposables : IDisposable, ICollection<IDisposable>
     #region 状態
     /// <summary>コレクションがDispose済みであるか否か</summary>
     public bool IsDisposed { get; private set; }
-    #endregion
 
-    #region 破棄
     /// <summary>最後に発生した例外</summary>
     /// <remarks>
     /// <see cref="DisposeOnRemove"/> が true の場合の <see cref="Remove"/>, <see cref="Clear"/> や <see cref="Dispose()"/> の呼び出しで要素が破棄される際、
@@ -103,7 +101,7 @@ public class CombinedDisposables : IDisposable, ICollection<IDisposable>
         }
 
         // コレクションも追加
-        this.disposables.Add(item);
+        this.Disposables.Add(item);
     }
 
     /// <summary>
@@ -119,7 +117,7 @@ public class CombinedDisposables : IDisposable, ICollection<IDisposable>
         if (item == null) throw new ArgumentNullException(nameof(item));
 
         // コレクションから要素を取り除く
-        var removed = this.disposables.Remove(item);
+        var removed = this.Disposables.Remove(item);
 
         // 除去時破棄が有効であればDisposeする。
         // 取り除いて破棄することが目的なのだから、登録されていたか否かには関わらず破棄は行う。
@@ -159,21 +157,21 @@ public class CombinedDisposables : IDisposable, ICollection<IDisposable>
         if (item == null) throw new ArgumentNullException(nameof(item));
 
         // コレクションに含まれるかを判定
-        return this.disposables.Contains(item);
+        return this.Disposables.Contains(item);
     }
 
     /// <summary>コレクション反復子を取得する。</summary>
     /// <returns>コレクション反復子</returns>
     public IEnumerator<IDisposable> GetEnumerator()
     {
-        return this.disposables.GetEnumerator();
+        return this.Disposables.GetEnumerator();
     }
 
     /// <summary>コレクション反復子を取得する。</summary>
     /// <returns>コレクション反復子</returns>
     IEnumerator IEnumerable.GetEnumerator()
     {
-        return this.disposables.GetEnumerator();
+        return this.Disposables.GetEnumerator();
     }
     #endregion
 
@@ -183,7 +181,7 @@ public class CombinedDisposables : IDisposable, ICollection<IDisposable>
     /// <param name="arrayIndex">コピー先配列の格納開始位置</param>
     void ICollection<IDisposable>.CopyTo(IDisposable[] array, int arrayIndex)
     {
-        this.disposables.CopyTo(array, arrayIndex);
+        this.Disposables.CopyTo(array, arrayIndex);
     }
     #endregion
 
@@ -194,6 +192,12 @@ public class CombinedDisposables : IDisposable, ICollection<IDisposable>
         Dispose(true);
         GC.SuppressFinalize(this);
     }
+    #endregion
+
+    // 保護プロパティ
+    #region リソース管理
+    /// <summary>破棄予定IDisposableを管理するコレクション</summary>
+    protected List<IDisposable> Disposables { get; }
     #endregion
 
     // 保護メソッド
@@ -209,24 +213,20 @@ public class CombinedDisposables : IDisposable, ICollection<IDisposable>
     }
     #endregion
 
-    // 非公開フィールド
-    #region リソース管理
-    /// <summary>破棄予定IDisposableを管理するコレクション</summary>
-    private List<IDisposable> disposables;
-    #endregion
-
+    // 非公開メソッド
+    #region 破棄
     /// <summary>管理しているコレクションをクリアする。</summary>
     /// <param name="disposeElements">要素を破棄するか否か</param>
     private void clearResources(bool disposeElements)
     {
         // 要素破棄が必要な場合、保持する要素を破棄
-        if (disposeElements && (0 < this.disposables.Count))
+        if (disposeElements && (0 < this.Disposables.Count))
         {
             // 破棄中の例外を保持するリスト
             var errors = new List<Exception>();
 
             // 破棄の順序を決定
-            var resources = this.disposables.AsEnumerable();
+            var resources = this.Disposables.AsEnumerable();
             if (this.ReverseDispose)
             {
                 resources = resources.Reverse();
@@ -249,6 +249,7 @@ public class CombinedDisposables : IDisposable, ICollection<IDisposable>
         }
 
         // コレクションをクリア
-        this.disposables.Clear();
+        this.Disposables.Clear();
     }
+    #endregion
 }
