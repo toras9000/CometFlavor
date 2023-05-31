@@ -10,6 +10,37 @@ namespace CometFlavor.Collections;
 /// <summary>
 /// 破棄対象リソース管理コレクション
 /// </summary>
+public class AsyncCombinedDisposables : AsyncCombinedDisposables<IAsyncDisposable>
+{
+    // 構築
+    #region コンストラクタ
+    /// <summary>
+    /// デフォルトコンストラクタ。
+    /// コレクションの逆順破棄、除去時破棄無しで初期化する。
+    /// </summary>
+    public AsyncCombinedDisposables() : base() { }
+
+    /// <summary>
+    /// 逆順破棄動作を指定して構築するコンストラクタ。
+    /// 除去時破棄は無しで初期化する。
+    /// </summary>
+    /// <param name="reverse">一括破棄時に逆順で破棄するか否か</param>
+    public AsyncCombinedDisposables(bool reverse) : base(reverse) { }
+
+    /// <summary>
+    /// 逆順破棄動作と除去時破棄動作を指定して構築するコンストラクタ。
+    /// </summary>
+    /// <param name="reverse">一括破棄時に逆順で破棄するか否か</param>
+    /// <param name="removeDispose">コレクションから取り除いた要素を破棄するか否か</param>
+    /// <param name="continueContext">一括破棄時にコンテキスト維持するか否か</param>
+    public AsyncCombinedDisposables(bool reverse, bool removeDispose, bool continueContext = true)
+         : base(reverse, removeDispose, continueContext) { }
+    #endregion
+}
+
+/// <summary>
+/// 破棄対象リソース管理コレクション
+/// </summary>
 /// <remarks>
 /// 破棄予定のIAsyncDisposableオブジェクトをコレクションとして管理し、
 /// コレクションをDisposeした際に管理している全ての要素に対してDisposeを呼び出す。
@@ -17,7 +48,7 @@ namespace CometFlavor.Collections;
 /// 破棄済みのコレクションに対して要素を追加仕様とした場合、要素に対して即座にDisposeを呼び出す。
 /// なお、このコレクションはスレッドセーフではない。
 /// </remarks>
-public class AsyncCombinedDisposables : IAsyncDisposable, ICollection<IAsyncDisposable>
+public class AsyncCombinedDisposables<T> : IAsyncDisposable, ICollection<T> where T : IAsyncDisposable
 {
     // 構築
     #region コンストラクタ
@@ -46,7 +77,7 @@ public class AsyncCombinedDisposables : IAsyncDisposable, ICollection<IAsyncDisp
     /// <param name="continueContext">一括破棄時にコンテキスト維持するか否か</param>
     public AsyncCombinedDisposables(bool reverse, bool removeDispose, bool continueContext = true)
     {
-        this.Disposables = new List<IAsyncDisposable>();
+        this.Disposables = new List<T>();
         this.ReverseDispose = reverse;
         this.DisposeOnRemove = removeDispose;
         this.ContinueuDisposeContext = continueContext;
@@ -95,7 +126,7 @@ public class AsyncCombinedDisposables : IAsyncDisposable, ICollection<IAsyncDisp
     /// <summary>コレクションに要素を追加する。</summary>
     /// <param name="item">追加する要素</param>
     /// <exception cref="ArgumentNullException">引数がnullである場合</exception>
-    public async ValueTask AddAsync(IAsyncDisposable item)
+    public async ValueTask AddAsync(T item)
     {
         // パラメータチェック
         if (item == null) throw new ArgumentNullException(nameof(item));
@@ -118,7 +149,7 @@ public class AsyncCombinedDisposables : IAsyncDisposable, ICollection<IAsyncDisp
     /// <param name="item">取り除く要素</param>
     /// <returns>要素を取り除いたか否か</returns>
     /// <exception cref="ArgumentNullException">引数がnullである場合</exception>
-    public async ValueTask<bool> RemoveAsync(IAsyncDisposable item)
+    public async ValueTask<bool> RemoveAsync(T item)
     {
         // パラメータチェック
         if (item == null) throw new ArgumentNullException(nameof(item));
@@ -153,7 +184,7 @@ public class AsyncCombinedDisposables : IAsyncDisposable, ICollection<IAsyncDisp
     #region インターフェース明示実装：要素管理(同期)
     /// <summary>このメソッドを利用するべきではない</summary>
     [Obsolete("このメソッドを利用するべきではない")]
-    void ICollection<IAsyncDisposable>.Add(IAsyncDisposable item)
+    void ICollection<T>.Add(T item)
     {
         // パラメータチェック
         if (item == null) throw new ArgumentNullException(nameof(item));
@@ -171,7 +202,7 @@ public class AsyncCombinedDisposables : IAsyncDisposable, ICollection<IAsyncDisp
 
     /// <summary>このメソッドを利用するべきではない</summary>
     [Obsolete("このメソッドを利用するべきではない")]
-    bool ICollection<IAsyncDisposable>.Remove(IAsyncDisposable item)
+    bool ICollection<T>.Remove(T item)
     {
         // パラメータチェック
         if (item == null) throw new ArgumentNullException(nameof(item));
@@ -194,7 +225,7 @@ public class AsyncCombinedDisposables : IAsyncDisposable, ICollection<IAsyncDisp
 
     /// <summary>このメソッドを利用するべきではない</summary>
     [Obsolete("このメソッドを利用するべきではない")]
-    void ICollection<IAsyncDisposable>.Clear()
+    void ICollection<T>.Clear()
     {
         clearResourcesAsync(this.DisposeOnRemove).GetAwaiter().GetResult();
     }
@@ -208,7 +239,7 @@ public class AsyncCombinedDisposables : IAsyncDisposable, ICollection<IAsyncDisp
     /// <param name="item"></param>
     /// <returns>指定の要素がコレクションに含まれているか否か</returns>
     /// <exception cref="ArgumentNullException">引数がnullである場合</exception>
-    public bool Contains(IAsyncDisposable item)
+    public bool Contains(T item)
     {
         // パラメータチェック
         if (item == null) throw new ArgumentNullException(nameof(item));
@@ -219,7 +250,7 @@ public class AsyncCombinedDisposables : IAsyncDisposable, ICollection<IAsyncDisp
 
     /// <summary>コレクション反復子を取得する。</summary>
     /// <returns>コレクション反復子</returns>
-    public IEnumerator<IAsyncDisposable> GetEnumerator()
+    public IEnumerator<T> GetEnumerator()
     {
         return this.Disposables.GetEnumerator();
     }
@@ -236,7 +267,7 @@ public class AsyncCombinedDisposables : IAsyncDisposable, ICollection<IAsyncDisp
     /// <summary>コレクション内容をコピーする</summary>
     /// <param name="array">コピー先配列</param>
     /// <param name="arrayIndex">コピー先配列の格納開始位置</param>
-    void ICollection<IAsyncDisposable>.CopyTo(IAsyncDisposable[] array, int arrayIndex)
+    void ICollection<T>.CopyTo(T[] array, int arrayIndex)
     {
         this.Disposables.CopyTo(array, arrayIndex);
     }
@@ -254,7 +285,7 @@ public class AsyncCombinedDisposables : IAsyncDisposable, ICollection<IAsyncDisp
     // 保護プロパティ
     #region リソース管理
     /// <summary>破棄予定IAsyncDisposableを管理するコレクション</summary>
-    protected List<IAsyncDisposable> Disposables { get; }
+    protected List<T> Disposables { get; }
     #endregion
 
     // 保護メソッド

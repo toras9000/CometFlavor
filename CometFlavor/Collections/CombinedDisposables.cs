@@ -8,6 +8,35 @@ namespace CometFlavor.Collections;
 /// <summary>
 /// 破棄対象リソース管理コレクション
 /// </summary>
+public class CombinedDisposables : CombinedDisposables<IDisposable>
+{
+    // 構築
+    #region コンストラクタ
+    /// <summary>
+    /// デフォルトコンストラクタ。
+    /// コレクションの逆順破棄、除去時破棄無しで初期化する。
+    /// </summary>
+    public CombinedDisposables() : base() { }
+
+    /// <summary>
+    /// 逆順破棄動作を指定して構築するコンストラクタ。
+    /// 除去時破棄は無しで初期化する。
+    /// </summary>
+    /// <param name="reverse">一括破棄時に逆順で破棄するか否か</param>
+    public CombinedDisposables(bool reverse) : base(reverse) { }
+
+    /// <summary>
+    /// 逆順破棄動作と除去時破棄動作を指定して構築するコンストラクタ。
+    /// </summary>
+    /// <param name="reverse">一括破棄時に逆順で破棄するか否か</param>
+    /// <param name="removeDispose">コレクションから取り除いた要素を破棄するか否か</param>
+    public CombinedDisposables(bool reverse, bool removeDispose) : base(reverse, removeDispose) { }
+    #endregion
+}
+
+/// <summary>
+/// 破棄対象リソース管理コレクション
+/// </summary>
 /// <remarks>
 /// 破棄予定のIDisposableオブジェクトをコレクションとして管理し、
 /// コレクションをDisposeした際に管理している全ての要素に対してDisposeを呼び出す。
@@ -15,7 +44,7 @@ namespace CometFlavor.Collections;
 /// 破棄済みのコレクションに対して要素を追加仕様とした場合、要素に対して即座にDisposeを呼び出す。
 /// なお、このコレクションはスレッドセーフではない。
 /// </remarks>
-public class CombinedDisposables : IDisposable, ICollection<IDisposable>
+public class CombinedDisposables<T> : IDisposable, ICollection<T> where T : IDisposable
 {
     // 構築
     #region コンストラクタ
@@ -43,7 +72,7 @@ public class CombinedDisposables : IDisposable, ICollection<IDisposable>
     /// <param name="removeDispose">コレクションから取り除いた要素を破棄するか否か</param>
     public CombinedDisposables(bool reverse, bool removeDispose)
     {
-        this.Disposables = new List<IDisposable>();
+        this.Disposables = new List<T>();
         this.ReverseDispose = reverse;
         this.DisposeOnRemove = removeDispose;
     }
@@ -88,7 +117,7 @@ public class CombinedDisposables : IDisposable, ICollection<IDisposable>
     /// <summary>コレクションに要素を追加する。</summary>
     /// <param name="item">追加する要素</param>
     /// <exception cref="ArgumentNullException">引数がnullである場合</exception>
-    public void Add(IDisposable item)
+    public void Add(T item)
     {
         // パラメータチェック
         if (item == null) throw new ArgumentNullException(nameof(item));
@@ -111,7 +140,7 @@ public class CombinedDisposables : IDisposable, ICollection<IDisposable>
     /// <param name="item">取り除く要素</param>
     /// <returns>要素を取り除いたか否か</returns>
     /// <exception cref="ArgumentNullException">引数がnullである場合</exception>
-    public bool Remove(IDisposable item)
+    public bool Remove(T item)
     {
         // パラメータチェック
         if (item == null) throw new ArgumentNullException(nameof(item));
@@ -151,7 +180,7 @@ public class CombinedDisposables : IDisposable, ICollection<IDisposable>
     /// <param name="item"></param>
     /// <returns>指定の要素がコレクションに含まれているか否か</returns>
     /// <exception cref="ArgumentNullException">引数がnullである場合</exception>
-    public bool Contains(IDisposable item)
+    public bool Contains(T item)
     {
         // パラメータチェック
         if (item == null) throw new ArgumentNullException(nameof(item));
@@ -162,7 +191,7 @@ public class CombinedDisposables : IDisposable, ICollection<IDisposable>
 
     /// <summary>コレクション反復子を取得する。</summary>
     /// <returns>コレクション反復子</returns>
-    public IEnumerator<IDisposable> GetEnumerator()
+    public IEnumerator<T> GetEnumerator()
     {
         return this.Disposables.GetEnumerator();
     }
@@ -179,7 +208,7 @@ public class CombinedDisposables : IDisposable, ICollection<IDisposable>
     /// <summary>コレクション内容をコピーする</summary>
     /// <param name="array">コピー先配列</param>
     /// <param name="arrayIndex">コピー先配列の格納開始位置</param>
-    void ICollection<IDisposable>.CopyTo(IDisposable[] array, int arrayIndex)
+    void ICollection<T>.CopyTo(T[] array, int arrayIndex)
     {
         this.Disposables.CopyTo(array, arrayIndex);
     }
@@ -197,7 +226,7 @@ public class CombinedDisposables : IDisposable, ICollection<IDisposable>
     // 保護プロパティ
     #region リソース管理
     /// <summary>破棄予定IDisposableを管理するコレクション</summary>
-    protected List<IDisposable> Disposables { get; }
+    protected List<T> Disposables { get; }
     #endregion
 
     // 保護メソッド
