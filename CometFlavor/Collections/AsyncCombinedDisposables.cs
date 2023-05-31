@@ -246,7 +246,7 @@ public class AsyncCombinedDisposables : IAsyncDisposable, ICollection<IAsyncDisp
     /// <summary>リソースを破棄する</summary>
     public async ValueTask DisposeAsync()
     {
-        await this.DisposeAsync().ConfigureAwait(false);
+        await this.DisposeAsync(true).ConfigureAwait(false);
         GC.SuppressFinalize(this);
     }
     #endregion
