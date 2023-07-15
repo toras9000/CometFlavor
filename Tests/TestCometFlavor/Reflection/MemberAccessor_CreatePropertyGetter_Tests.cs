@@ -382,4 +382,19 @@ public class MemberAccessor_CreatePropertyGetter_Tests
         txtGetter(item).Should().Be("asd");
         valGetter(item).Should().Be(123);
     }
+
+    public record struct StructItem(string Text, int Value);
+
+    [TestMethod]
+    public void CreatePropertyGetter_Struct()
+    {
+        var txtGetter = CreatePropertyGetter<StructItem>(nameof(StructItem.Text));
+        var valGetter = CreatePropertyGetter<StructItem>(nameof(StructItem.Value));
+
+        var item = new StructItem("asd", 123);
+        txtGetter(item).Should().Be("asd");
+        valGetter(item).Should().Be(123);
+    }
+
+
 }
