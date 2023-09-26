@@ -458,17 +458,17 @@ public static class DirectoryInfoExtensions
     private class SelectFilesContext<TResult> : IFileConverter<TResult>
     {
         // 構築
-    #region コンストラクタ
+        #region コンストラクタ
         /// <summary>起点ディレクトリを指定するコンストラクタ</summary>
         /// <param name="dir">起点ディレクトリ</param>
         public SelectFilesContext(DirectoryInfo dir)
         {
             this.Directory = dir;
         }
-    #endregion
+        #endregion
 
         // 公開プロパティ
-    #region IFileWalker インタフェース
+        #region IFileWalker インタフェース
         /// <inheritdoc />
         public FileSystemInfo Item => (FileSystemInfo?)this.File ?? this.Directory;
 
@@ -483,27 +483,27 @@ public static class DirectoryInfoExtensions
 
         /// <inheritdoc />
         public bool Exit { get; set; }
-    #endregion
+        #endregion
 
-    #region 列挙処理向け
+        #region 列挙処理向け
         /// <summary>結果値が設定されたかどうか</summary>
         public bool HasValue { get; private set; }
 
         /// <summary>結果値</summary>
         public TResult? Value { get; private set; }
-    #endregion
+        #endregion
 
         // 公開メソッド
-    #region IFileWalker インタフェース
+        #region IFileWalker インタフェース
         /// <inheritdoc />
         public void SetResult(TResult? value)
         {
             this.Value = value;
             this.HasValue = true;
         }
-    #endregion
+        #endregion
 
-    #region 列挙処理向け
+        #region 列挙処理向け
         /// <summary>列挙対象ディレクトリを更新する</summary>
         /// <param name="dir">ディレクトリ情報</param>
         public void SetDirectory(DirectoryInfo dir)
@@ -529,7 +529,7 @@ public static class DirectoryInfoExtensions
             this.Value = default;
             this.HasValue = false;
         }
-    #endregion
+        #endregion
     }
 
 #endif

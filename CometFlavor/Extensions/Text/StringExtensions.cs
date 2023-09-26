@@ -302,14 +302,11 @@ public static class StringExtensions
     /// <summary>文字列を連結する。</summary>
     /// <param name="self">文字列のシーケンス</param>
     /// <param name="separator">連結する文字間に差し込む文字列</param>
-    /// <returns></returns>
+    /// <returns>連結された文字列</returns>
     public static string JoinString(this IEnumerable<string?> self, string? separator = null)
         => string.Join(separator, self);
 
-    /// <summary>
-    /// 文字列を装飾する。
-    /// 元の文字列が null または 空の場合はなにもしない。
-    /// </summary>
+    /// <summary>指定の文字列がnull/空でない場合に装飾を付与する。</summary>
     /// <param name="self">元になる文字列</param>
     /// <param name="format">文字列を装飾する書式。埋め込み位置0のプレースホルダ({{0}})が含まれる必要がある。</param>
     /// <returns>装飾された文字列。元がnullまたは空の場合はそのまま返却。</returns>
@@ -317,10 +314,7 @@ public static class StringExtensions
     public static string? Decorate(this string? self, string format)
         => string.IsNullOrEmpty(self) ? self : string.Format(format, self);
 
-    /// <summary>
-    /// 文字列を装飾する。
-    /// 元の文字列が null または 空の場合はなにもしない。
-    /// </summary>
+    /// <summary>指定の文字列がnull/空でない場合に装飾を付与する。</summary>
     /// <param name="self">元になる文字列</param>
     /// <param name="decorator">文字列を装飾するデリゲート</param>
     /// <returns>装飾された文字列。元がnullまたは空の場合はそのまま返却。</returns>
