@@ -16,6 +16,7 @@ var settings = new
     // バージョンごとの生成ファイルと情報ファイルURL
     Versions = new[]
     {
+        new EawVersion("15.0.0", "V15", @"https://www.unicode.org/Public/15.0.0/ucd/EastAsianWidth.txt"),
         new EawVersion("14.0.0", "V14", @"https://www.unicode.org/Public/14.0.0/ucd/EastAsianWidth.txt"),
         new EawVersion("13.0.0", "V13", @"https://www.unicode.org/Public/13.0.0/ucd/EastAsianWidth.txt"),
         /*
