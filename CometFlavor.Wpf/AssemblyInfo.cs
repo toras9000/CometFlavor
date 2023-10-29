@@ -13,6 +13,8 @@ using System.Windows.Markup;
 // XAML用名前空間定義
 [assembly: XmlnsDefinition("http://schemas.cometflavor.toras9000/wpf/interactions", "CometFlavor.Wpf.Interactions")]
 [assembly: XmlnsDefinition("http://schemas.cometflavor.toras9000/wpf/converters", "CometFlavor.Wpf.Converters")]
+[assembly: XmlnsDefinition("http://schemas.cometflavor.toras9000/wpf/utility", "CometFlavor.Wpf.Utility")]
 
 [assembly: XmlnsDefinition("http://schemas.cometflavor.toras9000/", "CometFlavor.Wpf.Interactions")]
 [assembly: XmlnsDefinition("http://schemas.cometflavor.toras9000/", "CometFlavor.Wpf.Converters")]
+[assembly: XmlnsDefinition("http://schemas.cometflavor.toras9000/", "CometFlavor.Wpf.Utility")]
