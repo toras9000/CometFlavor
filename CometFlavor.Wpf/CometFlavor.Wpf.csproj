@@ -12,6 +12,7 @@
     <PackageId>CometFlavor.Wpf</PackageId>
     <PackageDescription>A utility class library for WPF.</PackageDescription>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageTags>wpf</PackageTags>
   </PropertyGroup>
   <PropertyGroup>
@@ -41,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <SourceRoot Include="$(MSBuildThisFileDirectory)" />
+    <None Include="readme.md" Pack="true" PackagePath="/" />
   </ItemGroup>
 
   <ItemGroup>
