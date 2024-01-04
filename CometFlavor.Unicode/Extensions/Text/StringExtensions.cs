@@ -42,7 +42,7 @@ public static class StringExtensions
             // 最も大きな幅で評価される値を採用する。
             var element = (string)elementer.Current;
             var elemWidth = element.EnumerateRunes()
-                .Select(rune => UnicodeEastAsianWidthV14.GetEastAsianWidth(rune.Value))
+                .Select(rune => UsingUnicode.GetEastAsianWidth(rune.Value))
                 .Select(eaw => measure.GetWidth(eaw))
                 .Max();
 
@@ -81,7 +81,7 @@ public static class StringExtensions
             // 最も大きな幅で評価される値を採用する。
             var element = (string)elementer.Current;
             var elemWidth = element.EnumerateRunes()
-                .Select(rune => UnicodeEastAsianWidthV14.GetEastAsianWidth(rune.Value))
+                .Select(rune => UsingUnicode.GetEastAsianWidth(rune.Value))
                 .Select(eaw => measure.GetWidth(eaw))
                 .Max();
 
@@ -128,7 +128,7 @@ public static class StringExtensions
             // 最も大きな幅で評価される値を採用する。
             var element = (string)elementer.Current;
             var elemWidth = element.EnumerateRunes()
-                .Select(rune => UnicodeEastAsianWidthV14.GetEastAsianWidth(rune.Value))
+                .Select(rune => UsingUnicode.GetEastAsianWidth(rune.Value))
                 .Select(eaw => measure.GetWidth(eaw))
                 .Max();
 
@@ -210,5 +210,8 @@ public static class StringExtensions
         // 省略した文字列を返却
         return builder.ToString();
     }
+
+    /// <summary>このクラスで利用するUnicode情報取得サービス</summary>
+    private static readonly IUnicodeInfo UsingUnicode = UnicodeInfo.CreateDefault();
 #endif
 }
