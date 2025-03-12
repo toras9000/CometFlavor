@@ -20,6 +20,7 @@ var settings = new
     // バージョンごとの生成ファイルと情報ファイルURL
     Versions = new[]
     {
+        new UnicodeVersion("16.0.0", "V16"),
         new UnicodeVersion("15.0.0", "V15"),
         new UnicodeVersion("14.0.0", "V14"),
         new UnicodeVersion("13.0.0", "V13"),

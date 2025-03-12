@@ -16,6 +16,7 @@ var settings = new
     // バージョンごとの生成ファイルと情報ファイルURL
     Versions = new[]
     {
+        new GcbVersion("16.0.0", "V16", @"https://www.unicode.org/Public/16.0.0/ucd/auxiliary/GraphemeBreakProperty.txt"),
         new GcbVersion("15.0.0", "V15", @"https://www.unicode.org/Public/15.0.0/ucd/auxiliary/GraphemeBreakProperty.txt"),
         new GcbVersion("14.0.0", "V14", @"https://www.unicode.org/Public/14.0.0/ucd/auxiliary/GraphemeBreakProperty.txt"),
         new GcbVersion("13.0.0", "V13", @"https://www.unicode.org/Public/13.0.0/ucd/auxiliary/GraphemeBreakProperty.txt"),

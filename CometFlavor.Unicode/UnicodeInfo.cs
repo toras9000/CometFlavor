@@ -19,7 +19,11 @@ public static class UnicodeInfo
     /// <returns>情報取得サービス</returns>
     public static IUnicodeInfo CreateV15() => new UnicodeInfoV15();
 
+    /// <summary>Unicode バージョン 16.0.0 の情報取得サービスを生成する</summary>
+    /// <returns>情報取得サービス</returns>
+    public static IUnicodeInfo CreateV16() => new UnicodeInfoV16();
+
     /// <summary>利用可能な最新 Unicode バージョン の情報取得サービスを生成する</summary>
     /// <returns>情報取得サービス</returns>
-    public static IUnicodeInfo CreateDefault() => new UnicodeInfoV15();
+    public static IUnicodeInfo CreateDefault() => new UnicodeInfoV16();
 }

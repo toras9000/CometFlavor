@@ -16,6 +16,7 @@ var settings = new
     // バージョンごとの生成ファイルと情報ファイルURL
     Versions = new[]
     {
+        new EawVersion("16.0.0", "V16", @"https://www.unicode.org/Public/16.0.0/ucd/EastAsianWidth.txt"),
         new EawVersion("15.0.0", "V15", @"https://www.unicode.org/Public/15.0.0/ucd/EastAsianWidth.txt"),
         new EawVersion("14.0.0", "V14", @"https://www.unicode.org/Public/14.0.0/ucd/EastAsianWidth.txt"),
         new EawVersion("13.0.0", "V13", @"https://www.unicode.org/Public/13.0.0/ucd/EastAsianWidth.txt"),
@@ -66,7 +67,7 @@ async Task MainAsync()
 
     // 定義ファイル処理用
     var lineTerms = new[] { '\r', '\n', };
-    var extractor = new Regex(@"^([0-9a-fA-F]+)(?:\.\.([0-9a-fA-F]+))?;(\w+)");
+    var extractor = new Regex(@"^([0-9a-fA-F]+)(?:\.\.([0-9a-fA-F]+))?\s*;\s*(\w+)");
     using var client = new HttpClient();
 
     // バージョンごとの定義ファイル処理
