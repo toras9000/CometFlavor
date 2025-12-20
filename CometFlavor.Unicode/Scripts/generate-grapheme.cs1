@@ -1,7 +1,6 @@
-﻿// dotnet-script 用のスクリプト
-
+﻿#!/usr/bin/env -S dotnet run --file
 using System.Globalization;
-using System.Net.Http;
+using System.Text;
 using System.Text.RegularExpressions;
 
 // 設定
@@ -28,38 +27,6 @@ var settings = new
         */
     }
 };
-
-/// <summary>コード生成設定</summary>
-record GenerateInfo(string Namespace, string ClassName);
-
-/// <summary>Unicodeバージョン毎のGraphemeClusterBreak情報</summary>
-record GcbVersion(string Value, string Symbol, string Source);
-
-/// <summary>GraphemeClusterBreak種別列挙</summary>
-enum GraphemeClusterBreak
-{
-    Other,
-    Prepend,
-    CR,
-    LF,
-    Control,
-    Extend,
-    Regional_Indicator,
-    SpacingMark,
-    L,
-    V,
-    T,
-    LV,
-    LVT,
-    E_Base,
-    E_Modifier,
-    ZWJ,
-    Glue_After_Zwj,
-    E_Base_GAZ,
-}
-
-/// <summary>コードポイント範囲に対するGraphemeClusterBreak定義</summary>
-record PropertyDefine(uint Begin, uint End, GraphemeClusterBreak Type);
 
 /// <summary>メイン処理</summary>
 async Task MainAsync()
@@ -149,7 +116,7 @@ async Task MainAsync()
 }
 
 /// <summary>スクリプト相対パスからフルパスを取得する</summary>
-string PathFromRelative(string relativePath, [System.Runtime.CompilerServices.CallerFilePath] string path = null) => Path.Combine(Path.GetDirectoryName(path), relativePath);
+string PathFromRelative(string relativePath, [System.Runtime.CompilerServices.CallerFilePath] string path = "") => Path.Combine(Path.GetDirectoryName(path) ?? "", relativePath);
 
 /// <summary>GraphemeClusterBreak取得クラスソースを生成する</summary>
 FileInfo generateGcbSource(string directory, GenerateInfo generate, GcbVersion version, IReadOnlyList<PropertyDefine> defines)
@@ -209,3 +176,35 @@ if (!Console.IsInputRedirected)
     Console.WriteLine("Press any key to exit.");
     Console.ReadKey(true);
 }
+
+/// <summary>コード生成設定</summary>
+record GenerateInfo(string Namespace, string ClassName);
+
+/// <summary>Unicodeバージョン毎のGraphemeClusterBreak情報</summary>
+record GcbVersion(string Value, string Symbol, string Source);
+
+/// <summary>GraphemeClusterBreak種別列挙</summary>
+enum GraphemeClusterBreak
+{
+    Other,
+    Prepend,
+    CR,
+    LF,
+    Control,
+    Extend,
+    Regional_Indicator,
+    SpacingMark,
+    L,
+    V,
+    T,
+    LV,
+    LVT,
+    E_Base,
+    E_Modifier,
+    ZWJ,
+    Glue_After_Zwj,
+    E_Base_GAZ,
+}
+
+/// <summary>コードポイント範囲に対するGraphemeClusterBreak定義</summary>
+record PropertyDefine(uint Begin, uint End, GraphemeClusterBreak Type);

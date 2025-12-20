@@ -1,7 +1,5 @@
-﻿// dotnet-script 用のスクリプト
-
+﻿#!/usr/bin/env -S dotnet run --file
 using System.Globalization;
-using System.Net.Http;
 using System.Text.RegularExpressions;
 
 // 設定
@@ -26,27 +24,6 @@ var settings = new
         */
     }
 };
-
-/// <summary>コード生成設定</summary>
-record GenerateInfo(string Namespace, string ClassName);
-
-/// <summary>Unicodeバージョン毎のEastAsianWidth情報</summary>
-record EawVersion(string Value, string Symbol, string Source);
-
-/// <summary>EastAsianWidth種別列挙</summary>
-enum EastAsianWidth
-{
-    Unknown,
-    Ambiguous,
-    Full,
-    Half,
-    Neutral,
-    Narrow,
-    Wide,
-}
-
-/// <summary>コードポイント範囲に対するEastAsianWidth定義</summary>
-record WidthDefine(uint Begin, uint End, EastAsianWidth Width);
 
 /// <summary>メイン処理</summary>
 async Task MainAsync()
@@ -122,7 +99,7 @@ async Task MainAsync()
 }
 
 /// <summary>スクリプト相対パスからフルパスを取得する</summary>
-string PathFromRelative(string relativePath, [System.Runtime.CompilerServices.CallerFilePath] string path = null) => Path.Combine(Path.GetDirectoryName(path), relativePath);
+string PathFromRelative(string relativePath, [System.Runtime.CompilerServices.CallerFilePath] string path = "") => Path.Combine(Path.GetDirectoryName(path) ?? "", relativePath);
 
 /// <summary>EastAsianWidth取得クラスソースを生成する</summary>
 FileInfo generateEawSource_Linear(string directory, GenerateInfo generate, EawVersion version, IReadOnlyList<WidthDefine> defines)
@@ -260,3 +237,24 @@ if (!Console.IsInputRedirected)
     Console.WriteLine("Press any key to exit.");
     Console.ReadKey(true);
 }
+
+/// <summary>コード生成設定</summary>
+record GenerateInfo(string Namespace, string ClassName);
+
+/// <summary>Unicodeバージョン毎のEastAsianWidth情報</summary>
+record EawVersion(string Value, string Symbol, string Source);
+
+/// <summary>EastAsianWidth種別列挙</summary>
+enum EastAsianWidth
+{
+    Unknown,
+    Ambiguous,
+    Full,
+    Half,
+    Neutral,
+    Narrow,
+    Wide,
+}
+
+/// <summary>コードポイント範囲に対するEastAsianWidth定義</summary>
+record WidthDefine(uint Begin, uint End, EastAsianWidth Width);

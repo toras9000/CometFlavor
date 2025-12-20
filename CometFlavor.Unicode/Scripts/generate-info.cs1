@@ -1,6 +1,5 @@
-﻿// dotnet-script 用のスクリプト
-
-using System.Globalization;
+﻿#!/usr/bin/env -S dotnet run --file
+using System.Text;
 
 // 設定
 var settings = new
@@ -33,12 +32,6 @@ var settings = new
     }
 };
 
-/// <summary>コード生成設定</summary>
-record GenerateInfo(string Namespace, string ClassName);
-
-/// <summary>Unicodeバージョン毎のEastAsianWidth情報</summary>
-record UnicodeVersion(string Value, string Symbol);
-
 /// <summary>メイン処理</summary>
 Task MainAsync()
 {
@@ -60,7 +53,7 @@ Task MainAsync()
 }
 
 /// <summary>スクリプト相対パスからフルパスを取得する</summary>
-string PathFromRelative(string relativePath, [System.Runtime.CompilerServices.CallerFilePath] string path = null) => Path.Combine(Path.GetDirectoryName(path), relativePath);
+string PathFromRelative(string relativePath, [System.Runtime.CompilerServices.CallerFilePath] string path = "") => Path.Combine(Path.GetDirectoryName(path) ?? "", relativePath);
 
 /// <summary>Unicode情報取得クラスソースを生成する</summary>
 FileInfo generateInfoSource(string directory, GenerateInfo generate, UnicodeVersion version)
@@ -132,3 +125,9 @@ if (!Console.IsInputRedirected)
     Console.WriteLine("Press any key to exit.");
     Console.ReadKey(true);
 }
+
+/// <summary>コード生成設定</summary>
+record GenerateInfo(string Namespace, string ClassName);
+
+/// <summary>Unicodeバージョン毎のEastAsianWidth情報</summary>
+record UnicodeVersion(string Value, string Symbol);
