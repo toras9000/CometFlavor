@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Tests/BenchCometFlavor.Unicode/BenchCometFlavor.Unicode.csproj" />
+    <Project Path="Tests/BenchCometFlavor/BenchCometFlavor.csproj" />
+    <Project Path="Tests/TestCometFlavor.Unicode/TestCometFlavor.Unicode.csproj" />
+    <Project Path="Tests/TestCometFlavor.Wpf.Win32/TestCometFlavor.Wpf.Win32.csproj" />
+    <Project Path="Tests/TestCometFlavor.Wpf/TestCometFlavor.Wpf.csproj" />
+    <Project Path="Tests/TestCometFlavor/TestCometFlavor.csproj" />
+  </Folder>
+  <Project Path="CometFlavor.Unicode/CometFlavor.Unicode.csproj" />
+  <Project Path="CometFlavor.Wpf.Win32/CometFlavor.Wpf.Win32.csproj" />
+  <Project Path="CometFlavor.Wpf/CometFlavor.Wpf.csproj" />
+  <Project Path="CometFlavor/CometFlavor.csproj" />
+</Solution>
