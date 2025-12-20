@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -22,6 +22,13 @@
   <ItemGroup>
     <ProjectReference Include="..\..\CometFlavor.Unicode\CometFlavor.Unicode.csproj" />
     <ProjectReference Include="..\..\CometFlavor\CometFlavor.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="Microsoft.VisualStudio.TestTools.UnitTesting.ParallelizeAttribute">
+      <Scope>Microsoft.VisualStudio.TestTools.UnitTesting.ExecutionScope.ClassLevel</Scope>
+      <Scope_IsLiteral>true</Scope_IsLiteral>
+    </AssemblyAttribute>
   </ItemGroup>
 
 </Project>
