@@ -1,5 +1,5 @@
 ﻿using CometFlavor.Extensions.Collection;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TestCometFlavor.Extensions.Collection;

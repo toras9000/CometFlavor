@@ -1,6 +1,6 @@
 ﻿using System;
 using CometFlavor.Utility;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TestCometFlavor.Utility;

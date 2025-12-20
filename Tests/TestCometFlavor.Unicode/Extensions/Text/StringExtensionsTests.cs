@@ -2,7 +2,7 @@
 using System.Linq;
 using CometFlavor.Extensions.Text;
 using CometFlavor.Unicode.Extensions.Text;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TestCometFlavor.Unicode.Extensions.Text;

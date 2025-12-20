@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows;
 using CometFlavor.Wpf.Converters;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestCometFlavor.Wpf._Test;
 

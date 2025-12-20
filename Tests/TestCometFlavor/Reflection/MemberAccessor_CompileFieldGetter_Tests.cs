@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Reflection;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static CometFlavor.Reflection.MemberAccessor;
 

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using CometFlavor.Extensions.Linq;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TestCometFlavor.Extensions.Linq;

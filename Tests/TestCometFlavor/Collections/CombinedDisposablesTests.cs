@@ -1,8 +1,8 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Linq;
 using CometFlavor.Collections;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -133,7 +133,7 @@ public class CombinedDisposablesTest
         target.Add(item5.Object);
         target.Should().HaveCount(5);
 
-        target.DisposeOnRemove.Should().Be(false, "”O‚Ì‚½‚ß‘O’ñ‚ğŠm”F");
+        target.DisposeOnRemove.Should().Be(false, "å¿µã®ãŸã‚å‰æã‚’ç¢ºèª");
 
         target.Remove(item2.Object).Should().Be(true);
         target.Should().Equal(
@@ -144,7 +144,7 @@ public class CombinedDisposablesTest
         );
         item2.Verify(o => o.Dispose(), Times.Never());
 
-        target.Remove(item2.Object).Should().Be(false, "œ‹Ï‚İƒIƒuƒWƒFƒNƒg‚ğÄw’è");
+        target.Remove(item2.Object).Should().Be(false, "é™¤å»æ¸ˆã¿ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å†æŒ‡å®š");
         target.Should().Equal(
             item1.Object,
             item3.Object,
@@ -181,7 +181,7 @@ public class CombinedDisposablesTest
         target.Add(item5.Object);
         target.Should().HaveCount(5);
 
-        target.DisposeOnRemove.Should().Be(true, "”O‚Ì‚½‚ß‘O’ñ‚ğŠm”F");
+        target.DisposeOnRemove.Should().Be(true, "å¿µã®ãŸã‚å‰æã‚’ç¢ºèª");
 
         target.Remove(item2.Object).Should().Be(true);
         target.Should().Equal(
@@ -192,7 +192,7 @@ public class CombinedDisposablesTest
         );
         item2.Verify(o => o.Dispose(), Times.Once());
 
-        target.Remove(item2.Object).Should().Be(false, "œ‹Ï‚İƒIƒuƒWƒFƒNƒg‚ğÄw’è");
+        target.Remove(item2.Object).Should().Be(false, "é™¤å»æ¸ˆã¿ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å†æŒ‡å®š");
         target.Should().Equal(
             item1.Object,
             item3.Object,
@@ -241,7 +241,7 @@ public class CombinedDisposablesTest
         target.Add(item5.Object);
         target.Should().HaveCount(5);
 
-        target.DisposeOnRemove.Should().Be(false, "”O‚Ì‚½‚ß‘O’ñ‚ğŠm”F");
+        target.DisposeOnRemove.Should().Be(false, "å¿µã®ãŸã‚å‰æã‚’ç¢ºèª");
         target.Clear();
         target.Should().HaveCount(0);
 
@@ -276,7 +276,7 @@ public class CombinedDisposablesTest
         target.Add(item5.Object);
         target.Should().HaveCount(5);
 
-        target.DisposeOnRemove.Should().Be(true, "”O‚Ì‚½‚ß‘O’ñ‚ğŠm”F");
+        target.DisposeOnRemove.Should().Be(true, "å¿µã®ãŸã‚å‰æã‚’ç¢ºèª");
         target.Clear();
         target.Should().HaveCount(0);
         target.IsDisposed.Should().Be(false);
@@ -320,7 +320,7 @@ public class CombinedDisposablesTest
         target.Add(item5.Object);
         target.Should().HaveCount(5);
 
-        target.DisposeOnRemove.Should().Be(true, "”O‚Ì‚½‚ß‘O’ñ‚ğŠm”F");
+        target.DisposeOnRemove.Should().Be(true, "å¿µã®ãŸã‚å‰æã‚’ç¢ºèª");
         target.Clear();
         target.Should().HaveCount(0);
         target.IsDisposed.Should().Be(false);
@@ -364,7 +364,7 @@ public class CombinedDisposablesTest
         target.Contains(item4.Object).Should().Be(true);
         target.Contains(item5.Object).Should().Be(true);
 
-        target.Remove(item2.Object);    // “¯‚¶ƒIƒuƒWƒFƒNƒg‚ğÄ“xw’è
+        target.Remove(item2.Object);    // åŒã˜ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å†åº¦æŒ‡å®š
         target.Contains(item1.Object).Should().Be(true);
         target.Contains(item2.Object).Should().Be(false);
         target.Contains(item3.Object).Should().Be(true);
