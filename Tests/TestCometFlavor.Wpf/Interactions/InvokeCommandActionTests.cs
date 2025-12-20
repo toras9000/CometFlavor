@@ -6,8 +6,8 @@ using CometFlavor.Wpf.Interactions;
 using AwesomeAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Reactive.Bindings;
 using TestCometFlavor.Wpf._Test;
+using R3;
 
 namespace TestCometFlavor.Wpf.Interactions;
 
@@ -206,7 +206,7 @@ public class InvokeCommandActionTests
 
         // バインドソース
         var argParam = new object();
-        var propParam = new ReactivePropertySlim<object>(new object());
+        var propParam = new ReactiveProperty<object>(new object());
 
         // バインド
         var binding = new Binding();
@@ -245,7 +245,7 @@ public class InvokeCommandActionTests
 
         // バインドソース
         var argParam = new object();
-        var propParam = new ReactivePropertySlim<object>(new object());
+        var propParam = new ReactiveProperty<object>(new object());
 
         // バインド
         var binding = new Binding();

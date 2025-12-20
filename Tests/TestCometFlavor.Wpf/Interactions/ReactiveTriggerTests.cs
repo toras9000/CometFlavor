@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using System.Windows;
 using CometFlavor.Wpf.Interactions;
 using AwesomeAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestCometFlavor.Wpf._Test;
+using R3;
 
 namespace TestCometFlavor.Wpf.Interactions;
 
@@ -25,7 +24,7 @@ public class ReactiveTriggerTests
     {
         // テスト用トリガソース
         var cause = new Action<int>((_) => { });
-        var source = Observable.FromEvent<int>(h => cause += h, h => cause -= h);
+        var source = Observable.FromEvent<int>(h => cause += h, h => cause -= h).AsSystemObservable();
 
         // テスト対象の準備
         var trigger = new ReactiveTrigger<int>();
@@ -57,8 +56,8 @@ public class ReactiveTriggerTests
         // テスト用トリガソース
         var cause1 = new Action<int>((_) => { });
         var cause2 = new Action<int>((_) => { });
-        var source1 = Observable.FromEvent<int>(h => cause1 += h, h => cause1 -= h);
-        var source2 = Observable.FromEvent<int>(h => cause2 += h, h => cause2 -= h);
+        var source1 = Observable.FromEvent<int>(h => cause1 += h, h => cause1 -= h).AsSystemObservable();
+        var source2 = Observable.FromEvent<int>(h => cause2 += h, h => cause2 -= h).AsSystemObservable();
 
         // テスト対象の準備
         var trigger = new ReactiveTrigger<int>();
@@ -95,7 +94,7 @@ public class ReactiveTriggerTests
     {
         // テスト用トリガソース
         var cause = new Action<string>((_) => { });
-        var source = Observable.FromEvent<string>(h => cause += h, h => cause -= h);
+        var source = Observable.FromEvent<string>(h => cause += h, h => cause -= h).AsSystemObservable();
 
         // テスト対象の準備
         var trigger = new ReactiveTrigger<string>();
@@ -127,8 +126,8 @@ public class ReactiveTriggerTests
         // テスト用トリガソース
         var cause1 = new Action<string>((_) => { });
         var cause2 = new Action<string>((_) => { });
-        var source1 = Observable.FromEvent<string>(h => cause1 += h, h => cause1 -= h);
-        var source2 = Observable.FromEvent<string>(h => cause2 += h, h => cause2 -= h);
+        var source1 = Observable.FromEvent<string>(h => cause1 += h, h => cause1 -= h).AsSystemObservable();
+        var source2 = Observable.FromEvent<string>(h => cause2 += h, h => cause2 -= h).AsSystemObservable();
 
         // テスト対象の準備
         var trigger = new ReactiveTrigger<string>();
@@ -165,7 +164,7 @@ public class ReactiveTriggerTests
     {
         // テスト用トリガソース
         var cause = new Action<object>((_) => { });
-        var source = Observable.FromEvent<object>(h => cause += h, h => cause -= h);
+        var source = Observable.FromEvent<object>(h => cause += h, h => cause -= h).AsSystemObservable();
 
         // テスト対象の準備
         var trigger = new ReactiveTrigger();
@@ -201,8 +200,8 @@ public class ReactiveTriggerTests
         // テスト用トリガソース
         var cause1 = new Action<object>((_) => { });
         var cause2 = new Action<object>((_) => { });
-        var source1 = Observable.FromEvent<object>(h => cause1 += h, h => cause1 -= h);
-        var source2 = Observable.FromEvent<object>(h => cause2 += h, h => cause2 -= h);
+        var source1 = Observable.FromEvent<object>(h => cause1 += h, h => cause1 -= h).AsSystemObservable();
+        var source2 = Observable.FromEvent<object>(h => cause2 += h, h => cause2 -= h).AsSystemObservable();
 
         // テスト対象の準備
         var trigger = new ReactiveTrigger();
@@ -242,7 +241,7 @@ public class ReactiveTriggerTests
     {
         // テスト用トリガソース
         var cause = new Action<int>((_) => { });
-        var source = Observable.FromEvent<int>(h => cause += h, h => cause -= h);
+        var source = Observable.FromEvent<int>(h => cause += h, h => cause -= h).AsSystemObservable();
 
         // テスト対象の準備
         var trigger = new ReactiveTrigger<int>();
@@ -276,7 +275,7 @@ public class ReactiveTriggerTests
 
         // テスト対象の準備
         var trigger = new ReactiveTrigger<int>();
-        trigger.Source = subject;
+        trigger.Source = subject.AsSystemObservable();
 
         // テスト対象のアクションを呼び出すためのトリガ作成
         var element = new DependencyObject();
@@ -309,7 +308,7 @@ public class ReactiveTriggerTests
 
         // テスト対象の準備
         var trigger = new ReactiveTrigger<int>();
-        trigger.Source = subject;
+        trigger.Source = subject.AsSystemObservable();
 
         // テスト対象のアクションを呼び出すためのトリガ作成
         var element = new DependencyObject();
@@ -325,7 +324,7 @@ public class ReactiveTriggerTests
         action.InvokedParameters.Should().AllBeOfType<int>().And.Equal(10, 11, 12);
 
         // シーケンスをエラー終了する
-        subject.OnError(new Exception());
+        subject.OnErrorResume(new Exception());
         action.InvokedParameters.Should().AllBeOfType<int>().And.Equal(10, 11, 12);
 
         // 完了後に値を流してみる

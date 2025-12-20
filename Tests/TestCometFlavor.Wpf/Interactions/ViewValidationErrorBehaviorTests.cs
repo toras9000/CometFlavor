@@ -5,8 +5,10 @@ using System.Windows.Data;
 using CometFlavor.Wpf.Interactions;
 using AwesomeAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Reactive.Bindings;
 using TestCometFlavor.Wpf._Test;
+using R3;
+using System;
+using System.Linq;
 
 namespace TestCometFlavor.Wpf.Interactions;
 
@@ -198,8 +200,8 @@ public class ViewValidationErrorBehaviorTests
 
         // バインドソース＆エラーソース
         var errors = new List<string>();
-        var rxp = new ReactiveProperty<int>();
-        rxp.SetValidateNotifyError(v => errors);
+        var rxp = new BindableReactiveProperty<int>();
+        rxp.EnableValidation(v => errors.Count <= 0 ? default : new AggregateException(errors.Select(e => new Exception(e))));
 
         // バインド
         var binding = new Binding();
@@ -244,8 +246,8 @@ public class ViewValidationErrorBehaviorTests
 
         // バインドソース＆エラーソース
         var errors = new List<string>();
-        var rxp = new ReactiveProperty<int>();
-        rxp.SetValidateNotifyError(v => errors);
+        var rxp = new BindableReactiveProperty<int>();
+        rxp.EnableValidation(v => errors.Count <= 0 ? default : new AggregateException(errors.Select(e => new Exception(e))));
 
         // バインド
         var binding = new Binding();
@@ -300,8 +302,8 @@ public class ViewValidationErrorBehaviorTests
 
         // バインドソース＆エラーソース
         var errors = new List<string>();
-        var rxp = new ReactiveProperty<int>();
-        rxp.SetValidateNotifyError(v => errors);
+        var rxp = new BindableReactiveProperty<int>();
+        rxp.EnableValidation(v => errors.Count <= 0 ? default : new AggregateException(errors.Select(e => new Exception(e))));
 
         // バインド
         var binding = new Binding();
