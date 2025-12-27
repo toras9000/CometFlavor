@@ -1,20 +1,17 @@
 ﻿// このファイル内のコメントを除いたソースコードはパブリックドメインとします。
 // The source code except for comments in this file is in the public domain.
 
-using System;
-using System.Collections.Generic;
-
-namespace CometFlavor.Wpf.Win32.Dialogs;
+namespace CometFlavor.Win32.Dialogs;
 
 /// <summary>
-/// <see cref="ShellOpenFileDialog"/> のパラメータ
+/// <see cref="ShellSaveFileDialog"/> のパラメータ
 /// </summary>
-public class ShellOpenFileDialogParameter
+public class ShellSaveFileDialogParameter
 {
     // 構築
     #region コンストラクタ
     /// <summary>デフォルトコンストラクタ</summary>
-    public ShellOpenFileDialogParameter()
+    public ShellSaveFileDialogParameter()
     {
         this.Filters = new List<ShellFileDialogFilter>();
         this.AdditionalPlaces = new List<ShellFileDialogPlace>();
@@ -22,30 +19,30 @@ public class ShellOpenFileDialogParameter
 
         // オプション設定のデフォルト値
         // ある時点で取得してみたCOMダイアログのデフォルト値を元にしている。
+        this.OverwritePrompt = true;
         this.StrictFileTypes = false;
         this.NoChangeDirectory = true;
-        this.PickFolders = false;
         this.ForceFileSystem = false;
         this.AllNonStorageItems = false;
         this.NoValidate = false;
-        this.AllowMultiSelect = false;
         this.PathMustExist = true;
-        this.FileMustExist = true;
+        this.FileMustExist = false;
         this.CreatePrompt = false;
         this.ShareAware = false;
-        this.NoReadOnlyReturn = false;
+        this.NoReadOnlyReturn = true;
         this.NoTestFileCreate = false;
         this.HidePinnedPlaces = false;
         this.NoDereferenceLinks = false;
         this.OkButtonNeedsInteraction = false;
         this.DontAddToRecent = false;
         this.ForceShowHidden = false;
-        this.ForcePreviewPaneOn = false;
 
         // 定義されたオプションのうち、以下に対応する設定は除外。
-        //   OVERWRITEPROMPT        : 開くダイアログでは無効のため
+        //   PICKFOLDERS            : 保存ダイアログでは使用不可のため
+        //   ALLOWMULTISELECT       : 保存ダイアログでは使用不可のため
         //   HIDEMRUPLACES          : 新しいOSで非サポートのため
         //   DEFAULTNOMINIMODE      : 新しいOSで非サポートのため
+        //   FORCEPREVIEWPANEON     : 保存ダイアログでは使用不可のため
         //   SUPPORTSTREAMABLEITEMS : ストリームアイテムとしてアクセスする手段を提供しないため
     }
     #endregion
@@ -99,6 +96,10 @@ public class ShellOpenFileDialogParameter
     #endregion
 
     #region 動作設定
+    /// <summary>上書きの確認を表示する</summary>
+    /// <remarks>デフォルト値は false となる。</remarks>
+    public bool OverwritePrompt { get; set; }
+
     /// <summary>設定されたファイルタイプのファイルのみを選択可能とする</summary>
     /// <remarks>デフォルト値は false となる。</remarks>
     public bool StrictFileTypes { get; set; }
@@ -106,10 +107,6 @@ public class ShellOpenFileDialogParameter
     /// <summary>カレントディレクトリを変更しない</summary>
     /// <remarks>デフォルト値は true となる。</remarks>
     public bool NoChangeDirectory { get; set; }
-
-    /// <summary>フォルダを選択する</summary>
-    /// <remarks>デフォルト値は false となる。</remarks>
-    public bool PickFolders { get; set; }
 
     /// <summary>ファイルシステムアイテムのみを選択可能とする</summary>
     /// <remarks>デフォルト値は false となる。</remarks>
@@ -122,10 +119,6 @@ public class ShellOpenFileDialogParameter
     /// <summary>ファイルを開けない状態(共有不可やアクセス拒否等)を検証しない</summary>
     /// <remarks>デフォルト値は false となる。</remarks>
     public bool NoValidate { get; set; }
-
-    /// <summary>複数選択を許可する</summary>
-    /// <remarks>デフォルト値は false となる。</remarks>
-    public bool AllowMultiSelect { get; set; }
 
     /// <summary>存在するフォルダのアイテムのみを選択可能とする</summary>
     /// <remarks>デフォルト値は true となる。</remarks>
@@ -172,10 +165,5 @@ public class ShellOpenFileDialogParameter
     /// <summary>非表示属性のアイテムを表示する</summary>
     /// <remarks>デフォルト値は false となる。</remarks>
     public bool ForceShowHidden { get; set; }
-
-    /// <summary>プレビューペインを常に表示する</summary>
-    /// <remarks>デフォルト値は false となる。</remarks>
-    public bool ForcePreviewPaneOn { get; set; }
     #endregion
-
 }

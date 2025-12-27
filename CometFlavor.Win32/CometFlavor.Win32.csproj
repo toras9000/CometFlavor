@@ -1,16 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net9.0-windows;net8.0-windows;net10.0-windows;</TargetFrameworks>
-    <CheckEolTargetFramework>false</CheckEolTargetFramework>
-    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>CometFlavor.Wpf.Win32</PackageId>
-    <PackageDescription>A utility class library for WPF that depends on native Win32.</PackageDescription>
+    <PackageId>CometFlavor.Win32</PackageId>
+    <PackageDescription>A utility class library that depends on native Win32.</PackageDescription>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageTags>wpf</PackageTags>
@@ -18,7 +16,7 @@
   <PropertyGroup>
     <Authors>toras9000</Authors>
     <Company />
-    <Version>0.6.0</Version>
+    <Version>0.0.0</Version>
   </PropertyGroup>
   <PropertyGroup>
     <PackageProjectUrl>https://github.com/toras9000/CometFlavor</PackageProjectUrl>
@@ -43,14 +41,6 @@
   <ItemGroup>
     <SourceRoot Include="$(MSBuildThisFileDirectory)" />
     <None Include="readme.md" Pack="true" PackagePath="/" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\CometFlavor.Win32\CometFlavor.Win32.csproj" />
   </ItemGroup>
 
 </Project>

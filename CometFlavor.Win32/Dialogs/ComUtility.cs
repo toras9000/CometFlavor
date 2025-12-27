@@ -1,13 +1,10 @@
 ﻿// このファイル内のコメントを除いたソースコードはパブリックドメインとします。
 // The source code except for comments in this file is in the public domain.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using static CometFlavor.Wpf.Win32.Dialogs.NativeDefinitions;
+using static CometFlavor.Win32.Dialogs.NativeDefinitions;
 
-namespace CometFlavor.Wpf.Win32.Dialogs;
+namespace CometFlavor.Win32.Dialogs;
 
 /// <summary>
 /// COMを扱う関連のユーティリティ処理

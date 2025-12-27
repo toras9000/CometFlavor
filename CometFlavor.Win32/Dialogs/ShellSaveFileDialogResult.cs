@@ -1,7 +1,7 @@
 ﻿// このファイル内のコメントを除いたソースコードはパブリックドメインとします。
 // The source code except for comments in this file is in the public domain.
 
-namespace CometFlavor.Wpf.Win32.Dialogs;
+namespace CometFlavor.Win32.Dialogs;
 
 /// <summary>
 /// <see cref="ShellSaveFileDialog"/> の結果

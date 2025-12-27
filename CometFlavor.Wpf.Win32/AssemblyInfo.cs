@@ -11,8 +11,8 @@ using System.Windows.Markup;
 )]
 
 // XAML用名前空間定義
-[assembly: XmlnsDefinition("http://schemas.cometflavor.toras9000/wpf/win32/dialogs", "CometFlavor.Wpf.Win32.Dialogs")]
+[assembly: XmlnsDefinition("http://schemas.cometflavor.toras9000/win32/dialogs", "CometFlavor.Win32.Dialogs")]
 [assembly: XmlnsDefinition("http://schemas.cometflavor.toras9000/wpf/win32/interactions", "CometFlavor.Wpf.Win32.Interactions")]
 
-[assembly: XmlnsDefinition("http://schemas.cometflavor.toras9000/", "CometFlavor.Wpf.Win32.Dialogs")]
+[assembly: XmlnsDefinition("http://schemas.cometflavor.toras9000/", "CometFlavor.Win32.Dialogs")]
 [assembly: XmlnsDefinition("http://schemas.cometflavor.toras9000/", "CometFlavor.Wpf.Win32.Interactions")]

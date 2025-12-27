@@ -1,10 +1,9 @@
 ﻿// このファイル内のコメントを除いたソースコードはパブリックドメインとします。
 // The source code except for comments in this file is in the public domain.
 
-using System;
 using System.Runtime.InteropServices;
 
-namespace CometFlavor.Wpf.Win32.Dialogs;
+namespace CometFlavor.Win32.Dialogs;
 
 /// <summary>
 /// ネイティブ利用のための定義類

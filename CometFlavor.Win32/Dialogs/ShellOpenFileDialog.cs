@@ -1,27 +1,23 @@
 ﻿// このファイル内のコメントを除いたソースコードはパブリックドメインとします。
 // The source code except for comments in this file is in the public domain.
 
-using System;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Windows;
-using System.Windows.Interop;
-using static CometFlavor.Wpf.Win32.Dialogs.NativeDefinitions;
+using static CometFlavor.Win32.Dialogs.NativeDefinitions;
 
-namespace CometFlavor.Wpf.Win32.Dialogs;
+namespace CometFlavor.Win32.Dialogs;
 
 /// <summary>
-/// COMのSaveFileDialogオブジェクトによるファイルを開くダイアログ
+/// COMのOpenFileDialogオブジェクトによるファイルを開くダイアログ
 /// </summary>
-public class ShellSaveFileDialog
+public class ShellOpenFileDialog
 {
     // 公開メソッド
     #region 表示
     /// <summary>ダイアログを表示する。</summary>
-    /// <param name="owner">オーナーウィンドウハンドル。nullを指定するとオーナーウィンドウ無しとなる。</param>
+    /// <param name="owner">オーナーウィンドウハンドル。IntPtr.Zero を指定するとオーナーウィンドウ無しとなる。</param>
     /// <param name="parameter">ダイアログ表示パラメータ</param>
     /// <returns>ダイアログの結果</returns>
-    public ShellSaveFileDialogResult ShowDialog(Window? owner, ShellSaveFileDialogParameter parameter)
+    public ShellOpenFileDialogResult ShowDialog(IntPtr owner, ShellOpenFileDialogParameter parameter)
     {
         // 現在のプラットフォームで利用可能かを判定
         var os = Environment.OSVersion;
@@ -38,34 +34,33 @@ public class ShellSaveFileDialog
     /// <summary>オーナーウィンドウ無しでダイアログを表示する。</summary>
     /// <param name="parameter">ダイアログ表示パラメータ</param>
     /// <returns>ダイアログの結果</returns>
-    public ShellSaveFileDialogResult ShowDialog(ShellSaveFileDialogParameter parameter)
+    public ShellOpenFileDialogResult ShowDialog(ShellOpenFileDialogParameter parameter)
     {
-        // ダイアログを表示する
-        return showInternal(null, parameter);
+        return ShowDialog(IntPtr.Zero, parameter);
     }
     #endregion
 
     // 非公開メソッド
     #region 表示
     /// <summary>ダイアログを表示する。</summary>
-    /// <param name="owner">オーナーウィンドウハンドル。nullを指定するとオーナーウィンドウ無しとなる。</param>
+    /// <param name="owner">オーナーウィンドウハンドル。IntPtr.Zero を指定するとオーナーウィンドウ無しとなる。</param>
     /// <param name="parameter">ダイアログ表示パラメータ</param>
     /// <returns>ダイアログの結果</returns>
-    private ShellSaveFileDialogResult showInternal(Window? owner, ShellSaveFileDialogParameter parameter)
+    private ShellOpenFileDialogResult showInternal(IntPtr owner, ShellOpenFileDialogParameter parameter)
     {
         if (parameter == null) throw new ArgumentNullException(nameof(parameter));
 
         var comObjects = new ComUtility.ObjectList();
-        var dlgResult = new ShellSaveFileDialogResult();
+        var dlgResult = new ShellOpenFileDialogResult();
         try
         {
-            // FileSaveDialog COMオブジェクト生成
-            var dlgClsId = new Guid(CLSID.FileSaveDialog);
+            // FileOpenDialog COMオブジェクト生成
+            var dlgClsId = new Guid(CLSID.FileOpenDialog);
             var dlgType = Type.GetTypeFromCLSID(dlgClsId) ?? throw new NotSupportedException();
             var dialogObject = Activator.CreateInstance(dlgType).WithAddTo(comObjects) ?? throw new NotSupportedException();
 
-            // IFileSaveDialogインターフェース取得(インポートインターフェースへのキャストにて)
-            var shellDialog = (IFileSaveDialog)dialogObject;
+            // IFileOpenDialogインターフェース取得(インポートインターフェースへのキャストにて)
+            var shellDialog = ((IFileOpenDialog)dialogObject).WithAddTo(comObjects);
 
             // タイトル指定があれば設定
             if (parameter.Title != null)
@@ -143,12 +138,13 @@ public class ShellSaveFileDialog
 
             // ダイアログ表示時のオプション設定を作成
             var dlgOpt = default(FILEOPENDIALOGOPTIONS);
-            if (parameter.OverwritePrompt) dlgOpt |= FILEOPENDIALOGOPTIONS.OVERWRITEPROMPT;
             if (parameter.StrictFileTypes) dlgOpt |= FILEOPENDIALOGOPTIONS.STRICTFILETYPES;
             if (parameter.NoChangeDirectory) dlgOpt |= FILEOPENDIALOGOPTIONS.NOCHANGEDIR;
+            if (parameter.PickFolders) dlgOpt |= FILEOPENDIALOGOPTIONS.PICKFOLDERS;
             if (parameter.ForceFileSystem) dlgOpt |= FILEOPENDIALOGOPTIONS.FORCEFILESYSTEM;
             if (parameter.AllNonStorageItems) dlgOpt |= FILEOPENDIALOGOPTIONS.ALLNONSTORAGEITEMS;
             if (parameter.NoValidate) dlgOpt |= FILEOPENDIALOGOPTIONS.NOVALIDATE;
+            if (parameter.AllowMultiSelect) dlgOpt |= FILEOPENDIALOGOPTIONS.ALLOWMULTISELECT;
             if (parameter.PathMustExist) dlgOpt |= FILEOPENDIALOGOPTIONS.PATHMUSTEXIST;
             if (parameter.FileMustExist) dlgOpt |= FILEOPENDIALOGOPTIONS.FILEMUSTEXIST;
             if (parameter.CreatePrompt) dlgOpt |= FILEOPENDIALOGOPTIONS.CREATEPROMPT;
@@ -160,21 +156,22 @@ public class ShellSaveFileDialog
             if (parameter.OkButtonNeedsInteraction) dlgOpt |= FILEOPENDIALOGOPTIONS.OKBUTTONNEEDSINTERACTION;
             if (parameter.DontAddToRecent) dlgOpt |= FILEOPENDIALOGOPTIONS.DONTADDTORECENT;
             if (parameter.ForceShowHidden) dlgOpt |= FILEOPENDIALOGOPTIONS.FORCESHOWHIDDEN;
+            if (parameter.ForcePreviewPaneOn) dlgOpt |= FILEOPENDIALOGOPTIONS.FORCEPREVIEWPANEON;
 
             // オプション設定を適用
             shellDialog.SetOptions(dlgOpt);
 
             // ダイアログを表示
-            var ownerHandle = (owner == null) ? IntPtr.Zero : new WindowInteropHelper(owner).Handle;
-            var result = shellDialog.Show(ownerHandle);
+            var result = shellDialog.Show(owner);
             if (SUCCEEDED(result))
             {
                 // ダイアログの選択結果を取得
-                shellDialog.GetResult(out var item);
-                comObjects.Add(item);
+                shellDialog.GetResults(out var items);
+                comObjects.Add(items);
 
                 // 各アイテムのファイルパスを列挙して結果リストに格納
-                dlgResult.Item = ComUtility.GetFileSystemPath(item);
+                var paths = ComUtility.EnumerateItemPaths(items);
+                dlgResult.Items.AddRange(paths.Where(p => p != null)!);
 
                 // 選択されたフィルタインデクスを取得
                 shellDialog.GetFileTypeIndex(out var resultIndex);

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows;
-using CometFlavor.Wpf.Win32.Dialogs;
+using CometFlavor.Win32.Dialogs;
 using Microsoft.Xaml.Behaviors;
 
 namespace CometFlavor.Wpf.Win32.Interactions;

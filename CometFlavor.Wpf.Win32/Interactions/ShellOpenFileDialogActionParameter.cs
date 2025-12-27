@@ -1,5 +1,5 @@
 ﻿using System;
-using CometFlavor.Wpf.Win32.Dialogs;
+using CometFlavor.Win32.Dialogs;
 
 namespace CometFlavor.Wpf.Win32.Interactions;
 

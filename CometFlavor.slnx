@@ -11,6 +11,7 @@
     <Project Path="Tests/TestCometFlavor/TestCometFlavor.csproj" />
   </Folder>
   <Project Path="CometFlavor.Unicode/CometFlavor.Unicode.csproj" />
+  <Project Path="CometFlavor.Win32/CometFlavor.Win32.csproj" Id="6e3e5234-d3da-4a18-b1ab-e5d04eabfd86" />
   <Project Path="CometFlavor.Wpf.Win32/CometFlavor.Wpf.Win32.csproj" />
   <Project Path="CometFlavor.Wpf/CometFlavor.Wpf.csproj" />
   <Project Path="CometFlavor/CometFlavor.csproj" />
