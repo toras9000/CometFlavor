@@ -6,6 +6,7 @@
     <Project Path="Tests/BenchCometFlavor.Unicode/BenchCometFlavor.Unicode.csproj" />
     <Project Path="Tests/BenchCometFlavor/BenchCometFlavor.csproj" />
     <Project Path="Tests/TestCometFlavor.Unicode/TestCometFlavor.Unicode.csproj" />
+    <Project Path="Tests/TestCometFlavor.Win32/TestCometFlavor.Win32.csproj" Id="2c35f1a4-6026-4ca7-b0ab-6253b29b4b00" />
     <Project Path="Tests/TestCometFlavor.Wpf.Win32/TestCometFlavor.Wpf.Win32.csproj" />
     <Project Path="Tests/TestCometFlavor.Wpf/TestCometFlavor.Wpf.csproj" />
     <Project Path="Tests/TestCometFlavor/TestCometFlavor.csproj" />
