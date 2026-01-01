@@ -1,6 +1,5 @@
-﻿using CometFlavor.Extensions.Collection;
-using AwesomeAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using AwesomeAssertions;
+using CometFlavor.Extensions.Collection;
 
 namespace TestCometFlavor.Extensions.Collection;
 

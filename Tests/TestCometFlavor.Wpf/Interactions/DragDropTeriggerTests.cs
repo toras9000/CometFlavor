@@ -1,8 +1,7 @@
 ﻿using System.Windows;
+using AwesomeAssertions;
 using CometFlavor.Wpf.Converters;
 using CometFlavor.Wpf.Interactions;
-using AwesomeAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TestCometFlavor.Wpf._Test;
 

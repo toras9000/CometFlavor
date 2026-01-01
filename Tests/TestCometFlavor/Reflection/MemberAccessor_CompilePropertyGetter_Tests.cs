@@ -1,7 +1,5 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using AwesomeAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static CometFlavor.Reflection.MemberAccessor;
 
 namespace TestCometFlavor.Reflection;
@@ -36,10 +34,10 @@ public class MemberAccessor_CompilePropertyGetter_Tests
 
     public class Item
     {
-        public string RefProp { get; set; }
+        public string? RefProp { get; set; }
         public int ValProp { get; set; }
 
-        public static string StaticRefProp { get; set; }
+        public static string? StaticRefProp { get; set; }
         public static int StaticValProp { get; set; }
 
         private string PrivateRefProp { get; set; } = "asd";
@@ -49,7 +47,7 @@ public class MemberAccessor_CompilePropertyGetter_Tests
     [TestMethod]
     public void CompilePropertyGetter_Normal_Ref()
     {
-        var property = typeof(Item).GetProperty(nameof(Item.RefProp));
+        var property = typeof(Item).GetProperty(nameof(Item.RefProp)) ?? throw new Exception();
         var getter = CompilePropertyGetter<Item>(property);
 
         var item = new Item();
@@ -63,7 +61,7 @@ public class MemberAccessor_CompilePropertyGetter_Tests
     [TestMethod]
     public void CreatePropertyGetter_Normal_Val()
     {
-        var property = typeof(Item).GetProperty(nameof(Item.ValProp));
+        var property = typeof(Item).GetProperty(nameof(Item.ValProp)) ?? throw new Exception();
         var getter = CompilePropertyGetter<Item>(property);
 
         var item = new Item();
@@ -77,7 +75,7 @@ public class MemberAccessor_CompilePropertyGetter_Tests
     [TestMethod]
     public void CreatePropertyGetter_Normal_StaticRef()
     {
-        var property = typeof(Item).GetProperty(nameof(Item.StaticRefProp), Flags.Static | Flags.Public);
+        var property = typeof(Item).GetProperty(nameof(Item.StaticRefProp), Flags.Static | Flags.Public) ?? throw new Exception();
         var getter = CompilePropertyGetter<Item>(property);
 
         Item.StaticRefProp = "xxx";
@@ -90,7 +88,7 @@ public class MemberAccessor_CompilePropertyGetter_Tests
     [TestMethod]
     public void CreatePropertyGetter_Normal_StaticVal()
     {
-        var property = typeof(Item).GetProperty(nameof(Item.StaticValProp), Flags.Static | Flags.Public);
+        var property = typeof(Item).GetProperty(nameof(Item.StaticValProp), Flags.Static | Flags.Public) ?? throw new Exception();
         var getter = CompilePropertyGetter<Item>(property);
 
         Item.StaticValProp = 11;
@@ -103,7 +101,7 @@ public class MemberAccessor_CompilePropertyGetter_Tests
     [TestMethod]
     public void CreatePropertyGetter_Normal_PrivateRef()
     {
-        var property = typeof(Item).GetProperty("PrivateRefProp", Flags.Instance | Flags.NonPublic);
+        var property = typeof(Item).GetProperty("PrivateRefProp", Flags.Instance | Flags.NonPublic) ?? throw new Exception();
         var getter = CompilePropertyGetter<Item>(property, nonPublic: true);
 
         var item = new Item();
@@ -117,7 +115,7 @@ public class MemberAccessor_CompilePropertyGetter_Tests
     [TestMethod]
     public void CreatePropertyGetter_Normal_PrivateVal()
     {
-        var property = typeof(Item).GetProperty("PrivateValProp", Flags.Instance | Flags.NonPublic);
+        var property = typeof(Item).GetProperty("PrivateValProp", Flags.Instance | Flags.NonPublic) ?? throw new Exception();
         var getter = CompilePropertyGetter<Item>(property, nonPublic: true);
 
         var item = new Item();
@@ -131,7 +129,7 @@ public class MemberAccessor_CompilePropertyGetter_Tests
     [TestMethod]
     public void CreatePropertyGetter_Normal_Fail()
     {
-        var property = typeof(Item).GetProperty("PrivateValProp", Flags.Static | Flags.Instance | Flags.Public | Flags.NonPublic);
+        var property = typeof(Item).GetProperty("PrivateValProp", Flags.Static | Flags.Instance | Flags.Public | Flags.NonPublic) ?? throw new Exception();
 
         new Action(() => CompilePropertyGetter<Item>(property, nonPublic: true)).Should().NotThrow();
 

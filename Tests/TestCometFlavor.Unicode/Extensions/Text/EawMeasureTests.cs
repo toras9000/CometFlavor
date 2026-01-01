@@ -1,8 +1,6 @@
-﻿using System;
+﻿using AwesomeAssertions;
 using CometFlavor.Unicode;
 using CometFlavor.Unicode.Extensions.Text;
-using AwesomeAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TestCometFlavor.Unicode.Extensions.Text;
 

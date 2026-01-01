@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
 using Microsoft.Xaml.Behaviors;
 
 namespace TestCometFlavor.Wpf._Test;

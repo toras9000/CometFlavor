@@ -1,5 +1,4 @@
-﻿#nullable disable
-using System.Linq;
+﻿using System.Linq;
 using BenchCometFlavor.Unicode.Codes;
 using BenchmarkDotNet.Attributes;
 
@@ -17,12 +16,12 @@ public class BenchEaw
         this.Codes = Enumerable.Range(0, this.Count).Select(n => n * interval).ToArray();
     }
 
-    public int[] Codes { get; private set; }
+    public int[]? Codes { get; private set; }
 
     [Benchmark]
     public void EawLinear()
     {
-        for (var i = 0; i < this.Codes.Length; i++)
+        for (var i = 0; i < this.Codes!.Length; i++)
         {
             EawLinearV14.GetEastAsianWidth(this.Codes[i]);
         }
@@ -31,7 +30,7 @@ public class BenchEaw
     [Benchmark]
     public void EawSwitchExp()
     {
-        for (var i = 0; i < this.Codes.Length; i++)
+        for (var i = 0; i < this.Codes!.Length; i++)
         {
             EawSwitchExpV14.GetEastAsianWidth(this.Codes[i]);
         }
@@ -40,7 +39,7 @@ public class BenchEaw
     [Benchmark]
     public void EawIfBin()
     {
-        for (var i = 0; i < this.Codes.Length; i++)
+        for (var i = 0; i < this.Codes!.Length; i++)
         {
             EawIfBinV14.GetEastAsianWidth(this.Codes[i]);
         }

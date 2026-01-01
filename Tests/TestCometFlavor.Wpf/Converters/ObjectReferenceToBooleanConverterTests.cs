@@ -1,7 +1,6 @@
 ﻿using System.Windows;
-using CometFlavor.Wpf.Converters;
 using AwesomeAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using CometFlavor.Wpf.Converters;
 
 namespace TestCometFlavor.Wpf.Converters;
 

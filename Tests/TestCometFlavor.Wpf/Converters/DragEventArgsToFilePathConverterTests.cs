@@ -1,9 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Windows;
-using CometFlavor.Wpf.Converters;
+﻿using System.Windows;
 using AwesomeAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using CometFlavor.Wpf.Converters;
 using TestCometFlavor.Wpf._Test;
 
 namespace TestCometFlavor.Wpf.Converters;
@@ -219,7 +216,7 @@ public class DragEventArgsToFilePathConverterTests
         // モック
         var dataMock = new TestDataObject();
         dataMock.Setup_GetDataPresent(DataFormats.FileDrop, () => true);
-        dataMock.Setup_GetData(DataFormats.FileDrop, () => null);
+        dataMock.Setup_GetData(DataFormats.FileDrop, () => null!);
 
         // テスト用のイベントパラメータ生成
         var args = TestActivator.CreateDragEventArgs(dataMock.Object);

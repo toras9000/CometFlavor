@@ -1,7 +1,5 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using AwesomeAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static CometFlavor.Reflection.MemberAccessor;
 
 namespace TestCometFlavor.Reflection;
@@ -36,10 +34,10 @@ public class MemberAccessor_CreatePropertyGetter_Tests
 
     public class Item
     {
-        public string RefProp { get; set; }
+        public string? RefProp { get; set; }
         public int ValProp { get; set; }
 
-        public static string StaticRefProp { get; set; }
+        public static string? StaticRefProp { get; set; }
         public static int StaticValProp { get; set; }
 
         private string PrivateRefProp { get; set; } = "asd";
@@ -89,7 +87,7 @@ public class MemberAccessor_CreatePropertyGetter_Tests
     public void CreatePropertyGetter_Normal_ByName_StaticVal()
     {
         var flags = Flags.Static | Flags.Public;
-        var getter = CreatePropertyGetter<Item>(nameof(Item.StaticValProp), flags);
+        var getter = CreatePropertyGetter<Item>(nameof(Item.StaticValProp), flags) ?? throw new Exception();
 
         Item.StaticValProp = 11;
         getter(null).Should().Be(11);
@@ -102,7 +100,7 @@ public class MemberAccessor_CreatePropertyGetter_Tests
     public void CreatePropertyGetter_Normal_ByName_PrivateRef()
     {
         var flags = Flags.Instance | Flags.NonPublic;
-        var property = typeof(Item).GetProperty("PrivateRefProp", flags);
+        var property = typeof(Item).GetProperty("PrivateRefProp", flags) ?? throw new Exception();
         var getter = CreatePropertyGetter<Item>(property.Name, flags);
 
         var item = new Item();
@@ -117,7 +115,7 @@ public class MemberAccessor_CreatePropertyGetter_Tests
     public void CreatePropertyGetter_Normal_ByName_PrivateVal()
     {
         var flags = Flags.Instance | Flags.NonPublic;
-        var property = typeof(Item).GetProperty("PrivateValProp", flags);
+        var property = typeof(Item).GetProperty("PrivateValProp", flags) ?? throw new Exception();
         var getter = CreatePropertyGetter<Item>(property.Name, flags);
 
         var item = new Item();
@@ -154,10 +152,10 @@ public class MemberAccessor_CreatePropertyGetter_Tests
 
     public class PrivateSetItem
     {
-        public string RefProp { private get; set; }
+        public string? RefProp { private get; set; }
         public int ValProp { private get; set; }
 
-        public static string StaticRefProp { private get; set; }
+        public static string? StaticRefProp { private get; set; }
         public static int StaticValProp { private get; set; }
 
         private string PrivateRefProp { get; set; } = "asd";
@@ -222,7 +220,7 @@ public class MemberAccessor_CreatePropertyGetter_Tests
     public void CreatePropertyGetter_PrivateSet_ByName_PrivateRef()
     {
         var flags = Flags.Instance | Flags.NonPublic;
-        var property = typeof(PrivateSetItem).GetProperty("PrivateRefProp", flags);
+        var property = typeof(PrivateSetItem).GetProperty("PrivateRefProp", flags) ?? throw new Exception();
         var getter = CreatePropertyGetter<PrivateSetItem>(property.Name, flags);
 
         var item = new PrivateSetItem();
@@ -237,7 +235,7 @@ public class MemberAccessor_CreatePropertyGetter_Tests
     public void CreatePropertyGetter_PrivateSet_ByName_PrivateVal()
     {
         var flags = Flags.Instance | Flags.NonPublic;
-        var property = typeof(PrivateSetItem).GetProperty("PrivateValProp", flags);
+        var property = typeof(PrivateSetItem).GetProperty("PrivateValProp", flags) ?? throw new Exception();
         var getter = CreatePropertyGetter<PrivateSetItem>(property.Name, flags);
 
         var item = new PrivateSetItem();

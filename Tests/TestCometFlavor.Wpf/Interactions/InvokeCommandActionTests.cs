@@ -1,13 +1,11 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-using CometFlavor.Wpf.Interactions;
 using AwesomeAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using CometFlavor.Wpf.Interactions;
 using Moq;
-using TestCometFlavor.Wpf._Test;
 using R3;
+using TestCometFlavor.Wpf._Test;
 
 namespace TestCometFlavor.Wpf.Interactions;
 

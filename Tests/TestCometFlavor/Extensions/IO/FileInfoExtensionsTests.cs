@@ -1,11 +1,6 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CometFlavor.Extensions.IO;
+﻿using System.Text;
 using AwesomeAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using CometFlavor.Extensions.IO;
 using TestCometFlavor._Test;
 
 namespace TestCometFlavor.Extensions.IO;
@@ -28,7 +23,7 @@ public class FileInfoExtensionsTests
         new FileInfo(".testfile.ext").GetNameWithoutExtension().Should().Be(".testfile");
         new FileInfo("testfile").GetNameWithoutExtension().Should().Be("testfile");
 
-        new Action(() => default(FileInfo).GetNameWithoutExtension()).Should().Throw<ArgumentNullException>();
+        new Action(() => default(FileInfo)!.GetNameWithoutExtension()).Should().Throw<ArgumentNullException>();
     }
 
     [TestMethod]
@@ -40,7 +35,7 @@ public class FileInfoExtensionsTests
         new FileInfo(".testfile.ext").GetExtension().Should().Be(".ext");
         new FileInfo("testfile").GetExtension().Should().Be("");
 
-        new Action(() => default(FileInfo).GetExtension()).Should().Throw<ArgumentNullException>();
+        new Action(() => default(FileInfo)!.GetExtension()).Should().Throw<ArgumentNullException>();
     }
 
     [TestMethod]
@@ -50,7 +45,7 @@ public class FileInfoExtensionsTests
         new FileInfo("testfile.ext").GetAnotherExtension("other").Name.Should().Be("testfile.other");
         new FileInfo("testfile").GetAnotherExtension("other").Name.Should().Be("testfile.other");
 
-        new Action(() => default(FileInfo).GetAnotherExtension("other")).Should().Throw<ArgumentNullException>();
+        new Action(() => default(FileInfo)!.GetAnotherExtension("other")).Should().Throw<ArgumentNullException>();
     }
 
     [TestMethod]

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using AwesomeAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static CometFlavor.Reflection.MemberAccessor;
 
 namespace TestCometFlavor.Reflection;
@@ -36,10 +34,10 @@ public class MemberAccessor_CompileFieldGetter_Tests
 
     public class Item
     {
-        public string RefField;
+        public string? RefField;
         public int ValField;
 
-        public static string StaticRefField;
+        public static string? StaticRefField;
         public static int StaticValField;
 
 #pragma warning disable 0414  // 使用されていないプライベート メンバーを削除する
@@ -51,7 +49,7 @@ public class MemberAccessor_CompileFieldGetter_Tests
     [TestMethod]
     public void CompileFieldGetter_Normal_Ref()
     {
-        var field = typeof(Item).GetField(nameof(Item.RefField));
+        var field = typeof(Item).GetField(nameof(Item.RefField)) ?? throw new Exception();
         var getter = CompileFieldGetter<Item>(field);
 
         var item = new Item();
@@ -65,7 +63,7 @@ public class MemberAccessor_CompileFieldGetter_Tests
     [TestMethod]
     public void CompileFieldGetter_Normal_Val()
     {
-        var field = typeof(Item).GetField(nameof(Item.ValField));
+        var field = typeof(Item).GetField(nameof(Item.ValField)) ?? throw new Exception();
         var getter = CompileFieldGetter<Item>(field);
 
         var item = new Item();
@@ -79,7 +77,7 @@ public class MemberAccessor_CompileFieldGetter_Tests
     [TestMethod]
     public void CompileFieldGetter_Normal_StaticRef()
     {
-        var field = typeof(Item).GetField(nameof(Item.StaticRefField), Flags.Static | Flags.Public);
+        var field = typeof(Item).GetField(nameof(Item.StaticRefField), Flags.Static | Flags.Public) ?? throw new Exception();
         var getter = CompileFieldGetter<Item>(field);
 
         Item.StaticRefField = "xxx";
@@ -92,7 +90,7 @@ public class MemberAccessor_CompileFieldGetter_Tests
     [TestMethod]
     public void CompileFieldGetter_Normal_StaticVal()
     {
-        var field = typeof(Item).GetField(nameof(Item.StaticValField), Flags.Static | Flags.Public);
+        var field = typeof(Item).GetField(nameof(Item.StaticValField), Flags.Static | Flags.Public) ?? throw new Exception();
         var getter = CompileFieldGetter<Item>(field);
 
         Item.StaticValField = 11;
@@ -105,7 +103,7 @@ public class MemberAccessor_CompileFieldGetter_Tests
     [TestMethod]
     public void CompileFieldGetter_Normal_PrivateRef()
     {
-        var field = typeof(Item).GetField("PrivateRefField", Flags.Instance | Flags.NonPublic);
+        var field = typeof(Item).GetField("PrivateRefField", Flags.Instance | Flags.NonPublic) ?? throw new Exception();
         var getter = CompileFieldGetter<Item>(field, nonPublic: true);
 
         var item = new Item();
@@ -119,7 +117,7 @@ public class MemberAccessor_CompileFieldGetter_Tests
     [TestMethod]
     public void CompileFieldGetter_Normal_PrivateVal()
     {
-        var field = typeof(Item).GetField("PrivateValField", Flags.Instance | Flags.NonPublic);
+        var field = typeof(Item).GetField("PrivateValField", Flags.Instance | Flags.NonPublic) ?? throw new Exception();
         var getter = CompileFieldGetter<Item>(field, nonPublic: true);
 
         var item = new Item();
@@ -133,7 +131,7 @@ public class MemberAccessor_CompileFieldGetter_Tests
     [TestMethod]
     public void CompileFieldGetter_Normal_Fail()
     {
-        var field = typeof(Item).GetField("PrivateValField", Flags.Static | Flags.Instance | Flags.Public | Flags.NonPublic);
+        var field = typeof(Item).GetField("PrivateValField", Flags.Static | Flags.Instance | Flags.Public | Flags.NonPublic) ?? throw new Exception();
 
         new Action(() => CompileFieldGetter<Item>(field, nonPublic: true)).Should().NotThrow();
 

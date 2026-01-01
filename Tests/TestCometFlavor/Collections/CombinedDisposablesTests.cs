@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using AwesomeAssertions;
 using CometFlavor.Collections;
-using AwesomeAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace TestCometFlavor.Collections;
@@ -113,7 +109,7 @@ public class CombinedDisposablesTest
     {
         var target = new CombinedDisposables();
 
-        new Action(() => target.Add(null)).Should().Throw<ArgumentNullException>();
+        new Action(() => target.Add(null!)).Should().Throw<ArgumentNullException>();
     }
 
     [TestMethod]
@@ -221,7 +217,7 @@ public class CombinedDisposablesTest
     {
         var target = new CombinedDisposables();
 
-        new Action(() => target.Remove(null)).Should().Throw<ArgumentNullException>();
+        new Action(() => target.Remove(null!)).Should().Throw<ArgumentNullException>();
     }
 
     [TestMethod]
@@ -387,7 +383,7 @@ public class CombinedDisposablesTest
     {
         var target = new CombinedDisposables();
 
-        new Action(() => target.Contains(null)).Should().Throw<ArgumentNullException>();
+        new Action(() => target.Contains(null!)).Should().Throw<ArgumentNullException>();
     }
 
     [TestMethod]
@@ -457,8 +453,8 @@ public class CombinedDisposablesTest
             item5.Object
         );
 
-        var dest2 = new IDisposable[10];
-        source.CopyTo(dest2, 3);
+        var dest2 = new IDisposable?[10];
+        source.CopyTo(dest2!, 3);
         dest2.Should().Equal(
             null,
             null,

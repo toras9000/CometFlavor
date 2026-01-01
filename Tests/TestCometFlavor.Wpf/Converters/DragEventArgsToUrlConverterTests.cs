@@ -1,10 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Text;
+﻿using System.Text;
 using System.Windows;
-using CometFlavor.Wpf.Converters;
 using AwesomeAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using CometFlavor.Wpf.Converters;
 using Moq;
 using TestCometFlavor.Wpf._Test;
 
@@ -288,7 +285,7 @@ public class DragEventArgsToUrlConverterTests
         // モック
         var dataMock = new TestDataObject();
         dataMock.Setup_GetDataPresent("UniformResourceLocatorW", () => true);
-        dataMock.Setup_GetData("UniformResourceLocatorW", () => null);
+        dataMock.Setup_GetData("UniformResourceLocatorW", () => null!);
 
         // テスト用のイベントパラメータ生成
         var args = TestActivator.CreateDragEventArgs(dataMock.Object);

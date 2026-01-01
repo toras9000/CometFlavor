@@ -1,8 +1,6 @@
-﻿using System;
-using System.Windows;
-using CometFlavor.Wpf.Interactions;
+﻿using System.Windows;
 using AwesomeAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using CometFlavor.Wpf.Interactions;
 using Moq;
 using TestCometFlavor.Wpf._Test;
 

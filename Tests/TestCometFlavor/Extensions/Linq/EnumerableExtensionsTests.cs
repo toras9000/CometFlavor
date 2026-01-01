@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using AwesomeAssertions;
 using CometFlavor.Extensions.Linq;
-using AwesomeAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TestCometFlavor.Extensions.Linq;
 

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using CometFlavor.Extensions.Text;
+﻿using System.Text;
 using AwesomeAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using CometFlavor.Extensions.Text;
 
 namespace TestCometFlavor.Extensions.Text;
 
@@ -127,7 +124,7 @@ public class StringBuilderExtensionsTests
         new StringBuilder("").PadLeft(0, 'P').ToString().Should().Be("");
 
         new Action(() => new StringBuilder("").PadLeft(-1)).Should().Throw<Exception>();
-        new Action(() => default(StringBuilder).PadLeft(2)).Should().Throw<Exception>();
+        new Action(() => default(StringBuilder)!.PadLeft(2)).Should().Throw<Exception>();
     }
 
     [TestMethod()]
@@ -148,7 +145,7 @@ public class StringBuilderExtensionsTests
         new StringBuilder("").PadRight(0, 'P').ToString().Should().Be("");
 
         new Action(() => new StringBuilder("").PadRight(-1)).Should().Throw<Exception>();
-        new Action(() => default(StringBuilder).PadRight(2)).Should().Throw<Exception>();
+        new Action(() => default(StringBuilder)!.PadRight(2)).Should().Throw<Exception>();
     }
 
 }

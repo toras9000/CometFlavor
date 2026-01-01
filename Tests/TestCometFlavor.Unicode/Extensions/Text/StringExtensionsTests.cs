@@ -1,9 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using AwesomeAssertions;
 using CometFlavor.Extensions.Text;
 using CometFlavor.Unicode.Extensions.Text;
-using AwesomeAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TestCometFlavor.Unicode.Extensions.Text;
 
@@ -124,7 +121,7 @@ public class StringExtensionsTests
     {
         var measure = new EawMeasure(1, 1, 1);
 
-        new Action(() => "abc".EvaluateEaw(null)).Should().Throw<Exception>();
+        new Action(() => "abc".EvaluateEaw(null!)).Should().Throw<Exception>();
         new Action(() => default(string).EvaluateEaw(measure)).Should().NotThrow();
         new Action(() => "".EvaluateEaw(measure)).Should().NotThrow();
     }
@@ -274,7 +271,7 @@ public class StringExtensionsTests
         var measure = new EawMeasure(1, 1, 1);
 
         new Action(() => "abc".CutLeftEaw(-1, measure)).Should().Throw<Exception>();
-        new Action(() => "abc".CutLeftEaw(1, null)).Should().Throw<Exception>();
+        new Action(() => "abc".CutLeftEaw(1, null!)).Should().Throw<Exception>();
         new Action(() => default(string).CutRightEaw(1, measure)).Should().NotThrow();
         new Action(() => "".CutRightEaw(1, measure)).Should().NotThrow();
     }
@@ -424,7 +421,7 @@ public class StringExtensionsTests
         var measure = new EawMeasure(1, 1, 1);
 
         new Action(() => "abc".CutRightEaw(-1, measure)).Should().Throw<Exception>();
-        new Action(() => "abc".CutRightEaw(1, null)).Should().Throw<Exception>();
+        new Action(() => "abc".CutRightEaw(1, null!)).Should().Throw<Exception>();
         new Action(() => default(string).CutRightEaw(1, measure)).Should().NotThrow();
         new Action(() => "".CutRightEaw(1, measure)).Should().NotThrow();
     }
@@ -735,11 +732,11 @@ public class StringExtensionsTests
     {
         var measure = new EawMeasure(1, 1, 1);
 
-        new Action(() => default(string).EllipsisByWidth(3, measure, "xyz")).Should().Throw<Exception>();
+        new Action(() => default(string)!.EllipsisByWidth(3, measure, "xyz")).Should().Throw<Exception>();
 
         new Action(() => "abcdef".EllipsisByWidth(-1, measure, "xyz")).Should().Throw<Exception>();
 
-        new Action(() => "abcdef".EllipsisByWidth(3, null, "xyz")).Should().Throw<Exception>();
+        new Action(() => "abcdef".EllipsisByWidth(3, null!, "xyz")).Should().Throw<Exception>();
 
         new Action(() => "abcdef".EllipsisByWidth(3, measure, "xyz")).Should().NotThrow();
         new Action(() => "abcdef".EllipsisByWidth(2, measure, "xyz")).Should().Throw<Exception>();

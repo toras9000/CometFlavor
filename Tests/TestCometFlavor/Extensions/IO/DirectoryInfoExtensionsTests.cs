@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AwesomeAssertions;
 using CometFlavor.Extensions.IO;
-using AwesomeAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestCometFlavor._Test;
 
 namespace TestCometFlavor.Extensions.IO;
@@ -68,7 +62,7 @@ public class DirectoryInfoExtensionsTests
     [TestMethod]
     public void RelativeFileAt_NullSelfFail()
     {
-        FluentActions.Invoking(() => default(DirectoryInfo).RelativeFileAt(@"V:\hoge\fuga"))
+        FluentActions.Invoking(() => default(DirectoryInfo)!.RelativeFileAt(@"V:\hoge\fuga"))
             .Should().Throw<ArgumentNullException>();
     }
 
@@ -123,14 +117,14 @@ public class DirectoryInfoExtensionsTests
         FluentActions.Invoking(() => new DirectoryInfo(@"X:\abc\def").RelativeFile(" "))
             .Should().Throw<ArgumentException>();
 
-        FluentActions.Invoking(() => new DirectoryInfo(@"X:\abc\def").RelativeFile(null))
+        FluentActions.Invoking(() => new DirectoryInfo(@"X:\abc\def").RelativeFile(null!))
             .Should().Throw<ArgumentException>();
     }
 
     [TestMethod]
     public void RelativeFile_NullSelfFail()
     {
-        FluentActions.Invoking(() => default(DirectoryInfo).RelativeFile(@"V:\hoge\fuga"))
+        FluentActions.Invoking(() => default(DirectoryInfo)!.RelativeFile(@"V:\hoge\fuga"))
             .Should().Throw<ArgumentNullException>();
     }
 
@@ -195,7 +189,7 @@ public class DirectoryInfoExtensionsTests
     [TestMethod]
     public void RelativeDirectoryAt_NullFail()
     {
-        FluentActions.Invoking(() => default(DirectoryInfo).RelativeDirectoryAt(@"V:\hoge\fuga"))
+        FluentActions.Invoking(() => default(DirectoryInfo)!.RelativeDirectoryAt(@"V:\hoge\fuga"))
             .Should().Throw<ArgumentNullException>();
     }
 
@@ -258,7 +252,7 @@ public class DirectoryInfoExtensionsTests
     [TestMethod]
     public void RelativeDirectory_NullFail()
     {
-        FluentActions.Invoking(() => default(DirectoryInfo).RelativeDirectory(@"V:\hoge\fuga"))
+        FluentActions.Invoking(() => default(DirectoryInfo)!.RelativeDirectory(@"V:\hoge\fuga"))
             .Should().Throw<ArgumentNullException>();
     }
 
@@ -409,7 +403,7 @@ public class DirectoryInfoExtensionsTests
         foreach (var data in testFiles)
         {
             var file = new FileInfo(Path.Combine(testDir.Info.FullName, data));
-            file.Directory.Create();
+            file.Directory?.Create();
             await file.WriteAllTextAsync(data);
         }
 
@@ -421,7 +415,7 @@ public class DirectoryInfoExtensionsTests
         };
 
         var selector = (FileInfo file) => file.ReadAllText();
-        var converter = (IFileConverter<string> context) => context.SetResult(selector(context.File));
+        var converter = (IFileConverter<string?> context) => context.SetResult(selector(context.File!));
 
         var testExpects = testDir.Info.EnumerateFiles("*", SearchOption.TopDirectoryOnly).Select(selector);
 
@@ -448,7 +442,7 @@ public class DirectoryInfoExtensionsTests
         foreach (var data in testFiles)
         {
             var file = new FileInfo(Path.Combine(testDir.Info.FullName, data));
-            file.Directory.Create();
+            file.Directory?.Create();
             await file.WriteAllTextAsync(data);
         }
 
@@ -460,12 +454,12 @@ public class DirectoryInfoExtensionsTests
         };
 
         var selector = (FileInfo file) => file.ReadAllText();
-        var converter = (IFileConverter<string> context) =>
+        var converter = (IFileConverter<string?> context) =>
         {
             if (context.File == null) context.Item.Should().BeOfType<DirectoryInfo>().And.Be(context.Directory);
             else context.Item.Should().BeOfType<FileInfo>().And.Be(context.File);
 
-            context.SetResult(selector(context.File));
+            context.SetResult(selector(context.File!));
         };
         var testExpects = testDir.Info.EnumerateFiles("*", SearchOption.AllDirectories).Select(selector);
 
@@ -492,7 +486,7 @@ public class DirectoryInfoExtensionsTests
         foreach (var data in testFiles)
         {
             var file = new FileInfo(Path.Combine(testDir.Info.FullName, data));
-            file.Directory.Create();
+            file.Directory?.Create();
             await file.WriteAllTextAsync(data);
         }
 
@@ -505,7 +499,7 @@ public class DirectoryInfoExtensionsTests
 
         var selector = (FileInfo file) => file.ReadAllText();
         var filter = (FileSystemInfo item) => item is DirectoryInfo || item.Name.Contains(".txt");
-        var converter = (IFileConverter<string> context) => { if (filter(context.File)) context.SetResult(selector(context.File)); };
+        var converter = (IFileConverter<string?> context) => { if (filter(context.File!)) context.SetResult(selector(context.File!)); };
 
         var testExpects = testDir.Info.EnumerateFiles("*", SearchOption.AllDirectories)
             .Where(f => filter(f)).Select(selector);
@@ -533,7 +527,7 @@ public class DirectoryInfoExtensionsTests
         foreach (var data in testFiles)
         {
             var file = new FileInfo(Path.Combine(testDir.Info.FullName, data));
-            file.Directory.Create();
+            file.Directory?.Create();
             await file.WriteAllTextAsync(data);
         }
 
@@ -545,7 +539,7 @@ public class DirectoryInfoExtensionsTests
             Sort = false,
         };
 
-        var converter = (IFileConverter<string> context) =>
+        var converter = (IFileConverter<string?> context) =>
         {
             if (context.File == null)
             {
@@ -587,7 +581,7 @@ public class DirectoryInfoExtensionsTests
         foreach (var data in testFiles)
         {
             var file = new FileInfo(Path.Combine(testDir.Info.FullName, data));
-            file.Directory.Create();
+            file.Directory?.Create();
             await file.WriteAllTextAsync(data);
         }
 
@@ -599,7 +593,7 @@ public class DirectoryInfoExtensionsTests
         };
 
         var selector = (FileInfo file) => file.ReadAllText();
-        var converter = (IFileConverter<string> context) => { context.SetResult(selector(context.File)); return ValueTask.CompletedTask; };
+        var converter = (IFileConverter<string?> context) => { context.SetResult(selector(context.File!)); return ValueTask.CompletedTask; };
 
         var testExpects = testDir.Info.EnumerateFiles("*", SearchOption.TopDirectoryOnly).Select(selector);
 
@@ -626,7 +620,7 @@ public class DirectoryInfoExtensionsTests
         foreach (var data in testFiles)
         {
             var file = new FileInfo(Path.Combine(testDir.Info.FullName, data));
-            file.Directory.Create();
+            file.Directory?.Create();
             await file.WriteAllTextAsync(data);
         }
 
@@ -638,7 +632,7 @@ public class DirectoryInfoExtensionsTests
         };
 
         var selector = (FileInfo file) => file.ReadAllText();
-        var converter = (IFileConverter<string> context) => { context.SetResult(selector(context.File)); return ValueTask.CompletedTask; };
+        var converter = (IFileConverter<string?> context) => { context.SetResult(selector(context.File!)); return ValueTask.CompletedTask; };
 
         var testExpects = testDir.Info.EnumerateFiles("*", SearchOption.AllDirectories).Select(selector);
 
@@ -665,7 +659,7 @@ public class DirectoryInfoExtensionsTests
         foreach (var data in testFiles)
         {
             var file = new FileInfo(Path.Combine(testDir.Info.FullName, data));
-            file.Directory.Create();
+            file.Directory?.Create();
             await file.WriteAllTextAsync(data);
         }
 
@@ -678,7 +672,7 @@ public class DirectoryInfoExtensionsTests
 
         var selector = (FileInfo file) => file.ReadAllText();
         var filter = (FileSystemInfo item) => item is DirectoryInfo || item.Name.Contains(".txt");
-        var converter = (IFileConverter<string> context) => { if (filter(context.File)) context.SetResult(selector(context.File)); return ValueTask.CompletedTask; };
+        var converter = (IFileConverter<string?> context) => { if (filter(context.File!)) context.SetResult(selector(context.File!)); return ValueTask.CompletedTask; };
 
         var testExpects = testDir.Info.EnumerateFiles("*", SearchOption.AllDirectories)
             .Where(f => filter(f)).Select(selector);
@@ -706,7 +700,7 @@ public class DirectoryInfoExtensionsTests
         foreach (var data in testFiles)
         {
             var file = new FileInfo(Path.Combine(testDir.Info.FullName, data));
-            file.Directory.Create();
+            file.Directory?.Create();
             await file.WriteAllTextAsync(data);
         }
 
@@ -718,7 +712,7 @@ public class DirectoryInfoExtensionsTests
             Sort = false,
         };
 
-        var converter = (IFileConverter<string> context) =>
+        var converter = (IFileConverter<string?> context) =>
         {
             if (context.File == null)
             {
@@ -761,7 +755,7 @@ public class DirectoryInfoExtensionsTests
         foreach (var data in testFiles)
         {
             var file = new FileInfo(Path.Combine(testDir.Info.FullName, data));
-            file.Directory.Create();
+            file.Directory?.Create();
             await file.WriteAllTextAsync(data);
         }
 
@@ -773,12 +767,12 @@ public class DirectoryInfoExtensionsTests
         };
 
         var selector = (FileInfo file) => file.ReadAllText();
-        var converter = (IFileConverter<string> context) => context.SetResult(selector(context.File));
+        var converter = (IFileConverter<string?> context) => context.SetResult(selector(context.File!));
 
         var testExpects = testDir.Info.EnumerateFiles("*", SearchOption.AllDirectories).Select(selector);
 
         var actionLog = new List<string>();
-        testDir.Info.DoFiles(w => actionLog.Add(selector(w.File)), options: testOpt);
+        testDir.Info.DoFiles(w => actionLog.Add(selector(w.File!)), options: testOpt);
         actionLog.Should().BeEquivalentTo(testExpects);
     }
 
@@ -802,7 +796,7 @@ public class DirectoryInfoExtensionsTests
         foreach (var data in testFiles)
         {
             var file = new FileInfo(Path.Combine(testDir.Info.FullName, data));
-            file.Directory.Create();
+            file.Directory?.Create();
             await file.WriteAllTextAsync(data);
         }
 
@@ -814,12 +808,12 @@ public class DirectoryInfoExtensionsTests
         };
 
         var selector = (FileInfo file) => file.ReadAllText();
-        var converter = (IFileConverter<string> context) => { context.SetResult(selector(context.File)); return ValueTask.CompletedTask; };
+        var converter = (IFileConverter<string?> context) => { context.SetResult(selector(context.File!)); return ValueTask.CompletedTask; };
 
         var testExpects = testDir.Info.EnumerateFiles("*", SearchOption.AllDirectories).Select(selector);
 
         var actionLog = new List<string>();
-        await testDir.Info.DoFilesAsync(w => { actionLog.Add(selector(w.File)); return ValueTask.CompletedTask; }, options: testOpt);
+        await testDir.Info.DoFilesAsync(w => { actionLog.Add(selector(w.File!)); return ValueTask.CompletedTask; }, options: testOpt);
         actionLog.Should().BeEquivalentTo(testExpects);
     }
 }

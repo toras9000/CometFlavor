@@ -1,6 +1,5 @@
-﻿using CometFlavor.Unicode;
-using AwesomeAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using AwesomeAssertions;
+using CometFlavor.Unicode;
 using static CometFlavor.Unicode.Materials.UnicodeEastAsianWidthV14;
 
 namespace TestCometFlavor.Unicode.Materials;

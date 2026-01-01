@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AwesomeAssertions;
 using CometFlavor.Collections;
-using AwesomeAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace TestCometFlavor.Collections;
@@ -114,7 +109,7 @@ public class AsyncCombinedDisposablesTests
     {
         var target = new AsyncCombinedDisposables();
 
-        await FluentActions.Awaiting(() => target.AddAsync(null).AsTask()).Should().ThrowAsync<ArgumentNullException>();
+        await FluentActions.Awaiting(() => target.AddAsync(null!).AsTask()).Should().ThrowAsync<ArgumentNullException>();
     }
 
     [TestMethod]
@@ -222,7 +217,7 @@ public class AsyncCombinedDisposablesTests
     {
         var target = new AsyncCombinedDisposables();
 
-        await FluentActions.Awaiting(() => target.RemoveAsync(null).AsTask()).Should().ThrowAsync<ArgumentNullException>();
+        await FluentActions.Awaiting(() => target.RemoveAsync(null!).AsTask()).Should().ThrowAsync<ArgumentNullException>();
     }
 
     [TestMethod]
@@ -388,7 +383,7 @@ public class AsyncCombinedDisposablesTests
     {
         var target = new AsyncCombinedDisposables();
 
-        new Action(() => target.Contains(null)).Should().Throw<ArgumentNullException>();
+        new Action(() => target.Contains(null!)).Should().Throw<ArgumentNullException>();
     }
 
     [TestMethod]
@@ -458,8 +453,8 @@ public class AsyncCombinedDisposablesTests
             item5.Object
         );
 
-        var dest2 = new IAsyncDisposable[10];
-        source.CopyTo(dest2, 3);
+        var dest2 = new IAsyncDisposable?[10];
+        source.CopyTo(dest2!, 3);
         dest2.Should().Equal(
             null,
             null,

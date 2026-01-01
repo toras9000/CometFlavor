@@ -1,14 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using CometFlavor.Wpf.Interactions;
 using AwesomeAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TestCometFlavor.Wpf._Test;
+using CometFlavor.Wpf.Interactions;
 using R3;
-using System;
-using System.Linq;
 
 namespace TestCometFlavor.Wpf.Interactions;
 
