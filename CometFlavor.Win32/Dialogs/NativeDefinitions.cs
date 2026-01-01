@@ -2,26 +2,23 @@
 // The source code except for comments in this file is in the public domain.
 
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace CometFlavor.Win32.Dialogs;
 
 /// <summary>
 /// ネイティブ利用のための定義類
 /// </summary>
-internal static class NativeDefinitions
+internal static partial class NativeDefinitions
 {
-    /// <summary>
-    /// COMクラスID
-    /// </summary>
+    /// <summary>COMクラスID</summary>
     public static class CLSID
     {
         public const string FileOpenDialog = "DC1C5A9C-E88A-4dde-A5A1-60F82A20AEF7";
         public const string FileSaveDialog = "C0B4E2F3-BA21-4773-8DBA-335EC946EB8B";
     }
 
-    /// <summary>
-    /// COMインターフェースID
-    /// </summary>
+    /// <summary>COMインターフェースID</summary>
     public static class IID
     {
         public const string IModalWindow = "b4db1657-70d7-485e-8e3e-6fcb5a5c1802";
@@ -34,26 +31,28 @@ internal static class NativeDefinitions
         public const string IShellItemArray = "b63ea76d-1f85-456f-a19c-48159efa858b";
     }
 
-    /// <summary>
-    /// ファイルオープンダイアログ COMインポートインターフェース
-    /// </summary>
-    [ComImport]
-    [Guid(IID.IFileOpenDialog)]
+    /// <summary>モーダルウィンドウ COMインポートインターフェース</summary>
+    [GeneratedComInterface]
+    [Guid(IID.IModalWindow)]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IFileOpenDialog
+    public partial interface IModalWindow
     {
-        #region IModalWindow
         /// <summary>モーダルウィンドウを表示する。</summary>
         /// <param name="hwndParent">オーナーウィンドウハンドル。</param>
         /// <returns>結果のHRESULT値</returns>
         [PreserveSig] Int32 Show(IntPtr hwndParent);
-        #endregion
+    }
 
-        #region IFileDialog
+    /// <summary>シェルファイルダイアログ COMインポートインターフェース</summary>
+    [GeneratedComInterface]
+    [Guid(IID.IFileDialog)]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public partial interface IFileDialog : IModalWindow
+    {
         /// <summary>ファイルの種類を示すフィルタを設定する。</summary>
         /// <param name="cFileTypes">設定するファイルタイプの数</param>
         /// <param name="rgFilterSpec">ファイルフィルタ情報</param>
-        void SetFileTypes(UInt32 cFileTypes, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] COMDLG_FILTERSPEC[] rgFilterSpec);
+        void SetFileTypes(UInt32 cFileTypes, [In][MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] ComDlgFilterSpec[] rgFilterSpec);
 
         /// <summary>ファイルの種類の選択インデックスを設定する。</summary>
         /// <param name="iFileType">選択するファイルタイプフィルタのインデクス。値は1ベース値となる。</param>
@@ -146,9 +145,14 @@ internal static class NativeDefinitions
         /// <summary>廃止。Windows7以降では非サポート。</summary>
         /// <remarks>signature : void SetFilter(IShellItemFilter pFilter);</remarks>
         void SetFilter(/* not use. omitted. */);
-        #endregion
+    }
 
-        #region IFileOpenDialog
+    /// <summary>ファイルオープンダイアログ COMインポートインターフェース</summary>
+    [GeneratedComInterface]
+    [Guid(IID.IFileOpenDialog)]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public partial interface IFileOpenDialog : IFileDialog
+    {
         /// <summary>ダイアログでの選択結果をすべて取得する</summary>
         /// <param name="ppenum">選択結果アイテムを表すインターフェースポインタの格納先</param>
         void GetResults(out IShellItemArray ppenum);
@@ -156,124 +160,14 @@ internal static class NativeDefinitions
         /// <summary>ダイアログで現在選択されているアイテムをすべて取得する</summary>
         /// <param name="ppsai">選択状態をアイテム表すインターフェースポインタの格納先</param>
         void GetSelectedItems(out IShellItemArray ppsai);
-        #endregion
     }
 
-    /// <summary>
-    /// ファイル保存ダイアログ COMインポートインターフェース
-    /// </summary>
-    [ComImport]
+    /// <summary>ファイル保存ダイアログ COMインポートインターフェース</summary>
+    [GeneratedComInterface]
     [Guid(IID.IFileSaveDialog)]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IFileSaveDialog
+    public partial interface IFileSaveDialog : IFileDialog
     {
-        #region IModalWindow
-        /// <summary>モーダルウィンドウを表示する。</summary>
-        /// <param name="hwndParent">オーナーウィンドウハンドル。</param>
-        /// <returns>結果のHRESULT値</returns>
-        [PreserveSig] Int32 Show(IntPtr hwndParent);
-        #endregion
-
-        #region IFileDialog
-        /// <summary>ファイルの種類を示すフィルタを設定する。</summary>
-        /// <param name="cFileTypes">設定するファイルタイプの数</param>
-        /// <param name="rgFilterSpec">ファイルフィルタ情報</param>
-        void SetFileTypes(UInt32 cFileTypes, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] COMDLG_FILTERSPEC[] rgFilterSpec);
-
-        /// <summary>ファイルの種類の選択インデックスを設定する。</summary>
-        /// <param name="iFileType">選択するファイルタイプフィルタのインデクス。値は1ベース値となる。</param>
-        void SetFileTypeIndex(UInt32 iFileType);
-
-        /// <summary>ファイルの種類の選択インデックスを取得する</summary>
-        /// <param name="piFileType">選択されたファイルフィルタのインデクス。値は1ベース値となる。</param>
-        void GetFileTypeIndex(out UInt32 piFileType);
-
-        /// <summary>ダイアログイベントをリッスンするイベントハンドラを登録する。</summary>
-        /// <!--
-        /// <param name="pfde">イベントを受け取る IFileDialogEvents の実装へのポインタ</param>
-        /// <param name="pdwCookie">登録したイベントハンドラの識別値を格納する変数へのポインタ。ハンドラが不要になった場合はUnadviseにこの値を指定して解除する必要がある。</param>
-        /// -->
-        /// <remarks>signature : void Advise(IFileDialogEvents pfde, out UInt32 pdwCookie);</remarks>
-        void Advise(/* not use. omitted. */);
-
-        /// <summary>ダイアログイベントのイベントハンドラを解除する。</summary>
-        /// <param name="dwCookie">Advise()メソッドが返却したイベントハンドラの識別値。</param>
-        void Unadvise(UInt32 dwCookie);
-
-        /// <summary>ダイアログの動作フラグを設定する</summary>
-        /// <param name="fos">設定するフラグ値</param>
-        void SetOptions(FILEOPENDIALOGOPTIONS fos);
-
-        /// <summary>ダイアログの動作フラグを取得する</summary>
-        /// <param name="pfos">取得したフラグ値の格納先</param>
-        void GetOptions(out FILEOPENDIALOGOPTIONS pfos);
-
-        /// <summary>最近使用したフォルダーが無い場合のデフォルトフォルダを設定する</summary>
-        /// <param name="psi">フォルダアイテムを示すインターフェースへのポインタ</param>
-        void SetDefaultFolder(IShellItem psi);
-
-        /// <summary>ダイアログを開いた際の初期フォルダを指定する</summary>
-        /// <param name="psi">フォルダアイテムを示すインターフェースへのポインタ</param>
-        void SetFolder(IShellItem psi);
-
-        /// <summary>ダイアログの初期フォルダ、もしくはダイアログ表示後の選択フォルダを取得する</summary>
-        /// <param name="ppsi">取得したフォルダアイテムへのポインタ格納先</param>
-        void GetFolder(out IShellItem ppsi);
-
-        /// <summary>ダイアログで現在の選択アイテムを取得する</summary>
-        /// <param name="ppsi">取得したアイテムへのポインタ格納先</param>
-        void GetCurrentSelection(out IShellItem ppsi);
-
-        /// <summary>ダイアログを開いた際の初期入力ファイル名を指定する</summary>
-        /// <param name="pszName">ファイル名</param>
-        void SetFileName([MarshalAs(UnmanagedType.LPWStr)] string pszName);
-
-        /// <summary>ダイアログで現在入力されているファイル名</summary>
-        /// <param name="pszName">取得したファイル名文字列へのポインタ格納先</param>
-        void GetFileName(out IntPtr pszName);
-
-        /// <summary>ダイアログのタイトルテキストを設定する</summary>
-        /// <param name="pszTitle">設定するタイトルテキスト</param>
-        void SetTitle([MarshalAs(UnmanagedType.LPWStr)] string pszTitle);
-
-        /// <summary>確定ボタンのラベルテキストを設定する</summary>
-        /// <param name="pszText">設定するラベルテキスト</param>
-        void SetOkButtonLabel([MarshalAs(UnmanagedType.LPWStr)] string pszText);
-
-        /// <summary>ファイル名入力欄キャプションのラベルテキストを設定する</summary>
-        /// <param name="pszLabel">設定するキャプションテキスト</param>
-        void SetFileNameLabel([MarshalAs(UnmanagedType.LPWStr)] string pszLabel);
-
-        /// <summary>ダイアログの選択結果を取得する</summary>
-        /// <param name="ppsi">取得したアイテムへのポインタ格納先</param>
-        void GetResult(out IShellItem ppsi);
-
-        /// <summary>ダイアログで選択可能な場所を追加する</summary>
-        /// <param name="psi">フォルダアイテムを示すインターフェースへのポインタ</param>
-        /// <param name="fdap">フォルダの配置位置</param>
-        void AddPlace(IShellItem psi, FDAP fdap);
-
-        /// <summary>選択したファイル名に付与するデフォルト拡張子を設定する</summary>
-        /// <param name="pszDefaultExtension">拡張子文字列。ピリオドは含めない。</param>
-        void SetDefaultExtension([MarshalAs(UnmanagedType.LPWStr)] string pszDefaultExtension);
-
-        /// <summary>ダイアログを閉じる</summary>
-        /// <param name="hr">Show()の返却値とする値</param>
-        void Close(UInt32 hr);
-
-        /// <summary>ダイアログ状態の永続化用GUIDを設定する</summary>
-        /// <param name="guid">任意のGUID</param>
-        void SetClientGuid(in Guid guid);
-
-        /// <summary>ダイアログ状態の永続化データをクリアする</summary>
-        void ClearClientData();
-
-        /// <summary>廃止。Windows7以降では非サポート。</summary>
-        /// <remarks>signature : void SetFilter(IShellItemFilter pFilter);</remarks>
-        void SetFilter(/* not use. omitted. */);
-        #endregion
-
-        #region IFileSaveDialog
         /// <summary>初期エントリとするアイテムを設定する</summary>
         /// <param name="psi"></param>
         void SetSaveAsItem(IShellItem psi);
@@ -293,16 +187,13 @@ internal static class NativeDefinitions
         // uninvestigated
         //void ApplyProperties(IShellItem psi, IPropertyStore pStore, IntPtr hwnd, IFileOperationProgressSink pSink);
         void ApplyProperties(/* not use. omitted. */);
-        #endregion
     }
 
-    /// <summary>
-    /// シェルアイテム COMインポートインターフェース
-    /// </summary>
-    [ComImport]
+    /// <summary>シェルアイテム COMインポートインターフェース</summary>
+    [GeneratedComInterface]
     [Guid(IID.IShellItem)]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IShellItem
+    public partial interface IShellItem
     {
         // uninvestigated
         void BindToHandler(IntPtr pbc, in Guid bhid, in Guid riid, out IntPtr ppv);
@@ -325,13 +216,11 @@ internal static class NativeDefinitions
         void Compare(/* not use. omitted. */);
     }
 
-    /// <summary>
-    /// シェルアイテム配列 COMインポートインターフェース
-    /// </summary>
-    [ComImport]
+    /// <summary>シェルアイテム配列 COMインポートインターフェース</summary>
+    [GeneratedComInterface]
     [Guid(IID.IShellItemArray)]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IShellItemArray
+    public partial interface IShellItemArray
     {
         // uninvestigated
         void BindToHandler(IntPtr pbc, in Guid bhid, in Guid riid, out IntPtr ppv);
@@ -362,14 +251,45 @@ internal static class NativeDefinitions
         void EnumItems(/* not use. omitted. */);
     }
 
-    /// <summary>フィルタ仕様を表す汎用データ型</summary>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    public struct COMDLG_FILTERSPEC
+    /// <summary>フィルタ仕様を表す汎用データ型 (マネージ側)</summary>
+    [NativeMarshalling(typeof(ComDlgFilterSpecMarshaller))]
+    public struct ComDlgFilterSpec
     {
         /// <summary>フィルタの表示用名称</summary>
-        [MarshalAs(UnmanagedType.LPWStr)] public string pszName;
+        public string? pszName;
         /// <summary>フィルタパターン文字列</summary>
-        [MarshalAs(UnmanagedType.LPWStr)] public string pszSpec;
+        public string? pszSpec;
+    }
+
+    /// <summary>フィルタ仕様型のカスタムマーシャラー</summary>
+    [CustomMarshaller(typeof(ComDlgFilterSpec), MarshalMode.Default, typeof(ComDlgFilterSpecMarshaller))]
+    public static unsafe class ComDlgFilterSpecMarshaller
+    {
+        internal struct COMDLG_FILTERSPEC
+        {
+            public ushort* pszName;
+            public ushort* pszSpec;
+        }
+
+        public static COMDLG_FILTERSPEC ConvertToUnmanaged(ComDlgFilterSpec managed)
+            => new()
+            {
+                pszName = Utf16StringMarshaller.ConvertToUnmanaged(managed.pszName),
+                pszSpec = Utf16StringMarshaller.ConvertToUnmanaged(managed.pszSpec),
+            };
+
+        public static ComDlgFilterSpec ConvertToManaged(COMDLG_FILTERSPEC unmanaged)
+            => new()
+            {
+                pszName = Utf16StringMarshaller.ConvertToManaged(unmanaged.pszName),
+                pszSpec = Utf16StringMarshaller.ConvertToManaged(unmanaged.pszSpec),
+            };
+
+        public static void Free(COMDLG_FILTERSPEC unmanaged)
+        {
+            Utf16StringMarshaller.Free(unmanaged.pszName);
+            Utf16StringMarshaller.Free(unmanaged.pszSpec);
+        }
     }
 
     /// <summary>オプション定義フラグ</summary>
@@ -458,6 +378,38 @@ internal static class NativeDefinitions
         PARENTRELATIVEFORUI = 0x80094001,
     }
 
+    /// <summary>オブジェクトの実行コンテキスト</summary>
+    public enum CLSCTX : UInt32
+    {
+        CLSCTX_INPROC_SERVER = 0x1,
+        CLSCTX_INPROC_HANDLER = 0x2,
+        CLSCTX_LOCAL_SERVER = 0x4,
+        CLSCTX_INPROC_SERVER16 = 0x8,
+        CLSCTX_REMOTE_SERVER = 0x10,
+        CLSCTX_INPROC_HANDLER16 = 0x20,
+        CLSCTX_RESERVED1 = 0x40,
+        CLSCTX_RESERVED2 = 0x80,
+        CLSCTX_RESERVED3 = 0x100,
+        CLSCTX_RESERVED4 = 0x200,
+        CLSCTX_NO_CODE_DOWNLOAD = 0x400,
+        CLSCTX_RESERVED5 = 0x800,
+        CLSCTX_NO_CUSTOM_MARSHAL = 0x1000,
+        CLSCTX_ENABLE_CODE_DOWNLOAD = 0x2000,
+        CLSCTX_NO_FAILURE_LOG = 0x4000,
+        CLSCTX_DISABLE_AAA = 0x8000,
+        CLSCTX_ENABLE_AAA = 0x10000,
+        CLSCTX_FROM_DEFAULT_CONTEXT = 0x20000,
+        CLSCTX_ACTIVATE_X86_SERVER = 0x40000,
+        CLSCTX_ACTIVATE_32_BIT_SERVER = CLSCTX_ACTIVATE_X86_SERVER,
+        CLSCTX_ACTIVATE_64_BIT_SERVER = 0x80000,
+        CLSCTX_ENABLE_CLOAKING = 0x100000,
+        CLSCTX_APPCONTAINER = 0x400000,
+        CLSCTX_ACTIVATE_AAA_AS_IU = 0x800000,
+        CLSCTX_RESERVED6 = 0x1000000,
+        CLSCTX_ACTIVATE_ARM32_SERVER = 0x2000000,
+        CLSCTX_PS_DLL = 0x80000000
+    };
+
     /// <summary>操作のキャンセルを表すエラーコード</summary>
     public const Int32 ERROR_CANCELLED = 1223;
 
@@ -480,17 +432,35 @@ internal static class NativeDefinitions
         return ((Int32)errcode <= 0) ? (Int32)errcode : (Int32)((errcode & 0x0000FFFF) | (FACILITY_WIN32 << 16) | 0x80000000);
     }
 
-    /// <summary>
-    /// APIのプロトタイプ
-    /// </summary>
-    public static class WinApi
+    /// <summary>APIインポート</summary>
+    public static partial class WinApi
     {
         /// <summary>パス文字列を解析してシェルアイテムを生成する</summary>
-        [DllImport("Shell32.dll", EntryPoint = "SHCreateItemFromParsingName", CallingConvention = CallingConvention.Winapi, CharSet = CharSet.Unicode)]
-        public static extern Int32 SHCreateItemFromParsingName_ShellItem(string pszPath, IntPtr pbc, in Guid riid, out IShellItem ppv);
+        [LibraryImport("Shell32.dll", EntryPoint = "SHCreateItemFromParsingName", StringMarshalling = StringMarshalling.Utf16)]
+        public static partial Int32 SHCreateItemFromParsingName(string pszPath, IntPtr pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+
+        /// <summary>パス文字列を解析してシェルアイテムを生成する (型付けヘルパ)</summary>
+        public static Int32 SHCreateItemFromParsingName<TItem>(string pszPath, IntPtr pbc, in Guid riid, out TItem? item) where TItem : class
+        {
+            var result = SHCreateItemFromParsingName(pszPath, pbc, riid, out var ppv);
+            item = SUCCEEDED(result) ? (TItem)ppv : default;
+            return result;
+        }
+
+        /// <summary>COMオブジェクトを生成する</summary>
+        [LibraryImport("Ole32.dll")]
+        public static partial Int32 CoCreateInstance(in Guid rclsid, IntPtr pUnkOuter, CLSCTX dwClsContext, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+
+        /// <summary>COMオブジェクトを生成する (型付けヘルパ)</summary>
+        public static Int32 CoCreateInstance<TInstance>(in Guid rclsid, IntPtr pUnkOuter, CLSCTX dwClsContext, in Guid riid, out TInstance? instance)
+        {
+            var result = CoCreateInstance(rclsid, pUnkOuter, dwClsContext, riid, out var ppv);
+            instance = SUCCEEDED(result) ? (TInstance)ppv : default;
+            return result;
+        }
 
         /// <summary>タスクメモリブロックを解放する</summary>
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.Winapi)]
-        public static extern void CoTaskMemFree(IntPtr pv);
+        [LibraryImport("Ole32.dll")]
+        public static partial void CoTaskMemFree(IntPtr pv);
     }
 }

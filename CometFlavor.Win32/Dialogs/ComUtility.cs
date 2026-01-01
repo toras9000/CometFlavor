@@ -1,6 +1,7 @@
 ﻿// このファイル内のコメントを除いたソースコードはパブリックドメインとします。
 // The source code except for comments in this file is in the public domain.
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using static CometFlavor.Win32.Dialogs.NativeDefinitions;
 
@@ -23,18 +24,19 @@ internal static class ComUtility
     /// <param name="self">リストに追加するオブジェクト</param>
     /// <param name="list">追加先リスト</param>
     /// <returns>追加したオブジェクト自身</returns>
-    public static T WithAddTo<T>(this T self, ObjectList list)
+    [return: NotNullIfNotNull(nameof(self))]
+    public static T? WithAddTo<T>(this T? self, ObjectList list)
     {
-        list.Add(self);
+        if (self != null) list.Add(self);
         return self;
     }
 
     /// <summary>パス文字列からシェルアイテムを生成する。</summary>
     /// <param name="path">パス文字列</param>
     /// <returns>シェルアイテム</returns>
-    public static IShellItem CreateShellItemFromPath(string path)
+    public static IShellItem? CreateShellItemFromPath(string path)
     {
-        var result = WinApi.SHCreateItemFromParsingName_ShellItem(path, IntPtr.Zero, in IShellItemID, out var item);
+        var result = WinApi.SHCreateItemFromParsingName(path, IntPtr.Zero, in IShellItemID, out IShellItem? item);
         if (!SUCCEEDED(result))
         {
             Marshal.ThrowExceptionForHR(result);
@@ -70,8 +72,10 @@ internal static class ComUtility
     /// <summary>シェルアイテム配列の各アイテムのファイルパスを列挙する</summary>
     /// <param name="items">シェルアイテム配列</param>
     /// <returns>ファイルパスのシーケンス</returns>
-    public static IEnumerable<string?> EnumerateItemPaths(IShellItemArray items)
+    public static IEnumerable<string?> EnumerateItemPaths(IShellItemArray? items)
     {
+        if (items == null) yield break;
+
         // 配列内アイテムの個数を取得
         items.GetCount(out var itemCount);
 
@@ -97,6 +101,26 @@ internal static class ComUtility
             // パスを列挙
             yield return path;
         }
+    }
+
+    /// <summary>COMオブジェクトを生成する</summary>
+    /// <typeparam name="TInterface">COMインタフェースマッパー型</typeparam>
+    /// <param name="clsid">クラスID</param>
+    /// <param name="iid">インタフェースID</param>
+    /// <returns>インスタンス</returns>
+    public static TInterface CreateInstance<TInterface>(in Guid clsid, in Guid iid)
+    {
+        var result = WinApi.CoCreateInstance<TInterface>(clsid, default, CLSCTX.CLSCTX_INPROC_SERVER, iid, out var item);
+        if (!SUCCEEDED(result))
+        {
+            Marshal.ThrowExceptionForHR(result);
+        }
+        if (item == null)
+        {
+            throw new COMException("Cannot create instance");
+        }
+
+        return item;
     }
 
     /// <summary>OLEメモリブロックがあれば解放する。</summary>

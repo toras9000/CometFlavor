@@ -57,11 +57,8 @@ public class ShellSaveFileDialog
         {
             // FileSaveDialog COMオブジェクト生成
             var dlgClsId = new Guid(CLSID.FileSaveDialog);
-            var dlgType = Type.GetTypeFromCLSID(dlgClsId) ?? throw new NotSupportedException();
-            var dialogObject = Activator.CreateInstance(dlgType).WithAddTo(comObjects) ?? throw new NotSupportedException();
-
-            // IFileSaveDialogインターフェース取得(インポートインターフェースへのキャストにて)
-            var shellDialog = (IFileSaveDialog)dialogObject;
+            var dlgIfId = new Guid(IID.IFileSaveDialog);
+            var shellDialog = ComUtility.CreateInstance<IFileSaveDialog>(dlgClsId, dlgIfId).WithAddTo(comObjects);
 
             // タイトル指定があれば設定
             if (parameter.Title != null)
@@ -86,7 +83,7 @@ public class ShellSaveFileDialog
             {
                 var fileTypes = parameter.Filters
                     .Where(f => f != null)
-                    .Select(f => new COMDLG_FILTERSPEC { pszName = f.Name, pszSpec = f.Spec })
+                    .Select(f => new ComDlgFilterSpec { pszName = f.Name, pszSpec = f.Spec })
                     .ToArray();
                 shellDialog.SetFileTypes((UInt32)fileTypes.Length, fileTypes);
 
@@ -113,14 +110,14 @@ public class ShellSaveFileDialog
             if (parameter.DefaultDirectory != null)
             {
                 var defDir = ComUtility.CreateShellItemFromPath(parameter.DefaultDirectory).WithAddTo(comObjects);
-                shellDialog.SetDefaultFolder(defDir);
+                if (defDir != null) shellDialog.SetDefaultFolder(defDir);
             }
 
             // 初期ディレクトリ指定があれば設定
             if (parameter.Directory != null)
             {
                 var iniDir = ComUtility.CreateShellItemFromPath(parameter.Directory).WithAddTo(comObjects);
-                shellDialog.SetFolder(iniDir);
+                if (iniDir != null) shellDialog.SetFolder(iniDir);
             }
 
             // 初期ファイル名指定があれば設定
@@ -133,8 +130,11 @@ public class ShellSaveFileDialog
             foreach (var place in parameter.AdditionalPlaces.Where(p => p != null))
             {
                 var placeItem = ComUtility.CreateShellItemFromPath(place.Path).WithAddTo(comObjects);
-                var placeOrder = place.Order == ShellFileDialogPlaceOrder.Top ? FDAP.TOP : FDAP.BOTTOM;
-                shellDialog.AddPlace(placeItem, placeOrder);
+                if (placeItem != null)
+                {
+                    var placeOrder = place.Order == ShellFileDialogPlaceOrder.Top ? FDAP.TOP : FDAP.BOTTOM;
+                    shellDialog.AddPlace(placeItem, placeOrder);
+                }
             }
 
             // ダイアログ表示時のオプション設定を作成

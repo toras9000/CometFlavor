@@ -125,7 +125,7 @@ public class ShellSaveFileDialogParameter
     public bool PathMustExist { get; set; }
 
     /// <summary>存在するアイテムのみを選択可能とする</summary>
-    /// <remarks>デフォルト値は true となる。</remarks>
+    /// <remarks>デフォルト値は false となる。</remarks>
     public bool FileMustExist { get; set; }
 
     /// <summary>ファイルの作成確認を表示する</summary>
@@ -139,7 +139,7 @@ public class ShellSaveFileDialogParameter
     public bool ShareAware { get; set; }
 
     /// <summary>読み取り専用アイテムを選択不可とする</summary>
-    /// <remarks>デフォルト値は false となる。</remarks>
+    /// <remarks>デフォルト値は true となる。</remarks>
     public bool NoReadOnlyReturn { get; set; }
 
     /// <summary>ファイルが作成可能であるかをテストしない</summary>
