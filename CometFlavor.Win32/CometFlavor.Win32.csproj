@@ -12,7 +12,7 @@
     <PackageDescription>A utility class library that depends on native Win32.</PackageDescription>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
-    <PackageTags>wpf</PackageTags>
+    <PackageTags>win32</PackageTags>
   </PropertyGroup>
   <PropertyGroup>
     <Authors>toras9000</Authors>
