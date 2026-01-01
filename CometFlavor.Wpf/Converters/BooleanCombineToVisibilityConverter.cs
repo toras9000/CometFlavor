@@ -48,7 +48,7 @@ public class BooleanCombineToVisibilityConverter : IMultiValueConverter
     /// <param name="parameter">コンバータパラメータ</param>
     /// <param name="culture">変換時のカルチャ</param>
     /// <returns>変換できた場合は結果の表示列挙子。変換できない場合は DependencyProperty.UnsetValue。</returns>
-    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object[]? values, Type? targetType, object? parameter, CultureInfo? culture)
     {
         // 値がない場合は変換不可
         if (values == null)
@@ -88,7 +88,7 @@ public class BooleanCombineToVisibilityConverter : IMultiValueConverter
     /// <param name="parameter">コンバータパラメータ</param>
     /// <param name="culture">変換時のカルチャ</param>
     /// <returns>常に null を返却。</returns>
-    public object[]? ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+    public object[]? ConvertBack(object? value, Type[]? targetTypes, object? parameter, CultureInfo? culture)
     {
         return null;
     }

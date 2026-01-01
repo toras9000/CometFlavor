@@ -19,7 +19,7 @@ public class InvertBooleanConverter : IValueConverter
     /// <param name="parameter">コンバータパラメータ</param>
     /// <param name="culture">変換時のカルチャ</param>
     /// <returns>変換できた場合は結果のbool値。変換できない場合は DependencyProperty.UnsetValue。</returns>
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object? value, Type? targetType, object? parameter, CultureInfo? culture)
     {
         if (value is bool b)
         {
@@ -34,7 +34,7 @@ public class InvertBooleanConverter : IValueConverter
     /// <param name="parameter">コンバータパラメータ</param>
     /// <param name="culture"></param>
     /// <returns>変換できた場合は結果のbool値。変換できない場合は DependencyProperty.UnsetValue。</returns>
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type? targetType, object? parameter, CultureInfo? culture)
     {
         if (value is bool b)
         {
