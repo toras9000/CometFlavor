@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AwesomeAssertions" Version="9.3.0" />
-    <PackageReference Include="Lestaly.General" Version="0.114.0" />
-    <PackageReference Include="MSTest" Version="4.0.1" />
+    <PackageReference Include="AwesomeAssertions" Version="9.4.0" />
+    <PackageReference Include="Lestaly.General" Version="0.141.0" />
+    <PackageReference Include="MSTest" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
